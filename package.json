@@ -1,0 +1,40 @@
+{
+  "name": "0dte-trading-system",
+  "version": "1.0.0",
+  "description": "Clean, minimalistic 0DTE options trading system with Alpaca integration",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "paper": "ts-node src/main.ts paper",
+    "backtest": "ts-node src/main.ts backtest",
+    "test": "ts-node tests/test-alpaca-integration.ts",
+    "build": "tsc",
+    "dev": "ts-node --watch src/main.ts"
+  },
+  "keywords": [
+    "0dte",
+    "options",
+    "trading",
+    "alpaca",
+    "momentum"
+  ],
+  "author": "Trading System",
+  "license": "MIT",
+  "dependencies": {
+    "@types/uuid": "^9.0.0",
+    "@types/ws": "^8.5.0",
+    "axios": "^1.6.0",
+    "dotenv": "^17.2.1",
+    "mathjs": "^14.6.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

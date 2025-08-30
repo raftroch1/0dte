@@ -1,0 +1,8 @@
+user is a beginer in coding make detailed explanations and comment on code.
+analize codebase before making coding suggestions 
+always make suggestions before coding
+clean coding
+do not break project structure
+do not modify core files without consulting first 
+use availible MCP servers
+any file created with tthe purpose of testing should be discarded if not necessary or archived in a proper folder following structure if could be useful later. 

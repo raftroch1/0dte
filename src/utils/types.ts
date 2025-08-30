@@ -36,33 +36,71 @@ export interface OptionsChain {
 export interface Position {
   id: string;
   symbol: string;
-  side: 'CALL' | 'PUT';
-  strike: number;
-  expiration: Date;
+  type?: 'CALL' | 'PUT' | 'FLYAGONAL_COMBO' | string; // Optional for backward compatibility
+  side?: 'CALL' | 'PUT'; // Legacy field for backward compatibility
+  strike?: number; // Optional for multi-leg positions
+  expiration?: Date; // Optional for multi-leg positions
   quantity: number;
   entryPrice: number;
-  currentPrice: number;
+  currentPrice?: number;
   entryTime: Date;
-  unrealizedPnL: number;
-  unrealizedPnLPercent: number;
-  is0DTE: boolean;
-  timeDecayRisk: 'LOW' | 'MEDIUM' | 'HIGH';
-  momentumScore: number;
-  exitStrategy: 'PROFIT_TARGET' | 'STOP_LOSS' | 'TIME_DECAY' | 'SIGNAL_BASED';
+  unrealizedPnL?: number;
+  unrealizedPnLPercent?: number;
+  is0DTE?: boolean;
+  timeDecayRisk?: 'LOW' | 'MEDIUM' | 'HIGH';
+  momentumScore?: number;
+  exitStrategy?: 'PROFIT_TARGET' | 'STOP_LOSS' | 'TIME_DECAY' | 'SIGNAL_BASED';
+  
+  // Multi-leg position support
+  legs?: Array<{
+    symbol: string;
+    type: 'CALL' | 'PUT';
+    strike: number;
+    quantity: number;
+    side: 'BUY' | 'SELL';
+  }>;
+  
+  // Strategy-specific metadata
+  metadata?: {
+    [key: string]: any;
+  };
+  
+  // Risk management
+  stopLoss?: number;
+  takeProfit?: number;
 }
 
 // Trade signal
 export interface TradeSignal {
-  action: 'BUY_CALL' | 'BUY_PUT' | 'SELL_CALL' | 'SELL_PUT' | 'CLOSE_POSITION';
+  action: 'BUY_CALL' | 'BUY_PUT' | 'SELL_CALL' | 'SELL_PUT' | 'CLOSE_POSITION' | 'FLYAGONAL_COMBO' | string;
   confidence: number; // 0-100
   reason: string;
   indicators?: any;
   timestamp: Date;
   targetStrike?: number;
   expiration?: Date;
-  positionSize?: number;
-  stopLoss?: number;
-  takeProfit?: number;
+  positionSize: number; // Make required for proper risk management
+  stopLoss: number;     // Make required for proper risk management
+  takeProfit: number;   // Make required for proper risk management
+  // Strategy metadata for logging and analysis
+  metadata?: { [key: string]: any };
+  // Flyagonal-specific components
+  flyagonalComponents?: {
+    butterfly: {
+      type: 'CALL_BROKEN_WING';
+      longLower: number;
+      short: number;
+      longUpper: number;
+      expiration: Date;
+    };
+    diagonal: {
+      type: 'PUT_DIAGONAL';
+      longStrike: number;
+      shortStrike: number;
+      shortExpiration: Date;
+      longExpiration: Date;
+    };
+  };
 }
 
 // Technical indicators

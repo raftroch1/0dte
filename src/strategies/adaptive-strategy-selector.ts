@@ -406,7 +406,10 @@ export class AdaptiveStrategySelector {
       confidence: Math.min(90, confidence), // Increased max from 85
       reason,
       indicators,
-      timestamp: new Date()
+      timestamp: new Date(),
+      positionSize: 0.02,
+      stopLoss: 0.5,
+      takeProfit: 1.0
     };
   }
   
@@ -465,7 +468,10 @@ export class AdaptiveStrategySelector {
       confidence: Math.min(90, confidence), // Increased max from 85
       reason,
       indicators,
-      timestamp: new Date()
+      timestamp: new Date(),
+      positionSize: 0.02,
+      stopLoss: 0.5,
+      takeProfit: 1.0
     };
   }
 }

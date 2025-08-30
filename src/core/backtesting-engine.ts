@@ -4,6 +4,9 @@ import { MarketData, OptionsChain, TradeSignal, Strategy, DailyMetrics } from '.
 import { AlpacaPaperTrading, PaperTradingConfig } from '../trading/alpaca-paper-trading';
 import { GreeksSimulator, OptionPricingInputs } from '../data/greeks-simulator';
 import { AlpacaIntegration } from './alpaca-integration';
+import { StrategyBacktestingAdapter } from './strategy-backtesting-adapter';
+import { TradeLogger } from '../utils/trade-logger';
+import { StrategyRegistry } from '../strategies/registry';
 
 export interface BacktestConfig {
   startDate: Date;
@@ -89,12 +92,19 @@ export class BacktestingEngine extends EventEmitter {
   private trades: BacktestTrade[] = [];
   private dailyMetrics: DailyMetrics[] = [];
   private equityCurve: { date: Date; equity: number; drawdown: number }[] = [];
+  private strategyAdapter: StrategyBacktestingAdapter | null = null;
+  private tradeLogger: TradeLogger;
+  private positionToTradeIdMap: Map<string, string> = new Map(); // Maps position keys to trade IDs
 
-  constructor(config: BacktestConfig, alpacaClient: AlpacaIntegration) {
+  constructor(config: BacktestConfig, alpacaClient: AlpacaIntegration, strategyName: string = 'unknown') {
     super();
     this.config = config;
     this.alpacaClient = alpacaClient;
     this.currentDate = new Date(config.startDate);
+    
+    // Initialize trade logger
+    const dateRange = `${config.startDate.toISOString().split('T')[0]}_to_${config.endDate.toISOString().split('T')[0]}`;
+    this.tradeLogger = new TradeLogger(strategyName, dateRange);
 
     // Initialize paper trading engine
     const paperConfig: PaperTradingConfig = {
@@ -125,10 +135,15 @@ export class BacktestingEngine extends EventEmitter {
     console.log(`📊 Loading historical data for ${this.config.underlyingSymbol}...`);
     
     try {
-      // Load underlying stock data
+      // Load strategy-specific backtesting adapter
+      await this.loadStrategyAdapter();
+      
+      // Load underlying stock data - Use 15-minute bars for optimal Flyagonal analysis
+      // 15-minute bars provide best balance: sufficient data + realistic VIX + trade generation
+      // ~26 bars per trading day allows precise multi-day strategy execution
       const stockBars = await this.alpacaClient.getStockBars(
         this.config.underlyingSymbol,
-        '1Min',
+        '15Min',
         this.config.startDate,
         this.config.endDate,
         10000
@@ -146,8 +161,13 @@ export class BacktestingEngine extends EventEmitter {
 
       this.marketData.set(this.config.underlyingSymbol, marketData);
 
-      // Load options data for each trading day
+      // Load options data for each trading day (strategy-specific or default)
       await this.loadOptionsData();
+
+      // Pass strategy adapter to paper trading system
+      if (this.strategyAdapter) {
+        this.paperTrading.setStrategyAdapter(this.strategyAdapter);
+      }
 
       console.log(`✅ Loaded ${marketData.length} bars of market data`);
     } catch (error) {
@@ -156,9 +176,34 @@ export class BacktestingEngine extends EventEmitter {
     }
   }
 
+  /**
+   * Load strategy-specific backtesting adapter
+   * This enables custom options generation and position management per strategy
+   */
+  private async loadStrategyAdapter(): Promise<void> {
+    const strategyName = this.config.strategy.name;
+    if (!strategyName) {
+      console.log('📊 No strategy name provided, using default backtesting behavior');
+      return;
+    }
+
+    try {
+      this.strategyAdapter = await StrategyRegistry.loadBacktestingAdapter(strategyName);
+      if (this.strategyAdapter) {
+        console.log(`🎯 Using strategy-specific backtesting adapter for: ${strategyName}`);
+      } else {
+        console.log(`📊 No custom adapter for ${strategyName}, using default backtesting behavior`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to load adapter for ${strategyName}, using default behavior:`, error);
+    }
+  }
+
   private async loadOptionsData(): Promise<void> {
     const marketData = this.marketData.get(this.config.underlyingSymbol);
     if (!marketData) return;
+
+    console.log(`📊 Loading REAL options data from Alpaca API for ${this.config.underlyingSymbol}...`);
 
     // Group data by date to get daily options chains
     const dailyData = new Map<string, MarketData[]>();
@@ -170,22 +215,150 @@ export class BacktestingEngine extends EventEmitter {
       dailyData.get(dateKey)!.push(bar);
     });
 
-    // For each trading day, simulate options chain
+    // For each trading day, fetch REAL options data from Alpaca (per .cursorrules)
+    let successfulDays = 0;
+
     for (const [dateKey, dayBars] of dailyData) {
       const date = new Date(dateKey);
       const lastBar = dayBars[dayBars.length - 1];
       
-      // Generate synthetic options chain for 0DTE trading
-      const optionsChain = this.generateSyntheticOptionsChain(
-        lastBar.close,
-        date,
-        0.20 // Assumed volatility
-      );
+      let optionsChain: OptionsChain[];
+      
+      try {
+        // 🎯 FETCH REAL OPTIONS DATA FROM ALPACA API
+        console.log(`🔍 Fetching real options for ${this.config.underlyingSymbol} on ${dateKey}...`);
+        
+        // Get options expiring on the same day (0DTE) or next available expiration
+        // For historical backtesting, we need to specify the expiration date
+        const expirationDateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+        const realOptionsChain = await this.alpacaClient.getOptionsChain(this.config.underlyingSymbol, expirationDateStr);
+        
+        if (realOptionsChain && realOptionsChain.length > 0) {
+          // Filter for relevant strikes and calculate Greeks
+          optionsChain = this.processRealOptionsData(realOptionsChain, lastBar.close, date);
+          console.log(`✅ Loaded ${optionsChain.length} REAL options contracts for ${dateKey}`);
+          successfulDays++;
+        } else {
+          throw new Error('No real options data available');
+        }
+        
+      } catch (error) {
+        console.error(`❌ CRITICAL: Failed to fetch real options data for ${dateKey}:`, error);
+        console.error(`❌ .cursorrules VIOLATION: Synthetic/fallback data is prohibited`);
+        console.error(`❌ Backtesting cannot continue without real Alpaca options data`);
+        throw new Error(`Real options data required per .cursorrules - cannot use synthetic data for ${dateKey}`);
+      }
 
       this.optionsData.set(dateKey, optionsChain);
     }
 
-    console.log(`✅ Generated options data for ${dailyData.size} trading days`);
+    console.log(`✅ Options data loaded: ${successfulDays} days with REAL data only (per .cursorrules)`);
+    
+    if (successfulDays === 0) {
+      throw new Error(`CRITICAL: No real options data was loaded! .cursorrules prohibits synthetic data.`);
+    }
+  }
+
+  /**
+   * Process real options data from Alpaca API
+   * - Filter for relevant strikes around current price
+   * - Calculate missing Greeks using GreeksSimulator
+   * - Preserve real bid/ask/last prices
+   */
+  private processRealOptionsData(
+    realOptions: OptionsChain[], 
+    currentPrice: number, 
+    currentDate: Date
+  ): OptionsChain[] {
+    const processedOptions: OptionsChain[] = [];
+    
+    // Filter for options within reasonable strike range (±30% for 0DTE trading)
+    // 0DTE options need wider range due to volatility and intraday movements
+    const minStrike = currentPrice * 0.7;
+    const maxStrike = currentPrice * 1.3;
+    
+    // For 0DTE trading, we want options expiring on the same day or very close
+    // Allow up to 3 days for flexibility in case exact 0DTE options aren't available
+    const maxExpiration = new Date(currentDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+    const minExpiration = new Date(currentDate.getTime() - 1 * 24 * 60 * 60 * 1000); // Allow 1 day before
+    
+    console.log(`🔍 Filtering options for ${currentDate.toISOString().split('T')[0]}:`);
+    console.log(`   Strike range: $${minStrike.toFixed(0)} - $${maxStrike.toFixed(0)} (current: $${currentPrice.toFixed(2)})`);
+    console.log(`   Expiration range: ${minExpiration.toISOString().split('T')[0]} to ${maxExpiration.toISOString().split('T')[0]}`);
+    
+    for (const option of realOptions) {
+      // Filter by strike range and expiration
+      if (option.strike >= minStrike && 
+          option.strike <= maxStrike && 
+          option.expiration >= minExpiration &&
+          option.expiration <= maxExpiration) {
+        
+        // Calculate missing Greeks using our GreeksSimulator
+        const timeToExpiration = GreeksSimulator.timeToExpiration(option.expiration, currentDate);
+        
+        if (timeToExpiration > 0) {
+          const pricingInputs: OptionPricingInputs = {
+            underlyingPrice: currentPrice,
+            strikePrice: option.strike,
+            timeToExpiration,
+            riskFreeRate: this.config.riskFreeRate,
+            volatility: option.impliedVolatility || 0.25, // Use real IV if available, fallback to 25%
+            optionType: option.type.toLowerCase() as 'call' | 'put'
+          };
+          
+          const greeksResult = GreeksSimulator.calculateOptionPrice(pricingInputs);
+          
+          // Create enhanced option with real prices + calculated Greeks
+          const enhancedOption: OptionsChain = {
+            ...option, // Keep all real data (bid, ask, last, volume, openInterest)
+            // Add calculated Greeks (directly from OptionPriceResult)
+            delta: greeksResult.delta,
+            gamma: greeksResult.gamma,
+            theta: greeksResult.theta,
+            vega: greeksResult.vega,
+            rho: greeksResult.rho,
+            // Use real implied volatility if available, otherwise estimate from prices
+            impliedVolatility: option.impliedVolatility || this.estimateImpliedVolatility(option, currentPrice, timeToExpiration)
+          };
+          
+          processedOptions.push(enhancedOption);
+        }
+      }
+    }
+    
+    console.log(`✅ Filtered ${processedOptions.length} relevant options from ${realOptions.length} total contracts`);
+    
+    if (processedOptions.length === 0) {
+      console.warn(`⚠️ NO OPTIONS MATCHED FILTERS!`);
+      console.warn(`   Available strikes: ${realOptions.map(o => o.strike).sort((a,b) => a-b).slice(0, 10).join(', ')}${realOptions.length > 10 ? '...' : ''}`);
+      console.warn(`   Available expirations: ${[...new Set(realOptions.map(o => o.expiration.toISOString().split('T')[0]))].slice(0, 5).join(', ')}`);
+      console.warn(`   Current price: $${currentPrice.toFixed(2)}, Date: ${currentDate.toISOString().split('T')[0]}`);
+    } else {
+      console.log(`   ✅ Selected strikes: ${processedOptions.map(o => `${o.type}${o.strike}`).slice(0, 10).join(', ')}`);
+      console.log(`   ✅ Expirations: ${[...new Set(processedOptions.map(o => o.expiration.toISOString().split('T')[0]))].join(', ')}`);
+    }
+    
+    return processedOptions;
+  }
+
+  /**
+   * Estimate implied volatility from option prices when not provided
+   */
+  private estimateImpliedVolatility(option: OptionsChain, underlyingPrice: number, timeToExpiration: number): number {
+    // Simple estimation based on option price relative to intrinsic value
+    const intrinsicValue = option.type === 'CALL' 
+      ? Math.max(0, underlyingPrice - option.strike)
+      : Math.max(0, option.strike - underlyingPrice);
+    
+    const timeValue = Math.max(0, option.last - intrinsicValue);
+    
+    // Rough estimation: higher time value suggests higher IV
+    if (timeValue <= 0 || timeToExpiration <= 0) return 0.20; // Default 20%
+    
+    // Simple heuristic: time value as percentage of underlying price
+    const estimatedIV = Math.min(2.0, Math.max(0.1, (timeValue / underlyingPrice) * Math.sqrt(365 / (timeToExpiration * 365))));
+    
+    return estimatedIV;
   }
 
   private generateSyntheticOptionsChain(
@@ -321,7 +494,12 @@ export class BacktestingEngine extends EventEmitter {
       
       if (signal) {
         // Execute trade through paper trading engine
-        await this.paperTrading.executeTradeSignal(signal, this.config.underlyingSymbol);
+        const order = await this.paperTrading.executeTradeSignal(signal, this.config.underlyingSymbol);
+        
+        // Log trade entry if order was successful
+        if (order) {
+          this.logTradeEntry(signal, order, currentBar);
+        }
       }
 
       // Check for position exits based on time, profit targets, stop losses
@@ -335,12 +513,54 @@ export class BacktestingEngine extends EventEmitter {
       dataIndex++;
     }
 
-    console.log('✅ Backtest completed, generating results...');
+    console.log('✅ Backtest completed, closing remaining positions...');
+    
+    // Close all remaining positions at the end of backtest
+    const remainingPositions = await this.paperTrading.closeAllPositions();
+    for (const closedTrade of remainingPositions) {
+      const backtestTrade: BacktestTrade = {
+        id: closedTrade.id,
+        entryDate: new Date(), // We'll need to get this from position data
+        exitDate: closedTrade.timestamp,
+        symbol: closedTrade.symbol,
+        side: 'BUY',
+        quantity: closedTrade.quantity,
+        entryPrice: 0, // We'll need to get this from position data
+        exitPrice: closedTrade.price,
+        pnl: closedTrade.pnl || 0,
+        pnlPercent: 0,
+        commission: this.config.commissionPerContract * closedTrade.quantity,
+        slippage: 0,
+        holdingPeriod: 0,
+        signal: {} as TradeSignal,
+        exitReason: 'EOD',
+        greeksAtEntry: { delta: 0, gamma: 0, theta: 0, vega: 0 },
+        greeksAtExit: { delta: 0, gamma: 0, theta: 0, vega: 0 }
+      };
+      this.trades.push(backtestTrade);
+    }
+    
+    console.log(`📊 Total completed trades: ${this.trades.length}`);
+    
+    // Finalize trade logging and generate comprehensive logs
+    this.tradeLogger.finalize();
+    
+    console.log('🔄 Generating results...');
     return this.generateResults();
   }
 
   private async checkPositionExits(currentBar: MarketData, optionsChain: OptionsChain[]): Promise<void> {
     const metrics = this.paperTrading.getAccountMetrics();
+    
+    if (metrics.positions.length > 0) {
+      console.log(`🔍 Checking ${metrics.positions.length} positions for exits at ${this.currentDate.toISOString()}`);
+      
+      // Log detailed position info
+      for (const pos of metrics.positions) {
+        const holdTime = (this.currentDate.getTime() - pos.openedAt.getTime()) / (1000 * 60); // minutes
+        console.log(`   📊 Position ${pos.id}: Entry=$${pos.averagePrice.toFixed(2)}, Current=$${pos.currentPrice.toFixed(2)}, P&L=$${pos.unrealizedPnL.toFixed(2)}, Hold=${holdTime.toFixed(0)}min`);
+      }
+    }
     
     for (const position of metrics.positions) {
       let shouldExit = false;
@@ -350,12 +570,14 @@ export class BacktestingEngine extends EventEmitter {
       if (position.unrealizedPnLPercent >= this.config.strategy.takeProfitPercent) {
         shouldExit = true;
         exitReason = 'PROFIT_TARGET';
+        console.log(`   ✅ PROFIT TARGET HIT: ${position.id} - P&L: ${position.unrealizedPnLPercent.toFixed(2)}% >= ${this.config.strategy.takeProfitPercent}%`);
       }
 
       // Check stop loss
       if (position.unrealizedPnLPercent <= -this.config.strategy.stopLossPercent) {
         shouldExit = true;
         exitReason = 'STOP_LOSS';
+        console.log(`   🛑 STOP LOSS HIT: ${position.id} - P&L: ${position.unrealizedPnLPercent.toFixed(2)}% <= -${this.config.strategy.stopLossPercent}%`);
       }
 
       // Check time decay for 0DTE options
@@ -365,6 +587,7 @@ export class BacktestingEngine extends EventEmitter {
         if (minutesToExpiration <= this.config.strategy.timeDecayExitMinutes) {
           shouldExit = true;
           exitReason = 'TIME_DECAY';
+          console.log(`   ⚡ 0DTE TIME DECAY: ${position.id} - ${minutesToExpiration.toFixed(0)}min to expiry <= ${this.config.strategy.timeDecayExitMinutes}min`);
         }
       }
 
@@ -373,31 +596,79 @@ export class BacktestingEngine extends EventEmitter {
       if (holdingMinutes >= this.config.strategy.maxHoldingTimeMinutes) {
         shouldExit = true;
         exitReason = 'TIME_DECAY';
+        console.log(`   ⏰ MAX HOLD TIME: ${position.id} - Held: ${holdingMinutes.toFixed(0)}min >= ${this.config.strategy.maxHoldingTimeMinutes}min`);
       }
 
       // Check end of day
       if (this.isEndOfDay(this.currentDate)) {
         shouldExit = true;
         exitReason = 'EOD';
+        console.log(`   🌅 END OF DAY: ${position.id} - Closing at EOD`);
       }
 
       if (shouldExit) {
+        console.log(`🚪 EXITING POSITION: ${position.id || position.symbol} due to ${exitReason}`);
         await this.exitPosition(position, exitReason);
+      } else {
+        console.log(`   ⏳ HOLDING: ${position.id} - No exit conditions met (P&L: ${position.unrealizedPnLPercent.toFixed(2)}%, Hold: ${holdingMinutes.toFixed(0)}min)`);
       }
     }
   }
 
   private async exitPosition(position: any, exitReason: BacktestTrade['exitReason']): Promise<void> {
     try {
-      await this.paperTrading.submitOrder({
-        symbol: position.symbol,
-        side: 'SELL',
-        quantity: position.quantity,
-        orderType: 'MARKET'
-      });
-
-      // Record the trade details for analysis
-      // This would be enhanced to capture more detailed trade information
+      // Use the proper closePosition method with the correct position identifier
+      // For strategy-specific positions, use the position ID, otherwise use symbol
+      const positionKey = position.id || position.symbol;
+      const closedTrade = await this.paperTrading.closePosition(positionKey);
+      
+      if (closedTrade) {
+        // Create a BacktestTrade record for analysis
+        const backtestTrade: BacktestTrade = {
+          id: closedTrade.id,
+          entryDate: position.openedAt,
+          exitDate: closedTrade.timestamp,
+          symbol: position.symbol,
+          side: 'BUY', // Original entry was BUY
+          quantity: position.quantity,
+          entryPrice: position.averagePrice,
+          exitPrice: closedTrade.price,
+          pnl: closedTrade.pnl || 0,
+          pnlPercent: position.averagePrice !== 0 ? (closedTrade.pnl || 0) / (position.averagePrice * position.quantity * 100) * 100 : 0,
+          commission: this.config.commissionPerContract * position.quantity,
+          slippage: 0,
+          holdingPeriod: (closedTrade.timestamp.getTime() - position.openedAt.getTime()) / (1000 * 60), // minutes
+          signal: {} as TradeSignal, // We'll need to store the original signal
+          exitReason: exitReason,
+          greeksAtEntry: position.greeks || { delta: 0, gamma: 0, theta: 0, vega: 0 },
+          greeksAtExit: position.greeks || { delta: 0, gamma: 0, theta: 0, vega: 0 }
+        };
+        
+        this.trades.push(backtestTrade);
+        
+        // Log trade exit for comprehensive analysis
+        const tradeId = this.positionToTradeIdMap.get(positionKey);
+        if (tradeId) {
+          this.logTradeExit(
+            tradeId, 
+            closedTrade.price, 
+            exitReason, 
+            {
+              grossPnL: closedTrade.pnl || 0,
+              netPnL: (closedTrade.pnl || 0) - (this.config.commissionPerContract * position.quantity),
+              commission: this.config.commissionPerContract * position.quantity,
+              maxDrawdown: position.maxDrawdown,
+              maxProfit: position.maxProfit
+            }
+          );
+          // Clean up the mapping
+          this.positionToTradeIdMap.delete(positionKey);
+        } else {
+          console.warn(`⚠️ Trade ID not found for position ${positionKey} - exit logging skipped`);
+        }
+        
+        console.log(`📊 Recorded completed trade: ${position.symbol} P&L: $${closedTrade.pnl?.toFixed(2)} (${exitReason})`);
+      }
     } catch (error) {
       console.error('Error exiting position:', error);
     }
@@ -470,6 +741,15 @@ export class BacktestingEngine extends EventEmitter {
     // Calculate monthly returns
     const monthlyReturns = this.calculateMonthlyReturns();
 
+    // Use the completed trades from BacktestingEngine instead of paper trading metrics
+    const completedTrades = this.trades;
+    const winningTrades = completedTrades.filter(t => t.pnl > 0);
+    const losingTrades = completedTrades.filter(t => t.pnl < 0);
+    const winRate = completedTrades.length > 0 ? (winningTrades.length / completedTrades.length) * 100 : 0;
+    const avgWin = winningTrades.length > 0 ? winningTrades.reduce((sum, t) => sum + t.pnl, 0) / winningTrades.length : 0;
+    const avgLoss = losingTrades.length > 0 ? losingTrades.reduce((sum, t) => sum + t.pnl, 0) / losingTrades.length : 0;
+    const profitFactor = Math.abs(avgLoss) > 0 ? Math.abs(avgWin * winningTrades.length) / Math.abs(avgLoss * losingTrades.length) : 0;
+
     const summary = {
       totalReturn,
       totalReturnPercent,
@@ -477,14 +757,14 @@ export class BacktestingEngine extends EventEmitter {
       maxDrawdown: finalMetrics.maxDrawdown * 100,
       sharpeRatio: finalMetrics.sharpeRatio,
       sortinoRatio,
-      winRate: finalMetrics.winRate * 100,
-      profitFactor: finalMetrics.profitFactor,
-      totalTrades: finalMetrics.totalTrades,
-      avgTradeReturn: finalMetrics.totalTrades > 0 ? totalReturn / finalMetrics.totalTrades : 0,
-      avgWinningTrade: finalMetrics.averageWin,
-      avgLosingTrade: finalMetrics.averageLoss,
-      largestWin: Math.max(...tradingData.trades.map(t => t.pnl || 0), 0),
-      largestLoss: Math.min(...tradingData.trades.map(t => t.pnl || 0), 0),
+      winRate,
+      profitFactor,
+      totalTrades: completedTrades.length,
+      avgTradeReturn: completedTrades.length > 0 ? totalReturn / completedTrades.length : 0,
+      avgWinningTrade: avgWin,
+      avgLosingTrade: avgLoss,
+      largestWin: Math.max(...completedTrades.map(t => t.pnl), 0),
+      largestLoss: Math.min(...completedTrades.map(t => t.pnl), 0),
       consecutiveWins,
       consecutiveLosses
     };
@@ -525,6 +805,80 @@ export class BacktestingEngine extends EventEmitter {
     
     const downside = Math.sqrt(negativeReturns.reduce((sum, ret) => sum + ret * ret, 0) / negativeReturns.length);
     return downside > 0 ? (mean / downside) * Math.sqrt(252) : 0;
+  }
+
+  /**
+   * Log trade entry with comprehensive details
+   */
+  private logTradeEntry(signal: TradeSignal, order: any, marketData: MarketData): void {
+    const tradeId = `${signal.action}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Extract legs information for Flyagonal strategies
+    let legs: any[] | undefined;
+    if (signal.flyagonalComponents) {
+      legs = [];
+      
+      // Add butterfly legs
+      if (signal.flyagonalComponents.butterfly) {
+        const bf = signal.flyagonalComponents.butterfly;
+        legs.push(
+          { type: 'CALL', strike: bf.longLower, quantity: 1, side: 'BUY', entryPrice: 0 },
+          { type: 'CALL', strike: bf.short, quantity: 2, side: 'SELL', entryPrice: 0 },
+          { type: 'CALL', strike: bf.longUpper, quantity: 1, side: 'BUY', entryPrice: 0 }
+        );
+      }
+      
+      // Add diagonal legs
+      if (signal.flyagonalComponents.diagonal) {
+        const diag = signal.flyagonalComponents.diagonal;
+        legs.push(
+          { type: 'PUT', strike: diag.shortStrike, quantity: 1, side: 'SELL', entryPrice: 0 },
+          { type: 'PUT', strike: diag.longStrike, quantity: 1, side: 'BUY', entryPrice: 0 }
+        );
+      }
+    }
+
+    this.tradeLogger.logTradeEntry({
+      tradeId,
+      strategy: this.strategyAdapter?.strategyName || 'unknown',
+      symbol: order.symbol,
+      entryTime: signal.timestamp || new Date(),
+      entryPrice: order.fillPrice || 0,
+      entryReason: signal.action,
+      quantity: order.quantity,
+      underlyingPrice: marketData.close,
+      vixLevel: signal.metadata?.vixLevel || signal.confidence, // Use actual VIX level from strategy metadata
+      marketRegime: signal.action.includes('CALL') ? 'BULLISH' : signal.action.includes('PUT') ? 'BEARISH' : 'NEUTRAL',
+      legs,
+      metadata: {
+        signalConfidence: signal.confidence,
+        stopLoss: signal.stopLoss,
+        takeProfit: signal.takeProfit,
+        positionSize: signal.positionSize,
+        timestamp: signal.timestamp?.toISOString(),
+        flyagonalComponents: signal.flyagonalComponents
+      }
+    });
+
+    // Store mapping between position key and trade ID for exit logging
+    const positionKey = order.symbol; // This should match what's used in closePosition
+    this.positionToTradeIdMap.set(positionKey, tradeId);
+  }
+
+  /**
+   * Log trade exit with P&L analysis
+   */
+  private logTradeExit(positionId: string, exitPrice: number, exitReason: string, pnlData: any): void {
+    this.tradeLogger.logTradeExit(positionId, {
+      exitTime: new Date(),
+      exitPrice,
+      exitReason,
+      grossPnL: pnlData.grossPnL || 0,
+      netPnL: pnlData.netPnL || 0,
+      commission: pnlData.commission || 0,
+      maxDrawdown: pnlData.maxDrawdown,
+      maxProfit: pnlData.maxProfit
+    });
   }
 
   private calculateConsecutiveWinsLosses(trades: any[]): { consecutiveWins: number; consecutiveLosses: number } {

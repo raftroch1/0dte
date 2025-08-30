@@ -73,7 +73,7 @@ export class IntegrationConfig {
       },
       accountConfig: this.getDefault35KAccountConfig(),
       strategy: this.getDefault0DTEStrategy(),
-      underlyingSymbol: 'SPY',
+      underlyingSymbol: 'SPX', // Flyagonal trades SPX index options, not SPY ETF
       enablePaperTrading: isPaper,
       
       riskManagement: {
@@ -107,12 +107,12 @@ export class IntegrationConfig {
   static getBacktestConfig(
     startDate: Date,
     endDate: Date,
-    underlyingSymbol: string = 'SPY'
+    underlyingSymbol: string = 'SPX'
   ): Omit<BacktestConfig, 'strategy'> {
     return {
       startDate,
       endDate,
-      initialBalance: 35000,
+      initialBalance: 25000,
       underlyingSymbol,
       commissionPerContract: 0.65,
       slippagePercent: 0.001,
@@ -295,30 +295,60 @@ export class IntegrationConfig {
   static createBacktestConfig(
     startDate: Date,
     endDate: Date,
-    strategyType: 'default' | 'conservative' | 'aggressive' | 'morning' | 'afternoon' | 'scalping' = 'default',
-    underlyingSymbol: string = 'SPY'
+    strategyType: 'default' | 'conservative' | 'aggressive' | 'morning' | 'afternoon' | 'scalping' | string = 'default',
+    underlyingSymbol: string = 'SPX'
   ): BacktestConfig {
     const baseConfig = this.getBacktestConfig(startDate, endDate, underlyingSymbol);
     
     let strategy: Strategy;
-    switch (strategyType) {
-      case 'conservative':
-        strategy = this.getConservativeStrategy();
-        break;
-      case 'aggressive':
-        strategy = this.getAggressiveStrategy();
-        break;
-      case 'morning':
-        strategy = this.getMorningMomentumStrategy();
-        break;
-      case 'afternoon':
-        strategy = this.getAfternoonMeanReversionStrategy();
-        break;
-      case 'scalping':
-        strategy = this.getScalpingStrategy();
-        break;
-      default:
-        strategy = this.getDefault0DTEStrategy();
+    
+    // Handle new strategy names from registry
+    if (!['default', 'conservative', 'aggressive', 'morning', 'afternoon', 'scalping'].includes(strategyType)) {
+      // Create a minimal strategy object with just the name for the new framework
+      strategy = {
+        name: strategyType,
+        positionSizePercent: 2,
+        maxPositions: 3,
+        stopLossPercent: 30,
+        takeProfitPercent: 50,
+        maxDailyLoss: 500,
+        dailyProfitTarget: 225,
+        rsiPeriod: 14,
+        rsiOversold: 30,
+        rsiOverbought: 70,
+        macdFast: 12,
+        macdSlow: 26,
+        macdSignal: 9,
+        bbPeriod: 20,
+        bbStdDev: 2,
+        maxHoldingTimeMinutes: 240,
+        timeDecayExitMinutes: 30,
+        momentumThreshold: 0.5,
+        volumeConfirmation: 1.5,
+        vixFilterMax: 50,
+        vixFilterMin: 10
+      };
+    } else {
+      // Handle legacy strategy types
+      switch (strategyType) {
+        case 'conservative':
+          strategy = this.getConservativeStrategy();
+          break;
+        case 'aggressive':
+          strategy = this.getAggressiveStrategy();
+          break;
+        case 'morning':
+          strategy = this.getMorningMomentumStrategy();
+          break;
+        case 'afternoon':
+          strategy = this.getAfternoonMeanReversionStrategy();
+          break;
+        case 'scalping':
+          strategy = this.getScalpingStrategy();
+          break;
+        default:
+          strategy = this.getDefault0DTEStrategy();
+      }
     }
 
     return {

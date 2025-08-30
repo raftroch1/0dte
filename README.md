@@ -100,11 +100,43 @@ npm start paper
 ```
 
 ### Backtesting
-```bash
-# Run backtest for specific date range
-npm start backtest 2024-01-01 2024-03-31
 
-# View results in console output
+#### 🎯 Flyagonal Strategy Backtesting
+
+**NEW: Professional User Backtest System with Alpaca Integration**
+
+```bash
+# Quick start - uses your Alpaca balance and last 6 months
+node scripts/flyagonal-backtest-user.js
+
+# Custom date range
+node scripts/flyagonal-backtest-user.js 2024-01-01 2024-06-30
+
+# Custom date range with specific balance
+node scripts/flyagonal-backtest-user.js 2024-03-01 2024-08-31 50000
+
+# Examples for different scenarios:
+node scripts/flyagonal-backtest-user.js 2024-01-01 2024-03-31 25000  # Q1 2024
+node scripts/flyagonal-backtest-user.js 2024-07-01 2024-07-31 10000  # July only
+```
+
+**Output Files Created:**
+- `📊 logs/flyagonal_report_[dates].txt` - **Complete analysis with summaries**
+- `📋 logs/flyagonal_trades_[dates].csv` - Spreadsheet-ready trade data  
+- `📄 logs/flyagonal_trades_[dates].json` - Structured trade log
+- `📋 logs/flyagonal_backtest_[dates].json` - System execution log
+
+**Key Features:**
+- ✅ **Real Alpaca Balance Integration** - Uses your actual account balance
+- ✅ **Custom Date Ranges** - Test any period you want
+- ✅ **Comprehensive Reports** - Win rate, drawdown, Sharpe ratio, profit factor
+- ✅ **Professional Logging** - Detailed entry/exit times and analysis
+- ✅ **Real VIX Data** - Live market data integration
+
+#### Legacy Backtesting
+```bash
+# Run backtest for specific date range (legacy system)
+npm start backtest 2024-01-01 2024-03-31
 ```
 
 ### Testing

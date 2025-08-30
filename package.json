@@ -7,9 +7,17 @@
     "start": "ts-node src/main.ts",
     "paper": "ts-node src/main.ts paper",
     "backtest": "ts-node src/main.ts backtest",
+    "backtest:flyagonal": "ts-node scripts/run-flyagonal-backtest.ts",
+    "backtest:user": "node scripts/flyagonal-backtest-user.js",
     "test": "ts-node tests/test-alpaca-integration.ts",
+    "test:vix": "ts-node scripts/test-free-vix-providers.ts",
+    "test:flyagonal": "ts-node tests/flyagonal-strategy-fixes.test.ts",
+    "validate:real-data": "ts-node scripts/validate-real-data-integration.ts",
     "build": "tsc",
-    "dev": "ts-node --watch src/main.ts"
+    "dev": "ts-node --watch src/main.ts",
+    "create-strategy": "node scripts/create-strategy.js",
+    "lint": "eslint src/ --ext .ts",
+    "lint:fix": "eslint src/ --ext .ts --fix"
   },
   "keywords": [
     "0dte",

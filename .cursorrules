@@ -1,8 +1,230 @@
-user is a beginer in coding make detailed explanations and comment on code.
-analize codebase before making coding suggestions 
-always make suggestions before coding
-clean coding
-do not break project structure
-do not modify core files without consulting first 
-use availible MCP servers
-any file created with tthe purpose of testing should be discarded if not necessary or archived in a proper folder following structure if could be useful later. 
+# 🏗️ 0DTE TRADING SYSTEM - ADVANCED CURSOR RULES
+# ================================================
+# Professional-grade development guidelines for scalable trading architecture
+
+## 👨‍💻 USER EXPERIENCE & EDUCATION
+user_experience:
+  - user is a beginner in coding - provide detailed explanations and comprehensive comments
+  - always analyze codebase architecture before making any suggestions
+  - suggest improvements before implementing - never code without consultation
+  - explain WHY architectural decisions are made, not just HOW
+  - provide learning resources and best practice explanations
+  - use clear, descriptive variable and function names for educational value
+
+## 🏛️ CORE ARCHITECTURE PROTECTION
+core_protection:
+  - NEVER modify core files without explicit user approval:
+    - src/core/alpaca-integration.ts
+    - src/core/backtesting-engine.ts
+    - src/utils/types.ts
+    - config/integration-config.ts
+  - maintain strict separation of concerns between layers
+  - preserve existing interfaces and contracts
+  - any core changes must include migration path and backward compatibility
+  - document all core modifications with detailed comments
+
+## 📁 PROJECT STRUCTURE ENFORCEMENT
+structure_rules:
+  # Mandatory directory structure - NEVER violate
+  required_structure: |
+    src/
+    ├── core/           # Core trading engine (PROTECTED)
+    ├── strategies/     # Strategy implementations (EXTENSIBLE)
+    ├── data/          # Data processing & indicators (EXTENSIBLE)
+    ├── trading/       # Trading execution & management (PROTECTED)
+    ├── utils/         # Shared utilities & types (PROTECTED)
+    └── main.ts        # Entry point (PROTECTED)
+    
+    config/            # Configuration files (PROTECTED)
+    tests/             # Test files (MANAGED)
+    docs/              # Documentation (EXTENSIBLE)
+
+  # Strategy module pattern - USE THIS for new strategies
+  strategy_template: |
+    src/strategies/
+    ├── [strategy-name]/
+    │   ├── index.ts           # Main strategy export
+    │   ├── strategy.ts        # Core strategy logic
+    │   ├── config.ts          # Strategy-specific config
+    │   ├── types.ts           # Strategy-specific types
+    │   ├── indicators.ts      # Custom indicators (if needed)
+    │   └── README.md          # Strategy documentation
+    └── registry.ts            # Strategy registry (AUTO-UPDATE)
+
+## 🔧 STRATEGY DEVELOPMENT PATTERNS
+strategy_patterns:
+  # All new strategies MUST implement this interface
+  required_interface: |
+    interface TradingStrategy {
+      name: string;
+      description: string;
+      version: string;
+      author: string;
+      
+      // Core methods
+      generateSignal(data: MarketData[], options: OptionsChain[]): TradeSignal | null;
+      validateSignal(signal: TradeSignal): boolean;
+      calculateRisk(signal: TradeSignal): RiskMetrics;
+      
+      // Configuration
+      getDefaultConfig(): StrategyConfig;
+      validateConfig(config: StrategyConfig): boolean;
+      
+      // Metadata
+      getRequiredIndicators(): string[];
+      getTimeframes(): string[];
+      getRiskLevel(): 'LOW' | 'MEDIUM' | 'HIGH';
+    }
+
+  # Strategy naming convention
+  naming_rules:
+    - use kebab-case for directories: momentum-rsi-strategy
+    - use PascalCase for classes: MomentumRsiStrategy  
+    - use camelCase for functions: generateBuySignal
+    - prefix with strategy type: scalping-, swing-, momentum-
+
+  # Strategy registration pattern
+  registration_required: |
+    // Auto-register in src/strategies/registry.ts
+    export const STRATEGY_REGISTRY = {
+      'momentum-rsi': () => import('./momentum-rsi-strategy'),
+      'mean-reversion': () => import('./mean-reversion-strategy'),
+      // Add new strategies here
+    };
+
+## 💾 DATA & BACKTESTING RULES
+data_rules:
+  - NO mock data for backtesting unless explicitly approved by user
+  - always use real Alpaca historical data for backtesting
+  - cache historical data appropriately to avoid API rate limits
+  - validate all data inputs before processing
+  - implement proper error handling for data failures
+  - log data quality metrics (missing bars, gaps, etc.)
+
+## 🧪 TESTING & VALIDATION
+testing_rules:
+  file_management:
+    - test files created for exploration: archive in tests/archived/ if useful
+    - temporary test files: delete after use unless explicitly requested to keep
+    - integration tests: keep in tests/ with proper naming
+    - strategy tests: place in src/strategies/[strategy-name]/tests/
+
+  testing_patterns:
+    - unit tests for all strategy logic
+    - integration tests for data flows
+    - backtesting validation with known datasets
+    - performance benchmarking for new features
+
+## 🔒 SECURITY & CREDENTIALS
+security_rules:
+  - NEVER commit API keys or credentials
+  - always use .env files with .env.example templates
+  - validate environment variables on startup
+  - implement proper error handling for auth failures
+  - log security events appropriately (without exposing secrets)
+
+## 📊 PERFORMANCE & MONITORING
+performance_rules:
+  - implement proper logging with different levels (DEBUG, INFO, WARN, ERROR)
+  - add performance metrics for strategy execution times
+  - monitor memory usage for large datasets
+  - implement circuit breakers for API failures
+  - add health checks for all external dependencies
+
+## 🎯 CODE QUALITY STANDARDS
+quality_standards:
+  typescript_rules:
+    - strict TypeScript configuration - no 'any' types
+    - comprehensive interface definitions
+    - proper error type definitions
+    - use discriminated unions for complex types
+    
+  documentation_rules:
+    - JSDoc comments for all public methods
+    - README.md for each strategy module
+    - inline comments explaining complex trading logic
+    - architecture decision records (ADRs) for major changes
+    
+  naming_conventions:
+    - descriptive names that explain purpose
+    - consistent terminology across codebase
+    - avoid abbreviations unless industry standard
+    - use domain-specific language (RSI, MACD, 0DTE, etc.)
+
+## 🚀 DEPLOYMENT & SCALING
+deployment_rules:
+  - maintain environment-specific configurations
+  - implement proper logging for production debugging
+  - add health check endpoints
+  - ensure graceful shutdown procedures
+  - implement proper error recovery mechanisms
+
+## 🔄 CHANGE MANAGEMENT
+change_rules:
+  version_control:
+    - meaningful commit messages with scope
+    - feature branches for new strategies
+    - proper PR descriptions with testing evidence
+    - tag releases with semantic versioning
+    
+  breaking_changes:
+    - always provide migration guides
+    - maintain backward compatibility when possible
+    - deprecate before removing functionality
+    - update all documentation
+
+## 🛠️ DEVELOPMENT WORKFLOW
+workflow_rules:
+  before_coding:
+    1. analyze existing codebase architecture
+    2. identify integration points and dependencies  
+    3. propose solution with architectural considerations
+    4. get user approval for approach
+    5. implement with comprehensive comments
+    6. test thoroughly with real data
+    7. document changes and update relevant README files
+
+  strategy_development:
+    1. create strategy directory following template
+    2. implement required interface
+    3. add comprehensive tests
+    4. register in strategy registry
+    5. update main documentation
+    6. provide usage examples
+
+## 🎓 EDUCATIONAL COMPONENTS
+education_rules:
+  - explain trading concepts when implementing strategies
+  - provide links to relevant financial literature
+  - comment on risk management implications
+  - explain market microstructure considerations
+  - document assumptions and limitations
+
+## 🔧 AVAILABLE TOOLS & INTEGRATIONS
+tool_usage:
+  - leverage available MCP servers for enhanced functionality
+  - use proper TypeScript tooling and linting
+  - implement proper CI/CD practices
+  - utilize appropriate testing frameworks
+  - integrate with monitoring and alerting systems
+
+## ⚠️ CRITICAL WARNINGS
+warnings:
+  - trading systems can cause financial loss - implement proper safeguards
+  - always test thoroughly before live deployment
+  - implement proper position sizing and risk management
+  - monitor system health continuously in production
+  - have emergency shutdown procedures ready
+
+# 📋 CHECKLIST FOR NEW FEATURES
+# Before implementing any new feature, ensure:
+# □ Architecture analysis completed
+# □ User approval obtained
+# □ Proper directory structure followed
+# □ Required interfaces implemented
+# □ Comprehensive tests written
+# □ Documentation updated
+# □ Real data testing completed
+# □ Security considerations addressed
+# □ Performance impact assessed
+# □ Error handling implemented

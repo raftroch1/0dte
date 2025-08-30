@@ -195,10 +195,25 @@ export class AlpacaIntegration extends EventEmitter {
         params.expiration_date = expiration;
       }
 
+      console.log(`🔍 Fetching option contracts for ${underlyingSymbol}${expiration ? ` expiring ${expiration}` : ''}`);
+      console.log(`📡 API call: GET /v2/options/contracts with params:`, params);
+
       const response = await this.httpClient.get('/v2/options/contracts', { params });
-      return response.data.option_contracts || [];
+      const contracts = response.data.option_contracts || [];
+      
+      console.log(`📊 Received ${contracts.length} option contracts from Alpaca API`);
+      if (contracts.length === 0) {
+        console.warn(`⚠️ No option contracts found for ${underlyingSymbol}${expiration ? ` expiring ${expiration}` : ''}`);
+        console.warn(`   This may indicate:`);
+        console.warn(`   - Symbol ${underlyingSymbol} doesn't have options`);
+        console.warn(`   - Expiration date ${expiration} has no contracts`);
+        console.warn(`   - API permissions issue`);
+        console.warn(`   - Historical date outside available range`);
+      }
+      
+      return contracts;
     } catch (error) {
-      console.error('Error fetching option contracts:', error);
+      console.error(`❌ Error fetching option contracts for ${underlyingSymbol}:`, error);
       throw error;
     }
   }
@@ -276,15 +291,26 @@ export class AlpacaIntegration extends EventEmitter {
 
   async getOptionQuotes(symbols: string[]): Promise<{ [symbol: string]: QuoteData }> {
     try {
+      // Handle empty symbols array to prevent API 404 error
+      if (!symbols || symbols.length === 0) {
+        console.warn('⚠️ getOptionQuotes called with empty symbols array - returning empty quotes');
+        return {};
+      }
+
+      const symbolsParam = symbols.join(',');
+      console.log(`🔍 Fetching option quotes for ${symbols.length} symbols: ${symbolsParam.substring(0, 100)}${symbolsParam.length > 100 ? '...' : ''}`);
+
       const response = await this.dataClient.get('/v2/options/quotes/latest', {
         params: {
-          symbols: symbols.join(',')
+          symbols: symbolsParam
         }
       });
 
-      return response.data.quotes || {};
+      const quotes = response.data.quotes || {};
+      console.log(`📊 Received quotes for ${Object.keys(quotes).length}/${symbols.length} option symbols`);
+      return quotes;
     } catch (error) {
-      console.error('Error fetching option quotes:', error);
+      console.error('❌ Error fetching option quotes:', error);
       return {};
     }
   }

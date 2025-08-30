@@ -63,9 +63,10 @@ export class ZDTETradingSystem {
     /**
      * Run backtesting on historical data using real Alpaca data
      */
-    async runBacktest(startDate: string, endDate: string): Promise<void> {
+    async runBacktest(startDate: string, endDate: string, strategyName: string = 'simple-momentum'): Promise<void> {
         console.log('📊 Running REAL backtest with Alpaca historical data...');
         console.log(`📅 Period: ${startDate} to ${endDate}`);
+        console.log(`🎯 Strategy: ${strategyName}`);
         console.log(`💰 Initial Capital: $${this.config.trading.accountSize}`);
         console.log(`🎯 Target: $${this.config.trading.dailyProfitTarget} daily profit`);
         
@@ -85,76 +86,45 @@ export class ZDTETradingSystem {
             }
             console.log('✅ Connected to Alpaca successfully');
 
-            // Create backtest configuration
+            // Load strategy from registry
+            console.log(`🎯 Loading strategy: ${strategyName}...`);
+            const { StrategyRegistry } = await import('./strategies/registry');
+            const strategy = await StrategyRegistry.loadStrategy(strategyName);
+            
+            if (!strategy) {
+                throw new Error(`Strategy '${strategyName}' not found or failed to load`);
+            }
+
+            // Create backtest configuration with loaded strategy
             const backtestConfig = IntegrationConfig.createBacktestConfig(
                 new Date(startDate),
                 new Date(endDate),
-                'default',
-                'SPY'
+                strategyName, // Pass the actual strategy name
+                'SPX' // Flyagonal trades SPX index options
             );
 
             console.log('🏗️ Initializing backtesting engine...');
-            const backtest = new BacktestingEngine(backtestConfig, alpacaClient);
+            const backtest = new BacktestingEngine(backtestConfig, alpacaClient, strategyName);
 
-            // Define our 0DTE momentum strategy for backtesting
-            const strategy = (marketData: MarketData[], optionsChain: OptionsChain[]): TradeSignal | null => {
-                if (marketData.length < 20) return null;
-                
-                const indicators = TechnicalAnalysis.calculateAllIndicators(marketData);
-                if (!indicators) return null;
-                
-                const currentBar = marketData[marketData.length - 1];
-                const currentPrice = currentBar.close;
-                const currentTime = currentBar.timestamp; // Use historical timestamp!
-                
-                // Simple momentum strategy for backtesting
-                if (indicators.rsi < 35 && indicators.macd > indicators.macdSignal) {
-                    return {
-                        action: 'BUY_CALL',
-                        confidence: 70,
-                        reason: 'RSI oversold + MACD bullish crossover',
-                        indicators,
-                        timestamp: currentTime, // Use historical date for backtesting
-                        targetStrike: Math.round(currentPrice + 2),
-                        expiration: new Date(currentTime.getTime() + 4 * 60 * 60 * 1000), // 4 hours from historical time
-                        positionSize: 2,
-                        stopLoss: 0.3,
-                        takeProfit: 0.5
-                    };
-                }
-                
-                if (indicators.rsi > 65 && indicators.macd < indicators.macdSignal) {
-                    return {
-                        action: 'BUY_PUT',
-                        confidence: 70,
-                        reason: 'RSI overbought + MACD bearish crossover',
-                        indicators,
-                        timestamp: currentTime, // Use historical date for backtesting
-                        targetStrike: Math.round(currentPrice - 2),
-                        expiration: new Date(currentTime.getTime() + 4 * 60 * 60 * 1000), // 4 hours from historical time
-                        positionSize: 2,
-                        stopLoss: 0.3,
-                        takeProfit: 0.5
-                    };
-                }
-                
-                return null;
+            // Use the loaded strategy's generateSignal method
+            const strategyFunction = (marketData: MarketData[], optionsChain: OptionsChain[]): TradeSignal | null => {
+                return strategy.generateSignal(marketData, optionsChain);
             };
 
             console.log('📈 Loading historical market data from Alpaca...');
             await backtest.loadHistoricalData();
 
             console.log('🚀 Running backtest with real data...');
-            const results = await backtest.runBacktest(strategy);
+            const results = await backtest.runBacktest(strategyFunction);
 
             // Display comprehensive results
             console.log('\n📊 REAL BACKTEST RESULTS:');
             console.log('================================');
-            console.log(`📈 Total Return: ${(results.summary.totalReturnPercent * 100).toFixed(2)}%`);
+            console.log(`📈 Total Return: ${results.summary.totalReturnPercent.toFixed(2)}%`);
             console.log(`💰 Total P&L: $${results.summary.totalReturn.toFixed(2)}`);
             console.log(`📊 Total Trades: ${results.summary.totalTrades}`);
-            console.log(`🎯 Win Rate: ${(results.summary.winRate * 100).toFixed(1)}%`);
-            console.log(`📉 Max Drawdown: ${(results.summary.maxDrawdown * 100).toFixed(2)}%`);
+            console.log(`🎯 Win Rate: ${results.summary.winRate.toFixed(1)}%`);
+            console.log(`📉 Max Drawdown: ${results.summary.maxDrawdown.toFixed(2)}%`);
             console.log(`⚡ Sharpe Ratio: ${results.summary.sharpeRatio.toFixed(2)}`);
             console.log(`💵 Avg Trade Return: $${results.summary.avgTradeReturn.toFixed(2)}`);
             console.log(`🏆 Largest Win: $${results.summary.largestWin.toFixed(2)}`);
@@ -186,10 +156,95 @@ export class ZDTETradingSystem {
     }
 }
 
+/**
+ * Parse command line arguments supporting both named (--key=value) and positional formats
+ * 
+ * Examples:
+ * - Named: backtest --start=2024-02-01 --end=2024-02-29 --strategy=flyagonal
+ * - Positional: backtest 2024-02-01 2024-02-29
+ * 
+ * @param args Raw command line arguments
+ * @returns Parsed arguments object
+ */
+function parseCommandLineArgs(args: string[]): {
+    command: string;
+    start?: string;
+    end?: string;
+    strategy?: string;
+    [key: string]: any;
+} {
+    const command = args[0] || 'paper';
+    const parsed: any = { command };
+    
+    // Parse named arguments (--key=value format)
+    const namedArgs: any = {};
+    const positionalArgs: string[] = [];
+    
+    for (let i = 1; i < args.length; i++) {
+        const arg = args[i];
+        
+        if (arg.startsWith('--')) {
+            // Handle --key=value format
+            const equalIndex = arg.indexOf('=');
+            if (equalIndex > 0) {
+                const key = arg.substring(2, equalIndex);
+                const value = arg.substring(equalIndex + 1);
+                namedArgs[key] = value;
+            } else {
+                // Handle --key format (boolean flag)
+                const key = arg.substring(2);
+                namedArgs[key] = true;
+            }
+        } else {
+            // Positional argument
+            positionalArgs.push(arg);
+        }
+    }
+    
+    // Merge named arguments
+    Object.assign(parsed, namedArgs);
+    
+    // Handle backward compatibility with positional arguments
+    if (command === 'backtest') {
+        // If no named arguments provided, use positional
+        if (!parsed.start && positionalArgs[0]) {
+            parsed.start = positionalArgs[0];
+        }
+        if (!parsed.end && positionalArgs[1]) {
+            parsed.end = positionalArgs[1];
+        }
+        
+        // Set defaults
+        parsed.start = parsed.start || '2024-01-01';
+        parsed.end = parsed.end || '2024-12-31';
+        parsed.strategy = parsed.strategy || 'simple-momentum';
+    }
+    
+    return parsed;
+}
+
+/**
+ * Validate date string and return Date object
+ * 
+ * @param dateStr Date string to validate
+ * @param paramName Parameter name for error messages
+ * @returns Valid Date object
+ */
+function validateDate(dateStr: string, paramName: string): Date {
+    const date = new Date(dateStr);
+    
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid ${paramName} date: "${dateStr}". Please use format YYYY-MM-DD`);
+    }
+    
+    return date;
+}
+
 // CLI Interface
 async function main() {
-    const args = process.argv.slice(2);
-    const command = args[0] || 'paper';
+    const rawArgs = process.argv.slice(2);
+    const args = parseCommandLineArgs(rawArgs);
+    const command = args.command;
 
     const config: TradingConfig = {
         alpaca: {
@@ -215,18 +270,38 @@ async function main() {
                 await system.startPaperTrading();
                 break;
             case 'backtest':
-                const startDate = args[1] || '2024-01-01';
-                const endDate = args[2] || '2024-12-31';
-                await system.runBacktest(startDate, endDate);
+                // Validate and parse dates
+                const startDate = validateDate(args.start!, 'start');
+                const endDate = validateDate(args.end!, 'end');
+                
+                // Validate date range
+                if (startDate >= endDate) {
+                    throw new Error(`Start date (${args.start}) must be before end date (${args.end})`);
+                }
+                
+                console.log(`📅 Backtesting Strategy: ${args.strategy}`);
+                console.log(`📅 Period: ${args.start} to ${args.end}`);
+                console.log(`💰 Initial Capital: $${config.trading.accountSize}`);
+                console.log(`🎯 Target: $${config.trading.dailyProfitTarget} daily profit`);
+                
+                await system.runBacktest(args.start!, args.end!, args.strategy!);
                 break;
             case 'stop':
                 await system.stop();
                 break;
             default:
                 console.log('Usage: npm start [paper|backtest|stop]');
-                console.log('  paper: Start paper trading');
-                console.log('  backtest <start> <end>: Run backtest');
-                console.log('  stop: Stop trading system');
+                console.log('');
+                console.log('Commands:');
+                console.log('  paper                                    Start paper trading');
+                console.log('  backtest --start=YYYY-MM-DD --end=YYYY-MM-DD [--strategy=name]');
+                console.log('                                          Run backtest with date range');
+                console.log('  backtest <start> <end>                  Run backtest (positional format)');
+                console.log('  stop                                    Stop trading system');
+                console.log('');
+                console.log('Examples:');
+                console.log('  npm run backtest -- --start=2024-02-01 --end=2024-02-29 --strategy=flyagonal');
+                console.log('  npm run backtest -- 2024-02-01 2024-02-29');
         }
     } catch (error) {
         console.error('System error:', error);

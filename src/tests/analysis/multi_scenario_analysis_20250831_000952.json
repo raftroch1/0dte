@@ -1,0 +1,537 @@
+{
+  "analysis_date": "2025-08-31T00:08:59.185908",
+  "initial_balance": 25000,
+  "scenarios_tested": 7,
+  "scenario_results": {
+    "SEPTEMBER_VOLATILITY": {
+      "backtest_summary": {
+        "start_date": "2024-09-03T00:00:00",
+        "end_date": "2024-09-13T00:00:00",
+        "trading_days": 9,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "SEPTEMBER_VOLATILITY",
+        "description": "\ud83d\udcc9 September market volatility",
+        "start_date": "2024-09-01 00:00:00",
+        "end_date": "2024-09-15 00:00:00",
+        "expected_regime": "BEARISH",
+        "expected_volatility": "HIGH"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "OCTOBER_EARNINGS": {
+      "backtest_summary": {
+        "start_date": "2024-10-15T00:00:00",
+        "end_date": "2024-10-30T00:00:00",
+        "trading_days": 12,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "OCTOBER_EARNINGS",
+        "description": "\ud83d\udcca October earnings season",
+        "start_date": "2024-10-15 00:00:00",
+        "end_date": "2024-10-30 00:00:00",
+        "expected_regime": "VOLATILE",
+        "expected_volatility": "HIGH"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "ELECTION_PERIOD": {
+      "backtest_summary": {
+        "start_date": "2024-11-01T00:00:00",
+        "end_date": "2024-11-15T00:00:00",
+        "trading_days": 11,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "ELECTION_PERIOD",
+        "description": "\ud83d\uddf3\ufe0f Election uncertainty",
+        "start_date": "2024-11-01 00:00:00",
+        "end_date": "2024-11-15 00:00:00",
+        "expected_regime": "UNCERTAIN",
+        "expected_volatility": "HIGH"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "DECEMBER_RALLY": {
+      "backtest_summary": {
+        "start_date": "2024-12-02T00:00:00",
+        "end_date": "2024-12-13T00:00:00",
+        "trading_days": 10,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "DECEMBER_RALLY",
+        "description": "\ud83c\udf84 Holiday season trading",
+        "start_date": "2024-12-01 00:00:00",
+        "end_date": "2024-12-15 00:00:00",
+        "expected_regime": "BULLISH",
+        "expected_volatility": "LOW"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "NEW_YEAR_START": {
+      "backtest_summary": {
+        "start_date": "2025-01-02T00:00:00",
+        "end_date": "2025-01-15T00:00:00",
+        "trading_days": 9,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "NEW_YEAR_START",
+        "description": "\ud83c\udf86 New Year volatility",
+        "start_date": "2025-01-02 00:00:00",
+        "end_date": "2025-01-15 00:00:00",
+        "expected_regime": "VOLATILE",
+        "expected_volatility": "MEDIUM"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "FEBRUARY_NORMAL": {
+      "backtest_summary": {
+        "start_date": "2025-02-03T00:00:00",
+        "end_date": "2025-02-14T00:00:00",
+        "trading_days": 10,
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_return_pct": 0.0,
+        "total_pnl": 0,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.0,
+        "avg_signals_per_day": 0.0,
+        "signal_frequency_improvement": 0.0,
+        "total_trades": 0,
+        "win_rate_pct": 0,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 0,
+          "improvement": -22.2,
+          "quick_profit_rate": 0,
+          "tight_stop_rate": 0,
+          "time_exit_rate": 0
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "avg_duration_minutes": 0
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0
+      },
+      "scenario_info": {
+        "name": "FEBRUARY_NORMAL",
+        "description": "\ud83d\udcc8 Normal February trading",
+        "start_date": "2025-02-01 00:00:00",
+        "end_date": "2025-02-15 00:00:00",
+        "expected_regime": "NORMAL",
+        "expected_volatility": "MEDIUM"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.0,
+        "win_rate_pct": 0,
+        "trades_per_day": 0.0,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.0,
+          "win_rate_score": 0,
+          "frequency_score": 0,
+          "target_score": 0.0,
+          "overall_score": 12.5
+        },
+        "grade": "F"
+      }
+    },
+    "RECENT_PERIOD": {
+      "backtest_summary": {
+        "start_date": "2025-08-15T00:00:00",
+        "end_date": "2025-08-29T00:00:00",
+        "trading_days": 11,
+        "initial_balance": 25000,
+        "final_balance": 25008.0,
+        "total_return_pct": 0.032,
+        "total_pnl": 8.000000000000078,
+        "daily_target": 250,
+        "target_achievement_rate": 0.0
+      },
+      "intraday_metrics": {
+        "avg_trades_per_day": 0.6363636363636364,
+        "avg_signals_per_day": 0.6363636363636364,
+        "signal_frequency_improvement": 0.7070707070707071,
+        "total_trades": 7,
+        "win_rate_pct": 28.57142857142857,
+        "win_rate_improvement": {
+          "previous_win_rate": 22.2,
+          "current_win_rate": 28.57142857142857,
+          "improvement": 6.37142857142857,
+          "quick_profit_rate": 28.57142857142857,
+          "tight_stop_rate": 0.0,
+          "time_exit_rate": 71.42857142857143
+        }
+      },
+      "trade_statistics": {
+        "winning_trades": 2,
+        "losing_trades": 5,
+        "avg_win": 29.000000000000004,
+        "avg_loss": -9.999999999999986,
+        "avg_duration_minutes": 77.14285714285714
+      },
+      "risk_management": {
+        "max_drawdown_pct": 0.19953707398834702
+      },
+      "scenario_info": {
+        "name": "RECENT_PERIOD",
+        "description": "\ud83d\udcc5 Most recent data",
+        "start_date": "2025-08-15 00:00:00",
+        "end_date": "2025-08-29 00:00:00",
+        "expected_regime": "CURRENT",
+        "expected_volatility": "MEDIUM"
+      },
+      "scenario_performance": {
+        "total_return_pct": 0.032,
+        "win_rate_pct": 28.57142857142857,
+        "trades_per_day": 0.6363636363636364,
+        "target_achievement_rate": 0.0,
+        "performance_scores": {
+          "return_score": 50.16,
+          "win_rate_score": 57.14285714285714,
+          "frequency_score": 12.727272727272727,
+          "target_score": 0.0,
+          "overall_score": 30.007532467532464
+        },
+        "grade": "F"
+      }
+    }
+  },
+  "comparative_analysis": {
+    "scenario_metrics": {
+      "SEPTEMBER_VOLATILITY": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "OCTOBER_EARNINGS": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "ELECTION_PERIOD": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "DECEMBER_RALLY": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "NEW_YEAR_START": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "FEBRUARY_NORMAL": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      },
+      "RECENT_PERIOD": {
+        "return": 0.032,
+        "win_rate": 28.57142857142857,
+        "trades_per_day": 0.6363636363636364,
+        "target_rate": 0.0,
+        "overall_score": 30.007532467532464,
+        "grade": "F"
+      }
+    },
+    "best_scenario": {
+      "name": "RECENT_PERIOD",
+      "score": 30.007532467532464,
+      "metrics": {
+        "return": 0.032,
+        "win_rate": 28.57142857142857,
+        "trades_per_day": 0.6363636363636364,
+        "target_rate": 0.0,
+        "overall_score": 30.007532467532464,
+        "grade": "F"
+      }
+    },
+    "worst_scenario": {
+      "name": "SEPTEMBER_VOLATILITY",
+      "score": 12.5,
+      "metrics": {
+        "return": 0.0,
+        "win_rate": 0,
+        "trades_per_day": 0.0,
+        "target_rate": 0.0,
+        "overall_score": 12.5,
+        "grade": "F"
+      }
+    },
+    "averages": {
+      "return": 0.004571428571428572,
+      "win_rate": 4.081632653061225,
+      "trades_per_day": 0.09090909090909091,
+      "target_rate": 0.0
+    },
+    "performance_categories": {
+      "high_performers": [],
+      "low_performers": [
+        "SEPTEMBER_VOLATILITY",
+        "OCTOBER_EARNINGS",
+        "ELECTION_PERIOD",
+        "DECEMBER_RALLY",
+        "NEW_YEAR_START",
+        "FEBRUARY_NORMAL",
+        "RECENT_PERIOD"
+      ]
+    }
+  },
+  "recommendations": [
+    "\u2705 BEST PERFORMANCE: RECENT_PERIOD (Grade: F, Score: 30)",
+    "\u274c POOR PERFORMANCE: No scenarios achieved good results",
+    "\ud83d\udd27 CRITICAL: Win rate too low across all scenarios - need better entry criteria",
+    "\ud83d\udd27 CRITICAL: Signal frequency too low - need more aggressive signal generation",
+    "\ud83d\udd27 CRITICAL: Daily target rarely achieved - major strategy revision needed",
+    "\ud83d\udcc9 INSIGHT: Strategy struggles in high volatility bear markets"
+  ]
+}

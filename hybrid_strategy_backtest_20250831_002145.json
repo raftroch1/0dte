@@ -1,0 +1,33 @@
+{
+  "backtest_period": {
+    "start_date": "N/A",
+    "end_date": "N/A",
+    "trading_days": 0
+  },
+  "financial_performance": {
+    "initial_balance": 25000,
+    "final_balance": 25000,
+    "total_pnl": 0,
+    "total_return_pct": 0.0,
+    "max_drawdown_pct": 0,
+    "avg_daily_pnl": 0.0
+  },
+  "trading_statistics": {
+    "total_trades": 0,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "win_rate_pct": 0.0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "profit_factor": Infinity
+  },
+  "strategy_breakdown": {},
+  "target_achievement": {
+    "target_days": 0,
+    "total_days": 0,
+    "achievement_rate_pct": 0.0
+  },
+  "daily_pnl": [],
+  "closed_trades": [],
+  "trade_log": []
+}

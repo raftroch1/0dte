@@ -41,7 +41,7 @@ export interface TradingStrategy {
    * ENHANCED: Now supports async operations for real data integration
    * (e.g., fetching real VIX data, real options Greeks, etc.)
    */
-  generateSignal(data: MarketData[], options: OptionsChain[]): Promise<TradeSignal | null>;
+  generateSignal(data: MarketData[], options: OptionsChain[]): TradeSignal | null | Promise<TradeSignal | null>;
 
   /**
    * Validate a generated signal before execution

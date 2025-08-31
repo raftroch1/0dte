@@ -1,0 +1,687 @@
+{
+  "analysis_date": "2025-08-30T23:44:44.320042",
+  "period": {
+    "start": "2025-08-15T00:00:00",
+    "end": "2025-08-29T00:00:00"
+  },
+  "days_analyzed": 11,
+  "baseline_results": {
+    "signals_generated": 9,
+    "strategy_distribution": {
+      "BUY_PUT": 9
+    },
+    "confidence_scores": [
+      65,
+      65,
+      65,
+      65,
+      65,
+      65,
+      65,
+      65,
+      65
+    ],
+    "daily_results": [
+      {
+        "date": "2025-08-15T00:00:00",
+        "spy_price": 630.0,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 5.06",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 2682 NTM options, 89 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-18T00:00:00",
+        "spy_price": 639.5,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Morning momentum window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 5.40",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 2484 NTM options, 59 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-19T00:00:00",
+        "spy_price": 643.75,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 4.12",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 3877 NTM options, 53 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-20T00:00:00",
+        "spy_price": 635.0,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 4.78",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 7170 NTM options, 71 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-21T00:00:00",
+        "spy_price": 634.0,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 2.83",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 4252 NTM options, 60 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-22T00:00:00",
+        "spy_price": 642.75,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 3.23",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 9637 NTM options, 64 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-25T00:00:00",
+        "spy_price": 639.5,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 2.33",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 5283 NTM options, 46 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-26T00:00:00",
+        "spy_price": 644.25,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Morning momentum window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 1.53",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 4976 NTM options, 34 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-27T00:00:00",
+        "spy_price": 643.25,
+        "strategy_type": "baseline",
+        "selected_strategy": "NO_TRADE",
+        "confidence": 0,
+        "market_regime": "NEUTRAL",
+        "regime_confidence": 60,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: NEUTRAL (60% confidence)",
+          "Put/Call ratio: 1.39",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 6765 NTM options, 38 avg volume",
+          "\ud83c\udfaf Strategy selected: NO_TRADE"
+        ]
+      },
+      {
+        "date": "2025-08-28T00:00:00",
+        "spy_price": 646.25,
+        "strategy_type": "baseline",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 65,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 1.79",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 11449 NTM options, 42 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT"
+        ]
+      },
+      {
+        "date": "2025-08-29T00:00:00",
+        "spy_price": 643.5,
+        "strategy_type": "baseline",
+        "selected_strategy": "NO_TRADE",
+        "confidence": 0,
+        "market_regime": "NEUTRAL",
+        "regime_confidence": 60,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: NEUTRAL (60% confidence)",
+          "Put/Call ratio: 1.26",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 18716 NTM options, 61 avg volume",
+          "\ud83c\udfaf Strategy selected: NO_TRADE"
+        ]
+      }
+    ]
+  },
+  "ml_enhanced_results": {
+    "signals_generated": 9,
+    "strategy_distribution": {
+      "BUY_PUT": 9
+    },
+    "confidence_scores": [
+      67.12601438390314,
+      67.41171853691884,
+      67.56438572157565,
+      67.04897275959863,
+      67.05033104587845,
+      67.311525736624,
+      67.41665680143228,
+      67.04167847079972,
+      67.57788584630751
+    ],
+    "confidence_improvements": [
+      2.1260143839031374,
+      2.4117185369188405,
+      2.564385721575644,
+      2.048972759598623,
+      2.050331045878449,
+      2.3115257366240023,
+      2.4166568014322802,
+      2.0416784707997304,
+      2.577885846307507
+    ],
+    "ml_predictions": {
+      "profitable": [
+        0.6417342922602092,
+        0.6607812357945894,
+        0.6709590481050429,
+        0.6365981839732415,
+        0.6366887363918966,
+        0.6541017157749335,
+        0.6611104534288187,
+        0.6361118980533154,
+        0.6718590564205005
+      ],
+      "high_confidence": [
+        0.6717190046005638,
+        0.6468455142343222,
+        0.645084722146169,
+        0.6677121514431844,
+        0.6709206450924698,
+        0.6727012492787595,
+        0.6189040869227598,
+        0.6027524270842981,
+        0.6539026902712127
+      ],
+      "high_value": [
+        0.3596129191455607,
+        0.3602322897834529,
+        0.3459125157691428,
+        0.3767288811514197,
+        0.39004525189194117,
+        0.30219106557446657,
+        0.23544151709149844,
+        0.21950729001672153,
+        0.16145919747508602
+      ]
+    },
+    "daily_results": [
+      {
+        "date": "2025-08-15T00:00:00",
+        "spy_price": 630.0,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.12601438390314,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.1260143839031374,
+        "ml_predictions": {
+          "profitable": 0.6417342922602092,
+          "high_confidence": 0.6717190046005638,
+          "high_value": 0.3596129191455607
+        },
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 5.06",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 2682 NTM options, 89 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.1% confidence boost",
+          "   Profitable: 64.2%, Confidence: 67.2%, Value: 36.0%"
+        ]
+      },
+      {
+        "date": "2025-08-18T00:00:00",
+        "spy_price": 639.5,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.41171853691884,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.4117185369188405,
+        "ml_predictions": {
+          "profitable": 0.6607812357945894,
+          "high_confidence": 0.6468455142343222,
+          "high_value": 0.3602322897834529
+        },
+        "reasoning": [
+          "Trading window: Morning momentum window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 5.40",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 2484 NTM options, 59 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.4% confidence boost",
+          "   Profitable: 66.1%, Confidence: 64.7%, Value: 36.0%"
+        ]
+      },
+      {
+        "date": "2025-08-19T00:00:00",
+        "spy_price": 643.75,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.56438572157565,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.564385721575644,
+        "ml_predictions": {
+          "profitable": 0.6709590481050429,
+          "high_confidence": 0.645084722146169,
+          "high_value": 0.3459125157691428
+        },
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 4.12",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 3877 NTM options, 53 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.6% confidence boost",
+          "   Profitable: 67.1%, Confidence: 64.5%, Value: 34.6%"
+        ]
+      },
+      {
+        "date": "2025-08-20T00:00:00",
+        "spy_price": 635.0,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.04897275959863,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.048972759598623,
+        "ml_predictions": {
+          "profitable": 0.6365981839732415,
+          "high_confidence": 0.6677121514431844,
+          "high_value": 0.3767288811514197
+        },
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 4.78",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 7170 NTM options, 71 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.0% confidence boost",
+          "   Profitable: 63.7%, Confidence: 66.8%, Value: 37.7%"
+        ]
+      },
+      {
+        "date": "2025-08-21T00:00:00",
+        "spy_price": 634.0,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.05033104587845,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.050331045878449,
+        "ml_predictions": {
+          "profitable": 0.6366887363918966,
+          "high_confidence": 0.6709206450924698,
+          "high_value": 0.39004525189194117
+        },
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 2.83",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 4252 NTM options, 60 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.1% confidence boost",
+          "   Profitable: 63.7%, Confidence: 67.1%, Value: 39.0%"
+        ]
+      },
+      {
+        "date": "2025-08-22T00:00:00",
+        "spy_price": 642.75,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.311525736624,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.3115257366240023,
+        "ml_predictions": {
+          "profitable": 0.6541017157749335,
+          "high_confidence": 0.6727012492787595,
+          "high_value": 0.30219106557446657
+        },
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 3.23",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 9637 NTM options, 64 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.3% confidence boost",
+          "   Profitable: 65.4%, Confidence: 67.3%, Value: 30.2%"
+        ]
+      },
+      {
+        "date": "2025-08-25T00:00:00",
+        "spy_price": 639.5,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.41665680143228,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.4166568014322802,
+        "ml_predictions": {
+          "profitable": 0.6611104534288187,
+          "high_confidence": 0.6189040869227598,
+          "high_value": 0.23544151709149844
+        },
+        "reasoning": [
+          "Trading window: Midday consolidation (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 2.33",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 5283 NTM options, 46 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.4% confidence boost",
+          "   Profitable: 66.1%, Confidence: 61.9%, Value: 23.5%"
+        ]
+      },
+      {
+        "date": "2025-08-26T00:00:00",
+        "spy_price": 644.25,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.04167847079972,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.0416784707997304,
+        "ml_predictions": {
+          "profitable": 0.6361118980533154,
+          "high_confidence": 0.6027524270842981,
+          "high_value": 0.21950729001672153
+        },
+        "reasoning": [
+          "Trading window: Morning momentum window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 1.53",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 4976 NTM options, 34 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.0% confidence boost",
+          "   Profitable: 63.6%, Confidence: 60.3%, Value: 22.0%"
+        ]
+      },
+      {
+        "date": "2025-08-27T00:00:00",
+        "spy_price": 643.25,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "NO_TRADE",
+        "confidence": 0,
+        "market_regime": "NEUTRAL",
+        "regime_confidence": 60,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: NEUTRAL (60% confidence)",
+          "Put/Call ratio: 1.39",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 6765 NTM options, 38 avg volume",
+          "\ud83c\udfaf Strategy selected: NO_TRADE"
+        ]
+      },
+      {
+        "date": "2025-08-28T00:00:00",
+        "spy_price": 646.25,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "BUY_PUT",
+        "confidence": 67.57788584630751,
+        "market_regime": "BEARISH",
+        "regime_confidence": 70,
+        "ml_enhanced": true,
+        "confidence_boost": 2.577885846307507,
+        "ml_predictions": {
+          "profitable": 0.6718590564205005,
+          "high_confidence": 0.6539026902712127,
+          "high_value": 0.16145919747508602
+        },
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: BEARISH (70% confidence)",
+          "Put/Call ratio: 1.79",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Good liquidity: 11449 NTM options, 42 avg volume",
+          "\ud83c\udfaf Strategy selected: BUY_PUT",
+          "\ud83e\udd16 ML Enhancement: +2.6% confidence boost",
+          "   Profitable: 67.2%, Confidence: 65.4%, Value: 16.1%"
+        ]
+      },
+      {
+        "date": "2025-08-29T00:00:00",
+        "spy_price": 643.5,
+        "strategy_type": "ml_enhanced",
+        "selected_strategy": "NO_TRADE",
+        "confidence": 0,
+        "market_regime": "NEUTRAL",
+        "regime_confidence": 60,
+        "ml_enhanced": false,
+        "confidence_boost": 0,
+        "ml_predictions": {},
+        "reasoning": [
+          "Trading window: Afternoon decay window (simulated)",
+          "Market regime: NEUTRAL (60% confidence)",
+          "Put/Call ratio: 1.26",
+          "VIX estimate: 20.0",
+          "Base regime: HIGH_FEAR",
+          "\u2705 Volatility: Normal Est IV 20.0%",
+          "\u2705 Liquidity: Excellent liquidity: 18716 NTM options, 61 avg volume",
+          "\ud83c\udfaf Strategy selected: NO_TRADE"
+        ]
+      }
+    ]
+  },
+  "comparative_metrics": {
+    "signal_generation": {
+      "baseline_signals": 9,
+      "ml_enhanced_signals": 9,
+      "signal_rate_baseline": 81.81818181818183,
+      "signal_rate_ml": 81.81818181818183
+    },
+    "confidence_analysis": {
+      "baseline_avg_confidence": 65.0,
+      "ml_enhanced_avg_confidence": 67.2832410336709,
+      "confidence_improvement": 2.2832410336709046,
+      "baseline_confidence_std": 0.0,
+      "ml_enhanced_confidence_std": 0.20900971251446523
+    },
+    "ml_enhancement_metrics": {
+      "avg_confidence_boost": 2.2832410336709126,
+      "max_confidence_boost": 2.577885846307507,
+      "min_confidence_boost": 2.0416784707997304,
+      "enhancement_consistency": 0.20900971251446426
+    },
+    "strategy_distribution_comparison": {
+      "baseline": {
+        "BUY_PUT": 9
+      },
+      "ml_enhanced": {
+        "BUY_PUT": 9
+      }
+    },
+    "ml_prediction_quality": {
+      "profitable": {
+        "average": 0.6522160689113943,
+        "std": 0.01393398083429762,
+        "min": 0.6361118980533154,
+        "max": 0.6718590564205005
+      },
+      "high_confidence": {
+        "average": 0.650060276785971,
+        "std": 0.02353969121996062,
+        "min": 0.6027524270842981,
+        "max": 0.6727012492787595
+      },
+      "high_value": {
+        "average": 0.30568121421103217,
+        "std": 0.0766230307785316,
+        "min": 0.16145919747508602,
+        "max": 0.39004525189194117
+      }
+    }
+  },
+  "recommendations": [
+    "\u2705 ML provides significant confidence boost (+2.3%)",
+    "\u2705 ML enhancements are highly consistent",
+    "\u2705 ML shows strong profitability prediction capability",
+    "\ud83d\ude80 RECOMMENDED: Deploy ML-enhanced strategy to production",
+    "\ud83d\udcca RECOMMENDED: Monitor ML predictions vs actual outcomes",
+    "\ud83d\udd04 RECOMMENDED: Retrain models monthly with new data"
+  ]
+}

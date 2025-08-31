@@ -410,8 +410,8 @@ Configure BacktestingEngine with includeOptionsData: true to fetch real data.
   shouldExit(position: Position, marketData: MarketData, options: OptionsChain[], holdingTime: number): boolean {
     const holdingDays = holdingTime / (24 * 60);
     const pnl = position.unrealizedPnL || 0;
-    const maxLoss = position.metadata?.maxLoss || 500;
-    const profitTarget = position.metadata?.profitTarget || 750; // CORRECTED: Realistic $750 target
+    const maxLoss = position.metadata?.maxLoss || 50; // SPY-adapted: $50 max loss (equivalent to SPX $500)
+    const profitTarget = position.metadata?.profitTarget || 75; // SPY-adapted: $75 target (equivalent to SPX $750)
     
     // Steve Guns' exit conditions
     if (pnl >= profitTarget) {

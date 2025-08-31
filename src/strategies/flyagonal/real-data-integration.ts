@@ -28,17 +28,17 @@ export interface FlyagonalDataRequirements {
   /** Current underlying price for strike calculations */
   underlyingPrice: number;
   
-  /** Required call strikes for broken wing butterfly */
+  /** Required call strikes for broken wing butterfly (SPY adapted) */
   butterflyStrikes: {
-    longLower: number;  // Market + 10pts
-    short: number;      // Market + 60pts  
-    longUpper: number;  // Market + 120pts
+    longLower: number;  // Market + 1pt (SPY equivalent of SPX +10pts)
+    short: number;      // Market + 6pts (SPY equivalent of SPX +60pts)
+    longUpper: number;  // Market + 12pts (SPY equivalent of SPX +120pts)
   };
   
-  /** Required put strikes for diagonal spread */
+  /** Required put strikes for diagonal spread (SPY adapted) */
   diagonalStrikes: {
     shortStrike: number; // 3% below market
-    longStrike: number;  // Short - 50pts
+    longStrike: number;  // Short - 5pts (SPY equivalent of SPX -50pts)
   };
   
   /** Required expirations */
@@ -87,21 +87,21 @@ export class FlyagonalRealDataIntegration {
     currentTime: Date
   ): FlyagonalDataRequirements {
     
-    // Round to nearest 10 for clean SPX strikes
-    const basePrice = Math.ceil(underlyingPrice / 10) * 10;
+    // Round to nearest 1 for clean SPY strikes (adapted from SPX)
+    const basePrice = Math.ceil(underlyingPrice);
     
-    // Call Broken Wing Butterfly (above market)
+    // Call Broken Wing Butterfly (above market) - SPY adapted from SPX
     const butterflyStrikes = {
-      longLower: basePrice + 10,   // e.g., 6370 when market at 6360
-      short: basePrice + 60,       // e.g., 6420 (50pt wing + 10pt offset)
-      longUpper: basePrice + 120   // e.g., 6480 (60pt upper wing)
+      longLower: basePrice + 1,    // e.g., 461 when market at 460 (SPY equivalent of SPX +10)
+      short: basePrice + 6,        // e.g., 466 (5pt wing + 1pt offset, SPY equivalent of SPX +60)
+      longUpper: basePrice + 12    // e.g., 472 (6pt upper wing, SPY equivalent of SPX +120)
     };
     
-    // Put Diagonal Spread (below market)  
-    const shortStrike = Math.floor((underlyingPrice * 0.97) / 5) * 5; // 3% below, rounded to $5
+    // Put Diagonal Spread (below market) - SPY adapted from SPX
+    const shortStrike = Math.floor((underlyingPrice * 0.97)); // 3% below, rounded to $1 for SPY
     const diagonalStrikes = {
       shortStrike,
-      longStrike: shortStrike - 50 // 50pts protection
+      longStrike: shortStrike - 5 // 5pts protection (SPY equivalent of SPX 50pts)
     };
     
     // Expiration dates based on Steve Guns' timing
@@ -349,7 +349,7 @@ export class FlyagonalRealDataIntegration {
       }
       
     } catch (error) {
-      console.error('❌ Error fetching real VIX data:', error.message);
+      console.error('❌ Error fetching real VIX data:', (error as Error).message);
       return null; // Return null to trigger estimation fallback
     }
   }
@@ -381,7 +381,7 @@ export class FlyagonalRealDataIntegration {
       }
       
     } catch (error) {
-      console.error('❌ Error fetching historical VIX data:', error.message);
+      console.error('❌ Error fetching historical VIX data:', (error as Error).message);
       return [];
     }
   }

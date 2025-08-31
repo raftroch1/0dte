@@ -1,0 +1,117 @@
+{
+  "backtest_summary": {
+    "start_date": "2025-08-15T00:00:00",
+    "end_date": "2025-08-28T00:00:00",
+    "trading_days": 10,
+    "initial_balance": 25000,
+    "final_balance": 24547.0,
+    "total_return_pct": -1.812,
+    "total_pnl": -251.99999999999997,
+    "daily_target": 250,
+    "target_achievement_rate": 0.0
+  },
+  "trade_statistics": {
+    "total_trades": 9,
+    "winning_trades": 2,
+    "losing_trades": 7,
+    "win_rate_pct": 22.22222222222222,
+    "avg_win": 37.000000000000014,
+    "avg_loss": -54.333333333333336,
+    "largest_win": 39.99999999999999,
+    "largest_loss": -199.99999999999997
+  },
+  "risk_management_metrics": {
+    "max_drawdown_pct": 1.916,
+    "expired_worthless_count": 0,
+    "stop_loss_count": 1,
+    "profit_target_count": 0,
+    "risk_management_score": {
+      "expired_worthless_rate": 0.0,
+      "stop_loss_rate": 11.11111111111111,
+      "profit_target_rate": 0.0
+    },
+    "avg_trade_duration_hours": 34.666666666666664
+  },
+  "daily_performance": [
+    {
+      "date": "2025-08-15T00:00:00",
+      "balance": 24859.0,
+      "daily_pnl": -141.0,
+      "daily_return_pct": -0.5640000000000001,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-18T00:00:00",
+      "balance": 24835.0,
+      "daily_pnl": -24.0,
+      "daily_return_pct": -0.09654451104227846,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-19T00:00:00",
+      "balance": 24721.0,
+      "daily_pnl": -114.0,
+      "daily_return_pct": -0.45902959532917254,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-20T00:00:00",
+      "balance": 24702.0,
+      "daily_pnl": -19.0,
+      "daily_return_pct": -0.07685773229238299,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-21T00:00:00",
+      "balance": 24777.0,
+      "daily_pnl": 75.0,
+      "daily_return_pct": 0.3036191401505951,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-22T00:00:00",
+      "balance": 24797.0,
+      "daily_pnl": 20.0,
+      "daily_return_pct": 0.08072002260160632,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-25T00:00:00",
+      "balance": 24521.0,
+      "daily_pnl": -276.0,
+      "daily_return_pct": -1.1130378674839698,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-26T00:00:00",
+      "balance": 24632.0,
+      "daily_pnl": 111.0,
+      "daily_return_pct": 0.4526732188736185,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-27T00:00:00",
+      "balance": 24556.0,
+      "daily_pnl": -76.0,
+      "daily_return_pct": -0.3085417343293277,
+      "target_hit": "False",
+      "trades_count": 1
+    },
+    {
+      "date": "2025-08-28T00:00:00",
+      "balance": 24547.0,
+      "daily_pnl": -9.0,
+      "daily_return_pct": -0.03665092034533312,
+      "target_hit": "False",
+      "trades_count": 1
+    }
+  ]
+}

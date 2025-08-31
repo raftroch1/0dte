@@ -86,20 +86,21 @@ const defaultConfig: FlyagonalStrategyConfig = {
     targetHoldingDays: 4.5,
 
     /**
-     * Butterfly strike spacing (SPX-specific)
+     * Butterfly strike spacing (SPY-adapted from SPX)
      * 
-     * Based on Steve Guns' methodology: 50pt lower wing, 60pt upper wing
-     * @default { lower: 50, upper: 60 }
+     * Based on Steve Guns' methodology adapted for SPY: 5pt lower wing, 6pt upper wing
+     * SPY equivalent of SPX { lower: 50, upper: 60 }
+     * @default { lower: 5, upper: 6 }
      */
-    butterflyStrikeSpacing: { lower: 50, upper: 60 },
+    butterflyStrikeSpacing: { lower: 5, upper: 6 },
 
     /**
-     * Diagonal strike spacing (SPX-specific)
+     * Diagonal strike spacing (SPY-adapted from SPX)
      * 
-     * Short put 3% below market, long put 50pts further below
-     * @default { percentBelow: 3, protection: 50 }
+     * Short put 3% below market, long put 5pts further below (SPY equivalent of SPX 50pts)
+     * @default { percentBelow: 3, protection: 5 }
      */
-    diagonalStrikeSpacing: { percentBelow: 3, protection: 50 },
+    diagonalStrikeSpacing: { percentBelow: 3, protection: 5 },
 
     /**
      * Maximum trend strength to allow entry

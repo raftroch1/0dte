@@ -1,0 +1,1044 @@
+{
+  "test_date": "2025-08-31T00:25:29.457342",
+  "strategy_type": "HYBRID_ADAPTIVE",
+  "initial_balance": 25000,
+  "scenarios_tested": 7,
+  "scenario_results": {
+    "SEPTEMBER_VOLATILITY": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "SEPTEMBER_VOLATILITY",
+        "description": "\ud83d\udcc9 September market volatility",
+        "start_date": "2024-09-01 00:00:00",
+        "end_date": "2024-09-15 00:00:00",
+        "expected_regime": "BEARISH",
+        "expected_volatility": "HIGH",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "OCTOBER_EARNINGS": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "OCTOBER_EARNINGS",
+        "description": "\ud83d\udcca October earnings season",
+        "start_date": "2024-10-15 00:00:00",
+        "end_date": "2024-10-30 00:00:00",
+        "expected_regime": "VOLATILE",
+        "expected_volatility": "HIGH",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "ELECTION_PERIOD": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "ELECTION_PERIOD",
+        "description": "\ud83d\uddf3\ufe0f Election uncertainty",
+        "start_date": "2024-11-01 00:00:00",
+        "end_date": "2024-11-15 00:00:00",
+        "expected_regime": "UNCERTAIN",
+        "expected_volatility": "HIGH",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "DECEMBER_RALLY": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "DECEMBER_RALLY",
+        "description": "\ud83c\udf84 Holiday season trading",
+        "start_date": "2024-12-01 00:00:00",
+        "end_date": "2024-12-15 00:00:00",
+        "expected_regime": "BULLISH",
+        "expected_volatility": "LOW",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "NEW_YEAR_START": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "NEW_YEAR_START",
+        "description": "\ud83c\udf86 New Year volatility",
+        "start_date": "2025-01-02 00:00:00",
+        "end_date": "2025-01-15 00:00:00",
+        "expected_regime": "VOLATILE",
+        "expected_volatility": "MEDIUM",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "FEBRUARY_NORMAL": {
+      "backtest_period": {
+        "start_date": "N/A",
+        "end_date": "N/A",
+        "trading_days": 0
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25000,
+        "total_pnl": 0,
+        "total_return_pct": 0.0,
+        "max_drawdown_pct": 0,
+        "avg_daily_pnl": 0.0
+      },
+      "trading_statistics": {
+        "total_trades": 0,
+        "winning_trades": 0,
+        "losing_trades": 0,
+        "win_rate_pct": 0.0,
+        "avg_win": 0,
+        "avg_loss": 0,
+        "profit_factor": Infinity
+      },
+      "strategy_breakdown": {},
+      "target_achievement": {
+        "target_days": 0,
+        "total_days": 0,
+        "achievement_rate_pct": 0.0
+      },
+      "daily_pnl": [],
+      "closed_trades": [],
+      "trade_log": [],
+      "scenario_info": {
+        "name": "FEBRUARY_NORMAL",
+        "description": "\ud83d\udcc8 Normal February trading",
+        "start_date": "2025-02-01 00:00:00",
+        "end_date": "2025-02-15 00:00:00",
+        "expected_regime": "NORMAL",
+        "expected_volatility": "MEDIUM",
+        "max_days": 10
+      },
+      "scenario_success": false,
+      "success_criteria": {
+        "trades_executed": 0,
+        "win_rate": 0.0,
+        "total_return": 0.0,
+        "meets_criteria": false
+      }
+    },
+    "RECENT_PERIOD": {
+      "backtest_period": {
+        "start_date": "2025-08-15",
+        "end_date": "2025-08-28",
+        "trading_days": 10
+      },
+      "financial_performance": {
+        "initial_balance": 25000,
+        "final_balance": 25218.15133002089,
+        "total_pnl": 218.15133002089152,
+        "total_return_pct": 0.8726053200835595,
+        "max_drawdown_pct": 0.42730953934457944,
+        "avg_daily_pnl": 21.81513300208915
+      },
+      "trading_statistics": {
+        "total_trades": 18,
+        "winning_trades": 16,
+        "losing_trades": 2,
+        "win_rate_pct": 88.88888888888889,
+        "avg_win": 25.855341547479448,
+        "avg_loss": -97.76706736938982,
+        "profit_factor": 0.264458597799514
+      },
+      "strategy_breakdown": {
+        "BEAR_CALL_SPREAD": {
+          "trades": 14,
+          "wins": 12,
+          "total_pnl": 89.41009957129326,
+          "win_rate": 85.71428571428571,
+          "avg_pnl": 6.386435683663804
+        },
+        "IRON_CONDOR": {
+          "trades": 4,
+          "wins": 4,
+          "total_pnl": 128.74123044959825,
+          "win_rate": 100.0,
+          "avg_pnl": 32.18530761239956
+        }
+      },
+      "target_achievement": {
+        "target_days": 1,
+        "total_days": 10,
+        "achievement_rate_pct": 10.0
+      },
+      "daily_pnl": [
+        {
+          "date": "2025-08-15 00:00:00",
+          "balance": 25000,
+          "daily_pnl": 0,
+          "total_pnl": 0,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-18 00:00:00",
+          "balance": 25051.20612905395,
+          "daily_pnl": 51.20612905394955,
+          "total_pnl": 51.20612905394955,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-19 00:00:00",
+          "balance": 25099.688546706704,
+          "daily_pnl": 48.48241765275452,
+          "total_pnl": 99.68854670670407,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-20 00:00:00",
+          "balance": 25148.42044157197,
+          "daily_pnl": 99.93802391921417,
+          "total_pnl": 148.4204415719687,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-21 00:00:00",
+          "balance": 25103.701674462423,
+          "daily_pnl": 3.7636505432092235,
+          "total_pnl": 103.7016744624234,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-22 00:00:00",
+          "balance": 25151.418919077423,
+          "daily_pnl": 147.65526853421397,
+          "total_pnl": 151.4189190774232,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-25 00:00:00",
+          "balance": 25043.944506755688,
+          "daily_pnl": -103.71076177852592,
+          "total_pnl": 43.94450675568805,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-26 00:00:00",
+          "balance": 25089.410099571294,
+          "daily_pnl": 193.1208613498202,
+          "total_pnl": 89.41009957129427,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-27 00:00:00",
+          "balance": 25150.577399564318,
+          "daily_pnl": -42.543461785502586,
+          "total_pnl": 150.5773995643176,
+          "open_positions": 2
+        },
+        {
+          "date": "2025-08-28 00:00:00",
+          "balance": 25218.15133002089,
+          "daily_pnl": 260.69479180639246,
+          "total_pnl": 218.15133002088987,
+          "open_positions": 2
+        }
+      ],
+      "closed_trades": [
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250815_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-15 00:00:00",
+          "exit_date": "2025-08-18 00:00:00",
+          "days_held": 3,
+          "pnl": 23.237167778523705,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250815_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-15 00:00:00",
+          "exit_date": "2025-08-18 00:00:00",
+          "days_held": 3,
+          "pnl": 27.968961275425844,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250818_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-18 00:00:00",
+          "exit_date": "2025-08-19 00:00:00",
+          "days_held": 1,
+          "pnl": 21.579667998106157,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250818_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-18 00:00:00",
+          "exit_date": "2025-08-19 00:00:00",
+          "days_held": 1,
+          "pnl": 26.902749654649522,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250819_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-19 00:00:00",
+          "exit_date": "2025-08-20 00:00:00",
+          "days_held": 1,
+          "pnl": 21.51366617537693,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250819_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-19 00:00:00",
+          "exit_date": "2025-08-20 00:00:00",
+          "days_held": 1,
+          "pnl": 27.21822868988701,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250820_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-20 00:00:00",
+          "exit_date": "2025-08-21 00:00:00",
+          "days_held": 1,
+          "pnl": -66.30566663735847,
+          "result": "LOSS",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250820_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-20 00:00:00",
+          "exit_date": "2025-08-21 00:00:00",
+          "days_held": 1,
+          "pnl": 21.586899527814207,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250821_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-21 00:00:00",
+          "exit_date": "2025-08-22 00:00:00",
+          "days_held": 1,
+          "pnl": 25.196782172161747,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250821_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-21 00:00:00",
+          "exit_date": "2025-08-22 00:00:00",
+          "days_held": 1,
+          "pnl": 22.52046244283626,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250822_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-22 00:00:00",
+          "exit_date": "2025-08-25 00:00:00",
+          "days_held": 3,
+          "pnl": -129.22846810142119,
+          "result": "LOSS",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250822_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-22 00:00:00",
+          "exit_date": "2025-08-25 00:00:00",
+          "days_held": 3,
+          "pnl": 21.75405577968388,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250825_MARKET_OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-25 00:00:00",
+          "exit_date": "2025-08-26 00:00:00",
+          "days_held": 1,
+          "pnl": 23.721092991226786,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "BEAR_CALL_SPREAD_20250825_MORNING_MOMENTUM",
+          "strategy": "BEAR_CALL_SPREAD",
+          "entry_date": "2025-08-25 00:00:00",
+          "exit_date": "2025-08-26 00:00:00",
+          "days_held": 1,
+          "pnl": 21.744499824380867,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 80
+        },
+        {
+          "position_id": "IRON_CONDOR_20250826_MARKET_OPEN",
+          "strategy": "IRON_CONDOR",
+          "entry_date": "2025-08-26 00:00:00",
+          "exit_date": "2025-08-27 00:00:00",
+          "days_held": 1,
+          "pnl": 30.74499358013234,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 70
+        },
+        {
+          "position_id": "IRON_CONDOR_20250826_MORNING_MOMENTUM",
+          "strategy": "IRON_CONDOR",
+          "entry_date": "2025-08-26 00:00:00",
+          "exit_date": "2025-08-27 00:00:00",
+          "days_held": 1,
+          "pnl": 30.422306412893466,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 70
+        },
+        {
+          "position_id": "IRON_CONDOR_20250827_MARKET_OPEN",
+          "strategy": "IRON_CONDOR",
+          "entry_date": "2025-08-27 00:00:00",
+          "exit_date": "2025-08-28 00:00:00",
+          "days_held": 1,
+          "pnl": 34.402050921910636,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 70
+        },
+        {
+          "position_id": "IRON_CONDOR_20250827_MORNING_MOMENTUM",
+          "strategy": "IRON_CONDOR",
+          "entry_date": "2025-08-27 00:00:00",
+          "exit_date": "2025-08-28 00:00:00",
+          "days_held": 1,
+          "pnl": 33.17187953466179,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD",
+          "confidence": 70
+        }
+      ],
+      "trade_log": [
+        {
+          "timestamp": "2025-08-15 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-15 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-18 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 23.237167778523705,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-18 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 27.968961275425844,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-18 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-18 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-19 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 21.579667998106157,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-19 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 26.902749654649522,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-19 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-19 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-20 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 21.51366617537693,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-20 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 27.21822868988701,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-20 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-20 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-21 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": -66.30566663735847,
+          "result": "LOSS",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-21 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 21.586899527814207,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-21 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-21 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-22 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 25.196782172161747,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-22 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 22.52046244283626,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-22 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-22 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: MEDIUM"
+        },
+        {
+          "timestamp": "2025-08-25 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": -129.22846810142119,
+          "result": "LOSS",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-25 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 21.75405577968388,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-25 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-25 00:00:00",
+          "action": "OPEN",
+          "strategy": "BEAR_CALL_SPREAD",
+          "position_size": 1,
+          "cash_required": 165.0,
+          "confidence": 80,
+          "reasoning": "Market Regime: BEARISH (70% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-26 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 23.721092991226786,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-26 00:00:00",
+          "action": "CLOSE",
+          "strategy": "BEAR_CALL_SPREAD",
+          "pnl": 21.744499824380867,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-26 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-26 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-27 00:00:00",
+          "action": "CLOSE",
+          "strategy": "IRON_CONDOR",
+          "pnl": 30.74499358013234,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-27 00:00:00",
+          "action": "CLOSE",
+          "strategy": "IRON_CONDOR",
+          "pnl": 30.422306412893466,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-27 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-27 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-28 00:00:00",
+          "action": "CLOSE",
+          "strategy": "IRON_CONDOR",
+          "pnl": 34.402050921910636,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-28 00:00:00",
+          "action": "CLOSE",
+          "strategy": "IRON_CONDOR",
+          "pnl": 33.17187953466179,
+          "result": "WIN",
+          "exit_reason": "TIME_EXIT_CREDIT_SPREAD"
+        },
+        {
+          "timestamp": "2025-08-28 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        },
+        {
+          "timestamp": "2025-08-28 00:00:00",
+          "action": "OPEN",
+          "strategy": "IRON_CONDOR",
+          "position_size": 1,
+          "cash_required": 140.0,
+          "confidence": 70,
+          "reasoning": "Market Regime: NEUTRAL (60% confidence); Available Cash: $20,000.00; Volatility: LOW"
+        }
+      ],
+      "scenario_info": {
+        "name": "RECENT_PERIOD",
+        "description": "\ud83d\udcc5 Most recent data",
+        "start_date": "2025-08-15 00:00:00",
+        "end_date": "2025-08-29 00:00:00",
+        "expected_regime": "CURRENT",
+        "expected_volatility": "MEDIUM",
+        "max_days": 10
+      },
+      "scenario_success": true,
+      "success_criteria": {
+        "trades_executed": 18,
+        "win_rate": 88.88888888888889,
+        "total_return": 0.8726053200835595,
+        "meets_criteria": true
+      }
+    }
+  },
+  "comparative_analysis": {
+    "scenario_metrics": {
+      "SEPTEMBER_VOLATILITY": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "OCTOBER_EARNINGS": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "ELECTION_PERIOD": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "DECEMBER_RALLY": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "NEW_YEAR_START": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "FEBRUARY_NORMAL": {
+        "trades": 0,
+        "win_rate": 0.0,
+        "return": 0.0,
+        "active": false
+      },
+      "RECENT_PERIOD": {
+        "trades": 18,
+        "win_rate": 88.88888888888889,
+        "return": 0.8726053200835595,
+        "active": true
+      }
+    },
+    "previous_system": {
+      "active_scenarios": 1,
+      "success_rate": 14.3,
+      "avg_trades_per_scenario": 0.1,
+      "total_trades": 0.7
+    },
+    "current_system": {
+      "active_scenarios": 1,
+      "success_rate": 14.285714285714285,
+      "avg_trades_per_scenario": 2.5714285714285716,
+      "total_trades": 18
+    },
+    "improvements": {
+      "active_scenarios_improvement": 0,
+      "success_rate_improvement": -0.014285714285716011,
+      "trade_frequency_improvement": 25.714285714285715,
+      "total_trades_improvement": 17.3
+    }
+  },
+  "improvement_metrics": {
+    "previous_successful_scenarios": 0,
+    "current_successful_scenarios": 1,
+    "previous_success_rate": 0.0,
+    "current_success_rate": 14.285714285714285,
+    "success_rate_improvement": 14.285714285714285,
+    "total_trades_generated": 18,
+    "avg_trades_per_scenario": 2.5714285714285716,
+    "previous_avg_trades_per_scenario": 0.1,
+    "trade_frequency_improvement": 25.714285714285715
+  },
+  "recommendations": [
+    "\u274c POOR: Strategy needs major improvements",
+    "\u2705 GOOD: Adequate trade frequency",
+    "\ud83d\ude80 BREAKTHROUGH: Dramatic improvement in trade generation",
+    "\ud83d\udd27 NEXT STEPS: Optimize exit management for better profit factor",
+    "\ud83c\udfaf TARGET: Focus on achieving $250/day profit target",
+    "\ud83d\udcca VALIDATION: Consider paper trading before live deployment"
+  ]
+}

@@ -100,15 +100,15 @@ export class ZDTETradingSystem {
                 new Date(startDate),
                 new Date(endDate),
                 strategyName, // Pass the actual strategy name
-                'SPX' // Flyagonal trades SPX index options
+                'SPY' // Use SPY for Alpaca options data (SPX not available on Alpaca)
             );
 
             console.log('🏗️ Initializing backtesting engine...');
             const backtest = new BacktestingEngine(backtestConfig, alpacaClient, strategyName);
 
             // Use the loaded strategy's generateSignal method
-            const strategyFunction = (marketData: MarketData[], optionsChain: OptionsChain[]): TradeSignal | null => {
-                return strategy.generateSignal(marketData, optionsChain);
+            const strategyFunction = async (marketData: MarketData[], optionsChain: OptionsChain[]): Promise<TradeSignal | null> => {
+                return await strategy.generateSignal(marketData, optionsChain);
             };
 
             console.log('📈 Loading historical market data from Alpaca...');
@@ -212,6 +212,9 @@ function parseCommandLineArgs(args: string[]): {
         }
         if (!parsed.end && positionalArgs[1]) {
             parsed.end = positionalArgs[1];
+        }
+        if (!parsed.strategy && positionalArgs[2]) {
+            parsed.strategy = positionalArgs[2];
         }
         
         // Set defaults

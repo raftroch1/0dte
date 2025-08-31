@@ -465,7 +465,8 @@ export class FlyagonalStrategy implements TradingStrategy {
         vixLevel,
         trend,
         volatilityRegime,
-        confidence: 0
+        confidence: 0,
+        dataSource
       };
     }
     
@@ -529,15 +530,16 @@ export class FlyagonalStrategy implements TradingStrategy {
         throw new Error('Insufficient profit zone for Flyagonal strategy');
       }
       
-      // CORRECTED: Realistic risk management with achievable targets
-      // Max $500 loss per trade with 1.5:1 risk/reward ratio ($750 profit target)
-      const maxLossPerTrade = 500; // Defined max loss per trade
-      const targetProfitPerTrade = 750; // CORRECTED: 1.5:1 risk/reward ratio (realistic)
+      // SPY-adapted: Realistic risk management with achievable targets
+      // Max $50 loss per trade with 1.5:1 risk/reward ratio ($75 profit target)
+      // SPY contracts are ~1/10th the size of SPX, so scale targets accordingly
+      const maxLossPerTrade = 50; // SPY equivalent of SPX $500 loss
+      const targetProfitPerTrade = 75; // SPY equivalent of SPX $750 profit (1.5:1 risk/reward)
       
       const totalMaxLoss = butterflyStrikes.maxLoss;
       let basePositionSize = Math.min(
         this.config.parameters.positionSize,
-        (maxLossPerTrade / totalMaxLoss) // Position size to limit loss to $500
+        (maxLossPerTrade / totalMaxLoss) // Position size to limit loss to $50 (SPY-adapted)
       );
       
       // VIX-based position sizing adjustment

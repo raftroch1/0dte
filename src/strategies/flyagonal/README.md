@@ -1,10 +1,10 @@
-# 🎯 Flyagonal Trading Strategy
+# 🎯 Flyagonal Trading Strategy (SPY-Adapted)
 
 ## 📋 Overview
 
 Call Broken Wing Butterfly (profits from rising markets + falling volatility) + Put Diagonal Spread (profits from falling markets + rising volatility)
 
-This strategy is designed for **0DTE (Zero Days to Expiration) options trading** and focuses on short-term momentum opportunities. It uses vix to identify optimal entry and exit points for short-term options positions.
+This strategy is designed for **SPY options trading** and has been adapted from the original SPX version for Alpaca compatibility. It focuses on short-term momentum opportunities using real VIX data to identify optimal entry and exit points.
 
 ## 🎯 Strategy Details
 

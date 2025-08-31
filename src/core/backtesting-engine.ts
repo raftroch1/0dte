@@ -225,13 +225,14 @@ export class BacktestingEngine extends EventEmitter {
       let optionsChain: OptionsChain[];
       
       try {
-        // 🎯 FETCH REAL OPTIONS DATA FROM ALPACA API
-        console.log(`🔍 Fetching real options for ${this.config.underlyingSymbol} on ${dateKey}...`);
+        // 🎯 FETCH HISTORICAL OPTIONS DATA FROM ALPACA API
+        console.log(`🔍 Fetching HISTORICAL options for ${this.config.underlyingSymbol} on ${dateKey}...`);
         
-        // Get options expiring on the same day (0DTE) or next available expiration
-        // For historical backtesting, we need to specify the expiration date
-        const expirationDateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-        const realOptionsChain = await this.alpacaClient.getOptionsChain(this.config.underlyingSymbol, expirationDateStr);
+        // Use the new historical options API to get options that existed on this specific date
+        let realOptionsChain: OptionsChain[] = [];
+        realOptionsChain = await this.alpacaClient.getHistoricalOptionsChain(this.config.underlyingSymbol, date);
+        
+        console.log(`   Found ${realOptionsChain.length} historical options contracts for ${dateKey}`);
         
         if (realOptionsChain && realOptionsChain.length > 0) {
           // Filter for relevant strikes and calculate Greeks
@@ -258,6 +259,8 @@ export class BacktestingEngine extends EventEmitter {
       throw new Error(`CRITICAL: No real options data was loaded! .cursorrules prohibits synthetic data.`);
     }
   }
+
+
 
   /**
    * Process real options data from Alpaca API
@@ -453,7 +456,7 @@ export class BacktestingEngine extends EventEmitter {
   }
 
   // Run backtest
-  async runBacktest(strategyFunction: (data: MarketData[], options: OptionsChain[]) => TradeSignal | null): Promise<BacktestResult> {
+  async runBacktest(strategyFunction: (data: MarketData[], options: OptionsChain[]) => TradeSignal | null | Promise<TradeSignal | null>): Promise<BacktestResult> {
     console.log(`🚀 Starting backtest from ${this.config.startDate.toDateString()} to ${this.config.endDate.toDateString()}`);
     
     const marketData = this.marketData.get(this.config.underlyingSymbol);
@@ -489,8 +492,8 @@ export class BacktestingEngine extends EventEmitter {
       // Get recent bars for strategy analysis
       const recentBars = marketData.slice(Math.max(0, dataIndex - 100), dataIndex + 1);
       
-      // Generate trade signal
-      const signal = strategyFunction(recentBars, optionsChain);
+      // Generate trade signal (handle both sync and async strategies)
+      const signal = await Promise.resolve(strategyFunction(recentBars, optionsChain));
       
       if (signal) {
         // Execute trade through paper trading engine

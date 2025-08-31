@@ -127,7 +127,7 @@ async function runFlyagonalBacktest(config?: Partial<BacktestConfig>): Promise<B
     console.log('🏗️ Initializing Strategy Components...');
     const strategy = new FlyagonalStrategy();
     const adapter = new FlyagonalBacktestingAdapter();
-    const tradeLogger = new TradeLogger();
+    const tradeLogger = new TradeLogger('flyagonal', `${backtestConfig.startDate.toISOString().split('T')[0]}_to_${backtestConfig.endDate.toISOString().split('T')[0]}`);
 
     console.log(`   ✅ Strategy: ${strategy.name} v${strategy.version}`);
     console.log(`   ✅ Risk Level: ${strategy.getRiskLevel()}`);
@@ -139,9 +139,8 @@ async function runFlyagonalBacktest(config?: Partial<BacktestConfig>): Promise<B
       symbol: backtestConfig.symbol,
       startDate: backtestConfig.startDate,
       endDate: backtestConfig.endDate,
-      timeframe: backtestConfig.timeframe,
-      includeOptionsData: backtestConfig.includeOptionsData,
-      includeVIXData: backtestConfig.includeVIXData
+      timeframe: backtestConfig.timeframe as '1Min' | '5Min' | '15Min' | '1Hour' | '1Day',
+      includeOptionsData: backtestConfig.includeOptionsData
     });
 
     console.log(`   ✅ Market Data: ${historicalData.marketData.length} bars`);
@@ -153,16 +152,28 @@ async function runFlyagonalBacktest(config?: Partial<BacktestConfig>): Promise<B
       throw new Error(`Data quality ${(historicalData.dataQuality.dataCompleteness * 100).toFixed(1)}% below minimum ${backtestConfig.minDataQualityScore}%`);
     }
 
-    // Step 3: Initialize backtesting engine
+    // Step 3: Initialize Alpaca client and backtesting engine
     console.log('\n🔧 Initializing Backtesting Engine...');
+    
+    // Create Alpaca client for real data fetching
+    const { AlpacaIntegration } = await import('../src/core/alpaca-integration');
+    const alpacaClient = new AlpacaIntegration({
+      apiKey: process.env.ALPACA_API_KEY || '',
+      apiSecret: process.env.ALPACA_SECRET_KEY || '',
+      isPaper: true
+    });
+    
     const backtestingEngine = new BacktestingEngine({
-      initialCapital: backtestConfig.initialCapital,
+      initialBalance: backtestConfig.initialCapital,
       startDate: backtestConfig.startDate,
       endDate: backtestConfig.endDate,
-      timeframe: backtestConfig.timeframe,
-      commissionPerTrade: 1.00, // $1 per option contract
+      underlyingSymbol: backtestConfig.symbol,
+      strategy: strategy,
+      commissionPerContract: 1.00, // $1 per option contract
+      slippagePercent: 0.01,
+      bidAskSpreadPercent: 0.02,
       riskFreeRate: 0.05
-    });
+    }, alpacaClient, 'flyagonal');
 
     // Step 4: Run backtest simulation
     console.log('\n🚀 Running Backtest Simulation...\n');
@@ -173,7 +184,8 @@ async function runFlyagonalBacktest(config?: Partial<BacktestConfig>): Promise<B
       adapter,
       historicalData.marketData,
       historicalData.optionsData || [],
-      tradeLogger
+      tradeLogger,
+      backtestConfig.initialCapital
     );
 
     // Step 5: Generate comprehensive results
@@ -208,12 +220,13 @@ async function runBacktestSimulation(
   adapter: FlyagonalBacktestingAdapter,
   marketData: MarketData[],
   optionsData: Array<{ date: Date; chain: OptionsChain[] }>,
-  tradeLogger: TradeLogger
+  tradeLogger: TradeLogger,
+  initialCapital: number
 ): Promise<any> {
   
   const trades: any[] = [];
   const positions: Position[] = [];
-  let currentCapital = engine['config'].initialCapital;
+  let currentCapital = initialCapital;
   
   console.log('📊 Processing market data...');
   
@@ -269,8 +282,7 @@ async function runBacktestSimulation(
           positions.push(position);
           
           // Log trade entry
-          tradeLogger.logTrade({
-            timestamp: currentBar.timestamp,
+          tradeLogger.logTradeEntry({
             symbol: position.symbol,
             action: 'ENTRY',
             type: position.type || 'FLYAGONAL_COMBO',
@@ -328,9 +340,8 @@ async function runBacktestSimulation(
           // Update capital
           currentCapital += pnl;
 
-          // Log trade exit
-          tradeLogger.logTrade({
-            timestamp: currentBar.timestamp,
+                      // Log trade exit
+            tradeLogger.logTradeEntry({
             symbol: position.symbol,
             action: 'EXIT',
             type: position.type || 'FLYAGONAL_COMBO',
@@ -355,7 +366,7 @@ async function runBacktestSimulation(
       }
 
     } catch (error) {
-      console.warn(`⚠️ Error processing ${currentBar.timestamp.toDateString()}:`, error.message);
+      console.warn(`⚠️ Error processing ${currentBar.timestamp.toDateString()}:`, (error as Error).message);
       continue;
     }
 
@@ -394,7 +405,7 @@ async function runBacktestSimulation(
   return {
     trades,
     finalCapital: currentCapital,
-    initialCapital: engine['config'].initialCapital
+    initialCapital: initialCapital
   };
 }
 

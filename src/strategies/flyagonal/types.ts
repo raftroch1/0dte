@@ -56,14 +56,14 @@ export interface FlyagonalStrategyParameters {
   targetHoldingDays: number;
 
   /**
-   * Butterfly strike spacing (SPX-specific)
-   * @default { lower: 50, upper: 60 }
+   * Butterfly strike spacing (SPY-adapted from SPX)
+   * @default { lower: 5, upper: 6 } - SPY equivalent of SPX { lower: 50, upper: 60 }
    */
   butterflyStrikeSpacing: { lower: number; upper: number };
 
   /**
-   * Diagonal strike spacing (SPX-specific)
-   * @default { percentBelow: 3, protection: 50 }
+   * Diagonal strike spacing (SPY-adapted from SPX)
+   * @default { percentBelow: 3, protection: 5 } - SPY equivalent of SPX protection: 50
    */
   diagonalStrikeSpacing: { percentBelow: number; protection: number };
 

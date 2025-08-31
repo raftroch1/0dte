@@ -216,6 +216,24 @@ warnings:
   - monitor system health continuously in production
   - have emergency shutdown procedures ready
 
+## 🚫 ANTI-PATTERNS & FORBIDDEN PRACTICES
+anti_patterns:
+  - NEVER create simplified/dumbed-down versions of existing complex implementations
+  - NEVER build duplicate functionality when proper implementation already exists
+  - NEVER sacrifice strategy complexity for "ease of implementation"
+  - NEVER create fast-running backtests that bypass proper analysis
+  - NEVER use simulated data when real data systems are available
+  - ALWAYS fix existing systems rather than creating inferior alternatives
+  - ALWAYS maintain the intended complexity of trading strategies
+  - ALWAYS use proper TypeScript interfaces and maintain type safety
+  - ALWAYS fix imports when moving files between directories
+  - ALWAYS maintain proper directory structure when making changes
+  - ALWAYS maintain proper file naming conventions
+  - ALWAYS maintain proper file organization
+  - ALWAYS maintain proper file comments
+  - ALWAYS maintain proper file documentation
+  - ALWAYS maintain proper file testing procedures
+
 # 📋 CHECKLIST FOR NEW FEATURES
 # Before implementing any new feature, ensure:
 # □ Architecture analysis completed

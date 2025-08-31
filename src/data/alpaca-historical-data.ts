@@ -95,7 +95,7 @@ export class AlpacaHistoricalDataFetcher {
   }
 
   /**
-   * Fetch options chain data for specific trading days
+   * Fetch historical options data for specific trading days using Alpaca's historical options bars API
    */
   private static async fetchHistoricalOptionsData(
     symbol: string,
@@ -105,56 +105,47 @@ export class AlpacaHistoricalDataFetcher {
     
     const optionsData: { date: Date; chain: OptionsChain[] }[] = [];
     
-    // For daily data, fetch options chain for each trading day
-    if (timeframe === '1Day') {
-      for (const dayData of marketData) {
-        try {
-          console.log(`📅 Fetching options chain for ${dayData.date.toDateString()}...`);
-          
-          // Note: This fetches current options chain as historical options data
-          // is not available from Alpaca. In practice, you would need a historical
-          // options data provider for true historical backtesting.
-          const chain = await alpacaClient.getOptionsChain(symbol);
-          
-          optionsData.push({
-            date: dayData.date,
-            chain: chain
-          });
-
-          // Add delay to avoid rate limiting
-          await this.delay(100);
-          
-        } catch (error) {
-          console.warn(`⚠️ Could not fetch options data for ${dayData.date.toDateString()}`);
-        }
-      }
-    } else {
-      // For intraday data, fetch options chain once per day
-      const uniqueDays = new Set<string>();
-      for (const dataPoint of marketData) {
-        const dayKey = dataPoint.date.toDateString();
-        if (!uniqueDays.has(dayKey)) {
-          uniqueDays.add(dayKey);
-          
-          try {
-            console.log(`📅 Fetching intraday options chain for ${dayKey}...`);
-            const chain = await alpacaClient.getOptionsChain(symbol);
-            
-            optionsData.push({
-              date: dataPoint.date,
-              chain: chain
-            });
-
-            // Add delay to avoid rate limiting
-            await this.delay(200);
-            
-          } catch (error) {
-            console.warn(`⚠️ Could not fetch options data for ${dayKey}`);
-          }
-        }
+    // Get unique trading days
+    const uniqueDays = new Set<string>();
+    const tradingDays: Date[] = [];
+    
+    for (const dataPoint of marketData) {
+      const dayKey = dataPoint.date.toDateString();
+      if (!uniqueDays.has(dayKey)) {
+        uniqueDays.add(dayKey);
+        tradingDays.push(new Date(dataPoint.date));
       }
     }
 
+    console.log(`📊 Fetching historical options data for ${tradingDays.length} trading days...`);
+
+    // For each trading day, fetch historical options data
+    for (const tradingDay of tradingDays) {
+      try {
+        console.log(`📅 Fetching historical options for ${tradingDay.toDateString()}...`);
+        
+        // Use historical options chain method that fetches data for specific date
+        const chain = await alpacaClient.getHistoricalOptionsChain(symbol, tradingDay);
+        
+        if (chain && chain.length > 0) {
+          optionsData.push({
+            date: tradingDay,
+            chain: chain
+          });
+          console.log(`✅ Retrieved ${chain.length} options contracts for ${tradingDay.toDateString()}`);
+        } else {
+          console.warn(`⚠️ No options data available for ${tradingDay.toDateString()}`);
+        }
+
+        // Add delay to avoid rate limiting
+        await this.delay(150);
+        
+      } catch (error) {
+        console.warn(`⚠️ Could not fetch historical options data for ${tradingDay.toDateString()}:`, error);
+      }
+    }
+
+    console.log(`✅ Successfully fetched historical options data for ${optionsData.length}/${tradingDays.length} trading days`);
     return optionsData;
   }
 

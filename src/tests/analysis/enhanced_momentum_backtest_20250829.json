@@ -1,0 +1,274 @@
+{
+  "test_date": "2025-08-29",
+  "strategy": "Enhanced Momentum 2.0.0",
+  "initial_capital": 35000,
+  "final_capital": 34997.0,
+  "total_pnl": -3.0,
+  "total_return_percent": -0.008571428571428572,
+  "total_signals": 13,
+  "total_trades": 6,
+  "win_rate_percent": 16.666666666666664,
+  "average_win": 1.0,
+  "average_loss": -1.3333333333333333,
+  "average_duration_minutes": 7.166666666666667,
+  "regime_performance": {
+    "CONSOLIDATING": {
+      "trades": 6,
+      "pnl": -3.0
+    }
+  },
+  "trades": [
+    {
+      "entry_time": "2025-08-29T09:46:00",
+      "exit_time": "2025-08-29T09:55:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 95,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Multi-TF bullish convergence, High volume (1.8x), Below BB lower",
+        "timestamp": "2025-08-29T09:46:00",
+        "spy_price": 646.305,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": true,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 14.356169296982515,
+            "5min": 23.92224128073039,
+            "15min": 29.44785276073671
+          }
+        },
+        "indicators": {
+          "fast_rsi": 14.356169296982515,
+          "vw_momentum": -0.08643799935366675,
+          "vol_adj_momentum": -9.820370059047638,
+          "volume_ratio": 1.8407935251988103,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.04,
+        "moneyness": 0.01345340048429155,
+        "score": 90
+      },
+      "entry_price": 0.04,
+      "exit_price": 0.03,
+      "pnl_dollars": -1.0000000000000002,
+      "pnl_percent": -25.000000000000007,
+      "duration_minutes": 9.0,
+      "exit_reason": "STOP_LOSS"
+    },
+    {
+      "entry_time": "2025-08-29T09:56:00",
+      "exit_time": "2025-08-29T10:13:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 80,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Multi-TF bullish convergence",
+        "timestamp": "2025-08-29T09:56:00",
+        "spy_price": 645.57,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": true,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 8.641975308647531,
+            "5min": 13.855020321139989,
+            "15min": 29.44785276073671
+          }
+        },
+        "indicators": {
+          "fast_rsi": 8.641975308647531,
+          "vw_momentum": -0.07555048414537807,
+          "vol_adj_momentum": -9.762613992772138,
+          "volume_ratio": 1.4580257416660394,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.04,
+        "moneyness": 0.014607246309462876,
+        "score": 90
+      },
+      "entry_price": 0.04,
+      "exit_price": 0.02,
+      "pnl_dollars": -2.0,
+      "pnl_percent": -50.0,
+      "duration_minutes": 17.0,
+      "exit_reason": "STOP_LOSS"
+    },
+    {
+      "entry_time": "2025-08-29T10:26:00",
+      "exit_time": "2025-08-29T10:28:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 92,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Multi-TF bullish convergence, MACD bullish",
+        "timestamp": "2025-08-29T10:26:00",
+        "spy_price": 643.915,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": true,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 8.737864077663147,
+            "5min": 21.244970025458073,
+            "15min": 29.218371131080346
+          }
+        },
+        "indicators": {
+          "fast_rsi": 8.737864077663147,
+          "vw_momentum": -0.059950904935898636,
+          "vol_adj_momentum": -0.6011360246762663,
+          "volume_ratio": 0.9048628378244576,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.03,
+        "moneyness": 0.017215005086075083,
+        "score": 90
+      },
+      "entry_price": 0.03,
+      "exit_price": 0.02,
+      "pnl_dollars": -0.9999999999999999,
+      "pnl_percent": -33.33333333333333,
+      "duration_minutes": 2.0,
+      "exit_reason": "STOP_LOSS"
+    },
+    {
+      "entry_time": "2025-08-29T10:44:00",
+      "exit_time": "2025-08-29T10:55:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 80,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Multi-TF bullish convergence",
+        "timestamp": "2025-08-29T10:44:00",
+        "spy_price": 644.2046,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": true,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 8.646943658902472,
+            "5min": 21.623583569405753,
+            "15min": 25.387851253576315
+          }
+        },
+        "indicators": {
+          "fast_rsi": 8.646943658902472,
+          "vw_momentum": -0.0780018703410799,
+          "vol_adj_momentum": -0.9573325242466948,
+          "volume_ratio": 1.1997423638120246,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.02,
+        "moneyness": 0.016757719519543902,
+        "score": 90
+      },
+      "entry_price": 0.02,
+      "exit_price": 0.02,
+      "pnl_dollars": 0.0,
+      "pnl_percent": 0.0,
+      "duration_minutes": 11.0,
+      "exit_reason": "SIGNAL_REVERSAL"
+    },
+    {
+      "entry_time": "2025-08-29T15:51:00",
+      "exit_time": "2025-08-29T15:53:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 90,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Afternoon oversold bounce, High volume (2.1x)",
+        "timestamp": "2025-08-29T15:51:00",
+        "spy_price": 644.02,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": false,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 21.276595744678104,
+            "5min": 41.59663865546265,
+            "15min": 56.31481873431463
+          }
+        },
+        "indicators": {
+          "fast_rsi": 21.276595744678104,
+          "vw_momentum": -0.07997884565033032,
+          "vol_adj_momentum": -2.9536464118176635,
+          "volume_ratio": 2.0959054819852696,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.01,
+        "moneyness": 0.017049159963976303,
+        "score": 50
+      },
+      "entry_price": 0.01,
+      "exit_price": 0.02,
+      "pnl_dollars": 1.0,
+      "pnl_percent": 100.0,
+      "duration_minutes": 2.0,
+      "exit_reason": "PROFIT_TARGET"
+    },
+    {
+      "entry_time": "2025-08-29T15:54:00",
+      "exit_time": "2025-08-29T15:56:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 75,
+        "reason": "Enhanced [CONSOLIDATING]: Normal VIX (15.4), Afternoon oversold bounce",
+        "timestamp": "2025-08-29T15:54:00",
+        "spy_price": 643.87,
+        "regime": "CONSOLIDATING",
+        "rsi_signals": {
+          "convergence_bullish": false,
+          "convergence_bearish": false,
+          "timeframe_signals": {
+            "1min": 21.31782945736319,
+            "5min": 41.59663865546265,
+            "15min": 56.31481873431463
+          }
+        },
+        "indicators": {
+          "fast_rsi": 21.31782945736319,
+          "vw_momentum": -0.07599234096444575,
+          "vol_adj_momentum": -2.6006822711470865,
+          "volume_ratio": 1.4699891330239667,
+          "vix": 15.359999656677246
+        }
+      },
+      "option": {
+        "ticker": "O:SPY250902C00655000",
+        "strike": 655.0,
+        "type": "CALL",
+        "price": 0.01,
+        "moneyness": 0.017286098125397976,
+        "score": 50
+      },
+      "entry_price": 0.01,
+      "exit_price": 0.01,
+      "pnl_dollars": 0.0,
+      "pnl_percent": 0.0,
+      "duration_minutes": 2.0,
+      "exit_reason": "EOD_EXIT"
+    }
+  ]
+}

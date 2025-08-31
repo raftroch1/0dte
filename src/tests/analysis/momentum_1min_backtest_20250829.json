@@ -1,0 +1,22 @@
+{
+  "test_date": "2025-08-29",
+  "strategy": "Simple Momentum (1-min) 1.0.0",
+  "initial_capital": 35000,
+  "final_capital": 35000.0,
+  "total_pnl": 1.1102230246251565e-16,
+  "total_return_percent": 0.0,
+  "total_signals": 9,
+  "total_trades": 3,
+  "win_rate_percent": 33.33333333333333,
+  "average_win": 1.0,
+  "average_loss": -0.9999999999999999,
+  "average_duration_minutes": 3.6666666666666665,
+  "trades": [
+    {
+      "entry_time": "2025-08-29T14:01:00",
+      "exit_time": "2025-08-29T14:08:00",
+      "signal": {
+        "action": "BUY_CALL",
+        "confidence": 55,
+        "reason": "Momentum: Optimal VIX (15.4), Afternoon oversold bounce, Low volume (0.8x)",
+        "timestamp": 

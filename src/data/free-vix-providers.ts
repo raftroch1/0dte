@@ -126,7 +126,7 @@ export class FreeVIXDataProvider {
           return vixData;
         }
       } catch (error) {
-        console.warn(`⚠️ Failed to fetch VIX from ${provider.provider}:`, error.message);
+        console.warn(`⚠️ Failed to fetch VIX from ${provider.provider}:`, error instanceof Error ? error.message : String(error));
         continue;
       }
     }
@@ -153,7 +153,7 @@ export class FreeVIXDataProvider {
         return yahooData;
       }
     } catch (error) {
-      console.warn('⚠️ Yahoo Finance historical VIX failed:', error.message);
+      console.warn('⚠️ Yahoo Finance historical VIX failed:', error instanceof Error ? error.message : String(error));
     }
 
     // Try Alpha Vantage as backup
@@ -166,7 +166,7 @@ export class FreeVIXDataProvider {
           return alphaData;
         }
       } catch (error) {
-        console.warn('⚠️ Alpha Vantage historical VIX failed:', error.message);
+        console.warn('⚠️ Alpha Vantage historical VIX failed:', error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -180,7 +180,7 @@ export class FreeVIXDataProvider {
           return fredData;
         }
       } catch (error) {
-        console.warn('⚠️ FRED historical VIX failed:', error.message);
+        console.warn('⚠️ FRED historical VIX failed:', error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -288,7 +288,7 @@ export class FreeVIXDataProvider {
         }
       }
     } catch (error) {
-      throw new Error(`Yahoo Finance CSV API error: ${error.message}`);
+      throw new Error(`Yahoo Finance CSV API error: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return null;
@@ -321,7 +321,7 @@ export class FreeVIXDataProvider {
         }
       }
     } catch (error) {
-      throw new Error(`Alpha Vantage API error: ${error.message}`);
+      throw new Error(`Alpha Vantage API error: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return null;
@@ -356,7 +356,7 @@ export class FreeVIXDataProvider {
         }
       }
     } catch (error) {
-      throw new Error(`FRED API error: ${error.message}`);
+      throw new Error(`FRED API error: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return null;
@@ -437,7 +437,7 @@ export class FreeVIXDataProvider {
         }
         
       } catch (error: any) {
-        console.warn(`⚠️ Polygon ${endpoint.name} failed:`, error.message);
+        console.warn(`⚠️ Polygon ${endpoint.name} failed:`, error instanceof Error ? error.message : String(error));
         
         // Log specific error details for debugging
         if (error.response) {
@@ -494,7 +494,7 @@ export class FreeVIXDataProvider {
         }
       }
     } catch (error) {
-      throw new Error(`Twelve Data API error: ${error.message}`);
+      throw new Error(`Twelve Data API error: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return null;
@@ -690,7 +690,7 @@ export class FreeVIXDataProvider {
         results.push({
           provider: provider.provider,
           working: false,
-          error: error.message
+          error: error instanceof Error ? error.message : String(error)
         });
       }
     }

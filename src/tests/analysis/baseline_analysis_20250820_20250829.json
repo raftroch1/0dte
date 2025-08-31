@@ -1,0 +1,131 @@
+{
+  "analysis_date": "2025-08-30T23:18:17.065089",
+  "period": {
+    "start": "2025-08-20T00:00:00",
+    "end": "2025-08-29T00:00:00"
+  },
+  "strategy": "Enhanced 0DTE with Greeks (Baseline Analysis)",
+  "location": "src/tests/analysis/ (following .cursorrules)",
+  "results": {
+    "dates_analyzed": 8,
+    "signals_generated": 0,
+    "signals_filtered_out": 0,
+    "confidence_distribution": [],
+    "market_conditions_summary": {},
+    "liquidity_analysis": {},
+    "daily_analysis": [
+      {
+        "date": "2025-08-20T00:00:00",
+        "total_options": 7363,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 4.776566667401415,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 4075 options filtered",
+          "Greeks: 282 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-21T00:00:00",
+        "total_options": 4390,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 2.8349203223674033,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 2600 options filtered",
+          "Greeks: 179 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-22T00:00:00",
+        "total_options": 9885,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 3.232808359053328,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 5411 options filtered",
+          "Greeks: 416 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-25T00:00:00",
+        "total_options": 5422,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 2.334110965953022,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 3467 options filtered",
+          "Greeks: 111 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-26T00:00:00",
+        "total_options": 5059,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 1.531289202672346,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 3141 options filtered",
+          "Greeks: 86 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-27T00:00:00",
+        "total_options": 7002,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 1.3918046739246073,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 4301 options filtered",
+          "Greeks: 71 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-28T00:00:00",
+        "total_options": 11824,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 1.7857425257401869,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 6569 options filtered",
+          "Greeks: 166 options filtered"
+        ],
+        "liquidity_stats": {}
+      },
+      {
+        "date": "2025-08-29T00:00:00",
+        "total_options": 18921,
+        "market_regime": "HIGH_FEAR",
+        "put_call_ratio": 1.256296544717452,
+        "signals_generated": 0,
+        "signals_filtered_out": 0,
+        "confidence_scores": [],
+        "filter_reasons": [
+          "Liquidity: 9411 options filtered",
+          "Greeks: 322 options filtered"
+        ],
+        "liquidity_stats": {}
+      }
+    ]
+  }
+}

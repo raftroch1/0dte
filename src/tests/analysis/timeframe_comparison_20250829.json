@@ -1,0 +1,556 @@
+{
+  "test_date": "2025-08-29",
+  "analysis_type": "Timeframe Comparison",
+  "timeframes_analyzed": [
+    "1min",
+    "5min",
+    "15min"
+  ],
+  "best_timeframe": {
+    "timeframe": "1min",
+    "score": -0.20000000000000007,
+    "reason": "Best composite score (-0.20): Sharpe 0.00, Win Rate 0.0%, Total P&L $-2.00"
+  },
+  "results": {
+    "1min": {
+      "timeframe": "1min",
+      "data_points": 830,
+      "signals": [
+        {
+          "timestamp": "2025-08-29T09:44:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "1min: Morning overbought breakdown, MACD bearish",
+          "spy_price": 647.0051,
+          "indicators": {
+            "fast_rsi": 60.54463871267263,
+            "momentum": -0.06254151156145223,
+            "volume_ratio": 1.061410797742543
+          }
+        },
+        {
+          "timestamp": "2025-08-29T10:13:00",
+          "action": "BUY_PUT",
+          "confidence": 90,
+          "reason": "1min: Morning overbought breakdown, High volume (1.7x), MACD bearish",
+          "spy_price": 644.26,
+          "indicators": {
+            "fast_rsi": 73.63636363635499,
+            "momentum": -0.11627726701911598,
+            "volume_ratio": 1.6841753312671566
+          }
+        },
+        {
+          "timestamp": "2025-08-29T10:56:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "1min: Morning overbought breakdown, MACD bearish",
+          "spy_price": 643.765,
+          "indicators": {
+            "fast_rsi": 70.05649717514248,
+            "momentum": -0.0628716022168019,
+            "volume_ratio": 1.0920952095787737
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:01:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.34,
+          "indicators": {
+            "fast_rsi": 19.69995453856596,
+            "momentum": -0.08063765778618333,
+            "volume_ratio": 0.7918814570510969
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:02:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.365,
+          "indicators": {
+            "fast_rsi": 34.06593406593352,
+            "momentum": -0.0876218988693549,
+            "volume_ratio": 0.44388038415908354
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:03:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.4,
+          "indicators": {
+            "fast_rsi": 34.78260869565109,
+            "momentum": -0.06668424235846093,
+            "volume_ratio": 0.49873769940230317
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:04:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.235,
+          "indicators": {
+            "fast_rsi": 11.428571428563998,
+            "momentum": -0.08297532453432514,
+            "volume_ratio": 0.5573421873897206
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:05:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.265,
+          "indicators": {
+            "fast_rsi": 27.692307692298,
+            "momentum": -0.07522295463358103,
+            "volume_ratio": 0.42226047673535533
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:20:00",
+          "action": "BUY_CALL",
+          "confidence": 87,
+          "reason": "1min: Afternoon oversold bounce, High volume (3.2x), Below BB lower",
+          "spy_price": 644.205,
+          "indicators": {
+            "fast_rsi": 13.125590179407965,
+            "momentum": -0.07133938888249505,
+            "volume_ratio": 3.2318603862171082
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:21:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.25,
+          "indicators": {
+            "fast_rsi": 19.298245614023543,
+            "momentum": -0.05119612771107402,
+            "volume_ratio": 0.8203243748039233
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:35:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "1min: Afternoon overbought reversal, High volume (1.9x)",
+          "spy_price": 644.72,
+          "indicators": {
+            "fast_rsi": 93.22033898305607,
+            "momentum": 0.052763897079368044,
+            "volume_ratio": 1.9003376058370098
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:36:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.62,
+          "indicators": {
+            "fast_rsi": 68.3794466403156,
+            "momentum": 0.0589842294796963,
+            "volume_ratio": 0.8820390851490819
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:37:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.7,
+          "indicators": {
+            "fast_rsi": 65.71428571428663,
+            "momentum": 0.06596562027085767,
+            "volume_ratio": 0.9574975825231977
+          }
+        },
+        {
+          "timestamp": "2025-08-29T14:44:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.27,
+          "indicators": {
+            "fast_rsi": 18.749999999986684,
+            "momentum": -0.05584598917208533,
+            "volume_ratio": 0.7622521091841099
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:08:00",
+          "action": "BUY_PUT",
+          "confidence": 72,
+          "reason": "1min: Afternoon overbought reversal, Above BB upper",
+          "spy_price": 644.8,
+          "indicators": {
+            "fast_rsi": 100.0,
+            "momentum": 0.06030309209303199,
+            "volume_ratio": 1.0975292855674674
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:10:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.77,
+          "indicators": {
+            "fast_rsi": 71.24999999999609,
+            "momentum": 0.07139420465304534,
+            "volume_ratio": 0.7551615753648508
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:21:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.935,
+          "indicators": {
+            "fast_rsi": 100.0,
+            "momentum": 0.05973159568691195,
+            "volume_ratio": 1.3539695148933448
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:34:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.43,
+          "indicators": {
+            "fast_rsi": 38.28124999999473,
+            "momentum": -0.05428208070970296,
+            "volume_ratio": 1.20483929999083
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:35:00",
+          "action": "BUY_CALL",
+          "confidence": 87,
+          "reason": "1min: Afternoon oversold bounce, High volume (2.3x), Below BB lower",
+          "spy_price": 644.145,
+          "indicators": {
+            "fast_rsi": 10.526315789477621,
+            "momentum": -0.08763630159297274,
+            "volume_ratio": 2.283888014318123
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:36:00",
+          "action": "BUY_CALL",
+          "confidence": 72,
+          "reason": "1min: Afternoon oversold bounce, Below BB lower",
+          "spy_price": 644.22,
+          "indicators": {
+            "fast_rsi": 22.142857142864457,
+            "momentum": -0.07212824867957501,
+            "volume_ratio": 1.4155147264213757
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:44:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.78,
+          "indicators": {
+            "fast_rsi": 90.5882352941252,
+            "momentum": 0.05431156215570702,
+            "volume_ratio": 1.0354760410360093
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:45:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.725,
+          "indicators": {
+            "fast_rsi": 84.61538461539615,
+            "momentum": 0.09004183840595534,
+            "volume_ratio": 1.4746395272007233
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:46:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "1min: Afternoon overbought reversal, High volume (1.6x)",
+          "spy_price": 644.83,
+          "indicators": {
+            "fast_rsi": 81.57894736843207,
+            "momentum": 0.09468815001086796,
+            "volume_ratio": 1.6119546896890404
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:47:00",
+          "action": "BUY_PUT",
+          "confidence": 87,
+          "reason": "1min: Afternoon overbought reversal, High volume (1.6x), Above BB upper",
+          "spy_price": 645.13,
+          "indicators": {
+            "fast_rsi": 88.33333333334218,
+            "momentum": 0.12726793003368722,
+            "volume_ratio": 1.5604098990263289
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:50:00",
+          "action": "BUY_CALL",
+          "confidence": 75,
+          "reason": "1min: Afternoon oversold bounce, High volume (2.3x)",
+          "spy_price": 644.05,
+          "indicators": {
+            "fast_rsi": 27.272727272725177,
+            "momentum": -0.05586505485638238,
+            "volume_ratio": 2.3297438884824886
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:51:00",
+          "action": "BUY_CALL",
+          "confidence": 75,
+          "reason": "1min: Afternoon oversold bounce, High volume (2.1x)",
+          "spy_price": 644.02,
+          "indicators": {
+            "fast_rsi": 21.276595744678104,
+            "momentum": -0.08842830326254673,
+            "volume_ratio": 2.0959054819852696
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:52:00",
+          "action": "BUY_CALL",
+          "confidence": 75,
+          "reason": "1min: Afternoon oversold bounce, High volume (1.8x)",
+          "spy_price": 644.295,
+          "indicators": {
+            "fast_rsi": 19.855595667868513,
+            "momentum": -0.0581692959188422,
+            "volume_ratio": 1.8394009137323217
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:53:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 644.045,
+          "indicators": {
+            "fast_rsi": 21.400778210115504,
+            "momentum": -0.11631603843081911,
+            "volume_ratio": 1.4590385962930235
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:54:00",
+          "action": "BUY_CALL",
+          "confidence": 60,
+          "reason": "1min: Afternoon oversold bounce",
+          "spy_price": 643.87,
+          "indicators": {
+            "fast_rsi": 21.31782945736319,
+            "momentum": -0.1411334098452136,
+            "volume_ratio": 1.4699891330239667
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:59:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "1min: Afternoon overbought reversal, High volume (5.0x)",
+          "spy_price": 645.04,
+          "indicators": {
+            "fast_rsi": 100.0,
+            "momentum": 0.06670700113245993,
+            "volume_ratio": 5.00319587439831
+          }
+        },
+        {
+          "timestamp": "2025-08-29T16:00:00",
+          "action": "BUY_PUT",
+          "confidence": 60,
+          "reason": "1min: Afternoon overbought reversal",
+          "spy_price": 644.84,
+          "indicators": {
+            "fast_rsi": 82.7586206896589,
+            "momentum": 0.12266128406180847,
+            "volume_ratio": 1.038666290987488
+          }
+        }
+      ],
+      "trades": [
+        {
+          "entry_time": "2025-08-29T09:44:00",
+          "exit_time": "2025-08-29T14:01:00",
+          "entry_signal": {
+            "timestamp": "2025-08-29T09:44:00",
+            "action": "BUY_PUT",
+            "confidence": 75,
+            "reason": "1min: Morning overbought breakdown, MACD bearish",
+            "spy_price": 647.0051,
+            "indicators": {
+              "fast_rsi": 60.54463871267263,
+              "momentum": -0.06254151156145223,
+              "volume_ratio": 1.061410797742543
+            }
+          },
+          "entry_price": 0.1,
+          "exit_price": 0.08,
+          "pnl_dollars": -2.0000000000000004,
+          "pnl_percent": -20.000000000000004,
+          "bars_held": 257,
+          "exit_reason": "MAX_TIME"
+        }
+      ],
+      "metrics": {
+        "total_trades": 1,
+        "win_rate": 0.0,
+        "avg_pnl": -2.0000000000000004,
+        "total_pnl": -2.0000000000000004,
+        "avg_holding_period": 257.0,
+        "sharpe_ratio": 0,
+        "max_drawdown": 0.0,
+        "pnl_std": 0
+      }
+    },
+    "5min": {
+      "timeframe": "5min",
+      "data_points": 189,
+      "signals": [
+        {
+          "timestamp": "2025-08-29T10:30:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "5min: Morning overbought breakdown, MACD bearish",
+          "spy_price": 644.825,
+          "indicators": {
+            "fast_rsi": 82.53275109170053,
+            "momentum": -0.33695252170344947,
+            "volume_ratio": 0.7694015710399006
+          }
+        },
+        {
+          "timestamp": "2025-08-29T10:35:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "5min: Morning overbought breakdown, MACD bearish",
+          "spy_price": 644.965,
+          "indicators": {
+            "fast_rsi": 80.67632850241259,
+            "momentum": -0.1756694010215123,
+            "volume_ratio": 0.6620671674068915
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:15:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "5min: Afternoon overbought reversal, High volume (1.9x)",
+          "spy_price": 644.835,
+          "indicators": {
+            "fast_rsi": 87.39495798320291,
+            "momentum": 0.08847291099160284,
+            "volume_ratio": 1.8856495313497892
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:50:00",
+          "action": "BUY_CALL",
+          "confidence": 87,
+          "reason": "5min: Afternoon oversold bounce, High volume (3.8x), Below BB lower",
+          "spy_price": 643.87,
+          "indicators": {
+            "fast_rsi": 24.82269503546115,
+            "momentum": -0.11092408293708847,
+            "volume_ratio": 3.791240296361177
+          }
+        }
+      ],
+      "trades": [
+        {
+          "entry_time": "2025-08-29T10:30:00",
+          "exit_time": "2025-08-29T15:15:00",
+          "entry_signal": {
+            "timestamp": "2025-08-29T10:30:00",
+            "action": "BUY_PUT",
+            "confidence": 75,
+            "reason": "5min: Morning overbought breakdown, MACD bearish",
+            "spy_price": 644.825,
+            "indicators": {
+              "fast_rsi": 82.53275109170053,
+              "momentum": -0.33695252170344947,
+              "volume_ratio": 0.7694015710399006
+            }
+          },
+          "entry_price": 0.1,
+          "exit_price": 0.08,
+          "pnl_dollars": -2.0000000000000004,
+          "pnl_percent": -20.000000000000004,
+          "bars_held": 57,
+          "exit_reason": "MAX_TIME"
+        }
+      ],
+      "metrics": {
+        "total_trades": 1,
+        "win_rate": 0.0,
+        "avg_pnl": -2.0000000000000004,
+        "total_pnl": -2.0000000000000004,
+        "avg_holding_period": 57.0,
+        "sharpe_ratio": 0,
+        "max_drawdown": 0.0,
+        "pnl_std": 0
+      }
+    },
+    "15min": {
+      "timeframe": "15min",
+      "data_points": 64,
+      "signals": [
+        {
+          "timestamp": "2025-08-29T15:30:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "15min: Afternoon overbought reversal, High volume (2.3x)",
+          "spy_price": 644.78,
+          "indicators": {
+            "fast_rsi": 94.7826086956563,
+            "momentum": 0.1475544786667182,
+            "volume_ratio": 2.3027862143187363
+          }
+        },
+        {
+          "timestamp": "2025-08-29T15:45:00",
+          "action": "BUY_PUT",
+          "confidence": 75,
+          "reason": "15min: Afternoon overbought reversal, High volume (6.2x)",
+          "spy_price": 645.04,
+          "indicators": {
+            "fast_rsi": 96.38554216867767,
+            "momentum": 0.16149068322980803,
+            "volume_ratio": 6.169048882610527
+          }
+        }
+      ],
+      "trades": [],
+      "metrics": {
+        "total_trades": 0,
+        "win_rate": 0,
+        "avg_pnl": 0,
+        "total_pnl": 0,
+        "avg_holding_period": 0,
+        "sharpe_ratio": 0,
+        "max_drawdown": 0
+      }
+    }
+  }
+}

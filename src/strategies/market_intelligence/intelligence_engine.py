@@ -31,6 +31,12 @@ import logging
 import warnings
 warnings.filterwarnings('ignore')
 
+# Import GEX analyzer
+try:
+    from .gamma_exposure_analyzer import GammaExposureAnalyzer
+except ImportError:
+    from gamma_exposure_analyzer import GammaExposureAnalyzer
+
 @dataclass
 class MarketIntelligence:
     """Comprehensive market intelligence analysis"""
@@ -76,12 +82,15 @@ class MarketIntelligenceEngine:
     """
     
     def __init__(self):
-        # Layer weights for final scoring
+        # Initialize GEX analyzer
+        self.gex_analyzer = GammaExposureAnalyzer()
+        
+        # Layer weights for final scoring (adjusted for GEX integration)
         self.layer_weights = {
-            'technical': 0.25,
-            'internals': 0.35,
-            'flow': 0.25,
-            'ml': 0.15
+            'technical': 0.20,    # Reduced due to GEX interference
+            'internals': 0.30,    # Reduced due to GEX interference  
+            'flow': 0.30,         # Increased - less affected by GEX
+            'ml': 0.20            # Increased - ML can learn GEX patterns
         }
         
         # VIX thresholds
@@ -151,12 +160,16 @@ class MarketIntelligenceEngine:
         # Layer 4: ML Integration (placeholder for now)
         ml_analysis = self._analyze_ml_layer(options_data)
         
-        # Combine all layers
-        intelligence = self._synthesize_intelligence(
+        # Layer 5: GEX Analysis (NEW - addresses direction detection issues)
+        gex_analysis = self._analyze_gex_layer(options_data, spy_price)
+        
+        # Combine all layers with GEX-aware synthesis
+        intelligence = self._synthesize_intelligence_with_gex(
             technical_analysis,
             internals_analysis,
             flow_analysis,
-            ml_analysis
+            ml_analysis,
+            gex_analysis
         )
         
         self.logger.info(f"🎯 INTELLIGENCE SYNTHESIS COMPLETE:")
@@ -334,6 +347,30 @@ class MarketIntelligenceEngine:
         
         # TODO: Integrate with existing ML models from Phase 3
         # For now, return neutral scores
+        
+        return analysis
+    
+    def _analyze_gex_layer(self, options_data: pd.DataFrame, spy_price: Optional[float]) -> Dict[str, Any]:
+        """Analyze Gamma Exposure layer - addresses direction detection issues"""
+        
+        if spy_price is None:
+            spy_price = self._estimate_current_price(options_data)
+        
+        # Get GEX analysis
+        gex_analysis = self.gex_analyzer.analyze_gamma_exposure(
+            options_data, spy_price, time_to_expiry=0.25  # 0DTE = ~6 hours
+        )
+        
+        # Convert GEX analysis to layer format
+        analysis = {
+            'bull_score': 50.0,  # GEX doesn't predict direction
+            'bear_score': 50.0,  # GEX doesn't predict direction
+            'neutral_score': 50.0,  # GEX doesn't predict direction
+            'gex_analysis': gex_analysis,
+            'direction_reliability': gex_analysis.direction_reliability,
+            'confidence_multiplier': gex_analysis.confidence_multiplier,
+            'signal_quality_score': gex_analysis.signal_quality_score
+        }
         
         return analysis
     
@@ -722,16 +759,17 @@ class MarketIntelligenceEngine:
         
         return analysis
     
-    def _synthesize_intelligence(
+    def _synthesize_intelligence_with_gex(
         self,
         technical_analysis: Dict[str, Any],
         internals_analysis: Dict[str, Any],
         flow_analysis: Dict[str, Any],
-        ml_analysis: Dict[str, Any]
+        ml_analysis: Dict[str, Any],
+        gex_analysis: Dict[str, Any]
     ) -> MarketIntelligence:
-        """Synthesize all layers into final intelligence"""
+        """Synthesize all layers into final intelligence with GEX awareness"""
         
-        # Weighted combination of layer scores
+        # Weighted combination of layer scores (GEX doesn't contribute to direction)
         bull_score = (
             technical_analysis['bull_score'] * self.layer_weights['technical'] +
             internals_analysis['bull_score'] * self.layer_weights['internals'] +
@@ -758,6 +796,18 @@ class MarketIntelligenceEngine:
         else:
             primary_regime = 'NEUTRAL'
             regime_confidence = neutral_score
+        
+        # CRITICAL: Apply GEX confidence adjustment
+        # This addresses the core direction detection issue
+        gex_confidence_multiplier = gex_analysis['confidence_multiplier']
+        gex_adjusted_confidence = regime_confidence * gex_confidence_multiplier
+        
+        # Log GEX impact
+        self.logger.info(f"⚡ GEX IMPACT ON DIRECTION DETECTION:")
+        self.logger.info(f"   Direction Reliability: {gex_analysis['direction_reliability']}")
+        self.logger.info(f"   Original Confidence: {regime_confidence:.1f}%")
+        self.logger.info(f"   GEX Multiplier: {gex_confidence_multiplier:.2f}x")
+        self.logger.info(f"   GEX-Adjusted Confidence: {gex_adjusted_confidence:.1f}%")
         
         # Determine volatility environment
         vix_level = internals_analysis['vix_term_structure']['vix_level']
@@ -804,7 +854,7 @@ class MarketIntelligenceEngine:
             rsi_analysis=technical_analysis['rsi_analysis'],
             put_call_analysis=internals_analysis['put_call_analysis'],
             primary_regime=primary_regime,
-            regime_confidence=regime_confidence,
+            regime_confidence=gex_adjusted_confidence,  # Use GEX-adjusted confidence
             volatility_environment=volatility_environment,
             optimal_strategies=optimal_strategies,
             avoid_strategies=avoid_strategies,

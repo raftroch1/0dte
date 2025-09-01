@@ -62,3 +62,5 @@ temp/
 # Trading data (optional - uncomment if you want to exclude)
 # data/
 # backtest-results/
+# Large data files - keep local only
+src/data/*.parquet

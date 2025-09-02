@@ -1,0 +1,24 @@
+🔍 ENHANCED ADAPTIVE ROUTER - DETAILED ANALYSIS
+============================================================
+
+📅 MONTHLY PERFORMANCE BREAKDOWN:
+   2024-01: 21 days | 63 trades | $-622.19 total | $-29.63 avg/day
+   2024-02: 20 days | 60 trades | $-813.53 total | $-40.68 avg/day
+   2024-03: 20 days | 60 trades | $-786.39 total | $-39.32 avg/day
+   2024-04: 22 days | 66 trades | $-819.71 total | $-37.26 avg/day
+   2024-05: 22 days | 66 trades | $-1220.28 total | $-55.47 avg/day
+   2024-06: 19 days | 57 trades | $-1052.23 total | $-55.38 avg/day
+   2024-07: 22 days | 66 trades | $-1076.06 total | $-48.91 avg/day
+   2024-08: 21 days | 63 trades | $-751.76 total | $-35.80 avg/day
+
+🌊 STRATEGY PERFORMANCE BY MARKET REGIME:
+   BEARISH + BEAR_CALL_SPREAD: 444 trades | 60.4% win rate | $-14.61 avg P&L
+   BULLISH + BULL_PUT_SPREAD: 57 trades | 64.9% win rate | $-11.53 avg P&L
+
+⏰ TIME-OF-DAY PERFORMANCE:
+   10:00 - 10:59: 167 trades | 53.3% win rate | $-20.71 avg P&L
+   12:00 - 12:59: 167 trades | 63.5% win rate | $-12.54 avg P&L
+   14:00 - 14:59: 167 trades | 65.9% win rate | $-9.52 avg P&L
+
+📊 CONFIDENCE LEVEL ANALYSIS:
+   Medium (40-70%): 501 trades | 60.9% win rate | $-14.26 avg P&L

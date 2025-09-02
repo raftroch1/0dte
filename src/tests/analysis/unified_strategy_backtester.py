@@ -69,7 +69,7 @@ class UnifiedStrategyBacktester:
         self.current_balance = initial_balance
         
         # Initialize components
-        self.data_loader = ParquetDataLoader(parquet_path="src/data/spy_options_20230830_20240829.parquet")
+        self.data_loader = ParquetDataLoader(parquet_path=os.path.join(project_root, "src/data/spy_options_20230830_20240829.parquet"))
         self.cash_manager = ConservativeCashManager(initial_balance)
         self.pricing_calculator = BlackScholesCalculator()
         self.strategy_selector = EnhancedHybridAdaptiveSelector(initial_balance)
@@ -943,10 +943,10 @@ def main():
     # Initialize unified backtester
     backtester = UnifiedStrategyBacktester(initial_balance=25000)
     
-    # Run 3-month backtest
+    # Run 2-month backtest
     results = backtester.run_unified_backtest(
         start_date="2024-01-01",
-        end_date="2024-03-31"
+        end_date="2024-02-29"
     )
     
     # Print final validation

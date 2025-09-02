@@ -225,6 +225,7 @@ class RealDataHybridBacktester:
         long_strike, short_strike = self.option_pricer.estimate_strikes_from_market_data(
             options_data, recommendation.strategy_type, spy_price
         )
+        print(f"🎯 POSITION OPENING: Long=${long_strike:.2f}, Short=${short_strike:.2f}")
         
         # Create position with REAL data for pricing
         position = {

@@ -232,7 +232,19 @@ anti_patterns:
   - ALWAYS maintain proper file organization
   - ALWAYS maintain proper file comments
   - ALWAYS maintain proper file documentation
-  - ALWAYS maintain proper file testing procedures
+  - ALWAYS maintain proper file testing proceduresare these ok so why  does this help?
+  - FIX the problems not create new ones
+  - dont just change things, fix the problems
+  - if you dont know the answer, ask the user
+  - maintain folder clean and organized
+  - maintain file naming conventions
+  - maintain file organization
+  - maintain file comments
+  - maintain file documentation
+  - maintain file testing procedures
+  - maintain file structure
+  - maintain file organization
+  
 
 # 📋 CHECKLIST FOR NEW FEATURES
 # Before implementing any new feature, ensure:

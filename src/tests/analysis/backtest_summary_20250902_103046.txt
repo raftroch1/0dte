@@ -1,0 +1,19 @@
+COMPREHENSIVE PRODUCTION BACKTEST SUMMARY
+==================================================
+
+Initial Balance: $100,000.00
+Final Balance: $88,417.00
+Total P&L: $-8,435.00
+Total Return: -11.58%
+
+Total Trades: 11
+Winning Trades: 3
+Losing Trades: 8
+Win Rate: 27.3%
+
+Max Drawdown: 11.58%
+Largest Win: $1,216.00
+Largest Loss: $-2,055.00
+
+ML-Enhanced Trades: 0
+Baseline Trades: 11

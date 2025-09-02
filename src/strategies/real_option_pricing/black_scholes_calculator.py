@@ -300,13 +300,14 @@ class BlackScholesCalculator:
             else:
                 exit_reason = "TIME_BASED_EXIT"
         
-        logger.debug(f"Real P&L Calculation:")
-        logger.debug(f"  Strategy: {strategy_type}")
-        logger.debug(f"  Entry Credit: ${entry_credit:.2f}")
-        logger.debug(f"  Current Spread Value: ${current_spread_value:.2f}")
-        logger.debug(f"  Exit Spot: ${exit_spot_price:.2f}")
-        logger.debug(f"  Time to Expiry: {time_to_expiry:.4f} years")
-        logger.debug(f"  Calculated P&L: ${pnl:.2f}")
+        print(f"🔍 REAL P&L DEBUG:")
+        print(f"  Strategy: {strategy_type}")
+        print(f"  Entry Credit: ${entry_credit:.2f}")
+        print(f"  Current Spread Value: ${current_spread_value:.2f}")
+        print(f"  Exit Spot: ${exit_spot_price:.2f}")
+        print(f"  Strikes: Long={long_strike}, Short={short_strike}")
+        print(f"  Time to Expiry: {time_to_expiry:.4f} years")
+        print(f"  Calculated P&L: ${pnl:.2f}")
         logger.debug(f"  Exit Reason: {exit_reason}")
         
         return pnl, exit_reason
@@ -355,6 +356,29 @@ class BlackScholesCalculator:
         # Find closest available strikes
         short_strike = min(available_strikes, key=lambda x: abs(x - target_short))
         long_strike = min(available_strikes, key=lambda x: abs(x - target_long))
+        
+        print(f"🎯 STRIKE SELECTION DEBUG:")
+        print(f"  Strategy: {strategy_type}")
+        print(f"  Spot Price: ${spot_price:.2f}")
+        print(f"  Target Short: ${target_short:.2f} → Selected: ${short_strike:.2f}")
+        print(f"  Target Long: ${target_long:.2f} → Selected: ${long_strike:.2f}")
+        print(f"  Available Strikes: {len(available_strikes)} strikes")
+        
+        # Ensure strikes are different for spreads
+        if short_strike == long_strike:
+            print(f"  ⚠️  WARNING: Identical strikes detected! Adjusting...")
+            # Find next available strike
+            if strategy_type == 'BEAR_CALL_SPREAD':
+                # Long should be higher than short for call spreads
+                higher_strikes = [s for s in available_strikes if s > short_strike]
+                if higher_strikes:
+                    long_strike = min(higher_strikes)
+            elif strategy_type == 'BULL_PUT_SPREAD':
+                # Long should be lower than short for put spreads  
+                lower_strikes = [s for s in available_strikes if s < short_strike]
+                if lower_strikes:
+                    long_strike = max(lower_strikes)
+            print(f"  ✅ ADJUSTED: Long=${long_strike:.2f}, Short=${short_strike:.2f}")
         
         return long_strike, short_strike
 

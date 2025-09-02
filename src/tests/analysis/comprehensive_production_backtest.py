@@ -166,28 +166,23 @@ class ComprehensiveProductionBacktester:
     Production-grade backtester for ML-enhanced 0DTE strategy
     """
     
-    def __init__(self, initial_balance: float = 100000):
+    def __init__(self, initial_balance: float = 25000):
         self.loader = ParquetDataLoader()
         self.initial_balance = initial_balance
         self.current_balance = initial_balance
         
-        # Load ML-enhanced strategy
+        # Load REAL backtesting system (not mocked)
         self.ml_strategy = None
-        if ML_AVAILABLE:
-            try:
-                models_metadata_path = "src/tests/analysis/trained_models/ml_models_metadata_20250830_233847.json"
-                if os.path.exists(models_metadata_path):
-                    ml_loader = MLModelLoader(models_metadata_path)
-                    self.ml_strategy = MLEnhancedAdaptiveStrategy(ml_loader)
-                    print(f"✅ ML-enhanced strategy loaded for backtesting")
-                else:
-                    print(f"⚠️  ML models not found - using baseline strategy")
-            except Exception as e:
-                print(f"⚠️  Could not load ML strategy: {e}")
-        
-        # Fallback to baseline strategy
-        if not self.ml_strategy:
-            self.ml_strategy = AdaptiveMLEnhancedStrategy()
+        try:
+            from src.tests.analysis.real_data_hybrid_backtester import RealDataHybridBacktester
+            self.ml_strategy = RealDataHybridBacktester(initial_balance)
+            print(f"✅ RealDataHybridBacktester loaded (REAL trades, REAL P&L, REAL market data)")
+        except Exception as e:
+            print(f"⚠️  Could not load RealDataHybridBacktester: {e}")
+            # Fallback to mocked system
+            from src.strategies.adaptive_zero_dte.optimized_adaptive_router import OptimizedAdaptiveRouter
+            self.ml_strategy = OptimizedAdaptiveRouter(initial_balance)
+            print(f"⚠️  Using mocked OptimizedAdaptiveRouter as fallback")
         
         # Trading state
         self.open_trades: List[Trade] = []
@@ -289,17 +284,57 @@ class ComprehensiveProductionBacktester:
         
         print(f"   📊 {len(options_data)} options, SPY: ${spy_price:.2f}")
         
-        # Check for new trade signals (only if within risk limits)
-        if self._can_open_new_trade():
-            signal = self.ml_strategy.generate_ml_enhanced_signal(
-                options_data, spy_price, market_conditions, trade_date
-            )
+        # Process trading day using REAL backtesting system
+        if hasattr(self.ml_strategy, '_process_trading_day'):
+            # Use RealDataHybridBacktester's real processing
+            self.ml_strategy._process_trading_day(trade_date)
             
-            if signal['selected_strategy'] != StrategyType.NO_TRADE:
-                self._open_new_trade(signal, options_data, spy_price, trade_date)
+            # Update our balance and trades from the real system
+            self.current_balance = self.ml_strategy.current_balance
+            
+            # Get all closed positions from the real system
+            if hasattr(self.ml_strategy, 'closed_positions'):
+                # Count all closed positions as our trades
+                self.total_trades = len(self.ml_strategy.closed_positions)
+                
+                # Calculate win/loss stats
+                self.winning_trades = sum(1 for pos in self.ml_strategy.closed_positions 
+                                        if pos.get('pnl', 0) > 0)
+                self.losing_trades = self.total_trades - self.winning_trades
+                
+                # Get today's new trades
+                today_trades = [pos for pos in self.ml_strategy.closed_positions 
+                               if hasattr(pos, 'get') and pos.get('exit_time', '').startswith(trade_date.strftime('%Y-%m-%d'))]
+                
+                if today_trades:
+                    for trade in today_trades:
+                        pnl = trade.get('pnl', 0)
+                        print(f"   🚀 REAL TRADE: {trade.get('specific_strategy', 'UNKNOWN')} "
+                              f"(${pnl:+.2f} P&L)")
+        else:
+            # Fallback to mocked system
+            print("   ⚠️  Using mocked system - trades will be simulated")
         
         # Manage existing trades
         self._manage_open_trades(options_data, spy_price, trade_date)
+    
+    def _record_trade(self, trade_result: Dict, trade_date: datetime):
+        """Record a completed trade from OptimizedAdaptiveRouter"""
+        self.total_trades += 1
+        pnl = trade_result.get('pnl', 0)
+        
+        if pnl > 0:
+            self.winning_trades += 1
+        else:
+            self.losing_trades += 1
+        
+        # Update balance from router's performance summary
+        performance = self.ml_strategy.get_performance_summary()
+        self.current_balance = performance.get('current_balance', self.current_balance)
+        self.total_pnl = performance.get('total_pnl', self.total_pnl)
+        
+        print(f"   🚀 TRADE EXECUTED: {trade_result.get('strategy_type', 'UNKNOWN')} "
+              f"(${pnl:+.2f} P&L)")
     
     def _can_open_new_trade(self) -> bool:
         """Check if we can open a new trade based on risk management"""
@@ -505,7 +540,7 @@ class ComprehensiveProductionBacktester:
                 'end_date': self.daily_balances[-1]['date'].isoformat() if self.daily_balances else None,
                 'trading_days': len(self.daily_balances),
                 'initial_balance': self.initial_balance,
-                'final_balance': self.current_balance,
+                'final_balance': getattr(self.ml_strategy, 'current_balance', self.current_balance),
                 'total_return_pct': total_return,
                 'total_pnl': self.total_pnl
             },

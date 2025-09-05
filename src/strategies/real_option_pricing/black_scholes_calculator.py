@@ -47,6 +47,18 @@ class BlackScholesCalculator:
         logger.info(f"   Risk-Free Rate: {risk_free_rate*100:.1f}%")
         logger.info(f"   ✅ REAL PRICING - NO SIMULATION")
     
+    def _validate_inputs(self, spot_price: float, strike_price: float, 
+                        time_to_expiry: float, volatility: float):
+        """Validate input parameters for option pricing"""
+        if spot_price <= 0:
+            raise ValueError(f"Spot price must be positive, got {spot_price}")
+        if strike_price <= 0:
+            raise ValueError(f"Strike price must be positive, got {strike_price}")
+        if time_to_expiry < 0:
+            raise ValueError(f"Time to expiry cannot be negative, got {time_to_expiry}")
+        if volatility <= 0:
+            raise ValueError(f"Volatility must be positive, got {volatility}")
+
     def calculate_option_price(self, 
                              spot_price: float,
                              strike_price: float, 
@@ -66,6 +78,9 @@ class BlackScholesCalculator:
         Returns:
             Option price using Black-Scholes formula
         """
+        
+        # Validate inputs
+        self._validate_inputs(spot_price, strike_price, time_to_expiry, volatility)
         
         if time_to_expiry <= 0:
             # Option expired - intrinsic value only
@@ -112,7 +127,11 @@ class BlackScholesCalculator:
         """
         
         if spread_type == 'BEAR_CALL_SPREAD':
-            # Short lower strike call, long higher strike call
+            # CORRECT: Short higher strike call, long even higher strike call
+            # Validate strike relationship for bear call spread
+            if short_strike >= long_strike:
+                raise ValueError(f"Bear call spread requires short_strike < long_strike. Got short={short_strike}, long={long_strike}")
+            
             short_call_price = self.calculate_option_price(
                 spot_price, short_strike, time_to_expiry, volatility, 'call'
             )
@@ -120,12 +139,16 @@ class BlackScholesCalculator:
                 spot_price, long_strike, time_to_expiry, volatility, 'call'
             )
             # Credit spread: we receive premium for short, pay premium for long
-            # Profit when spread value decreases (both options expire worthless)
+            # Net credit = short premium - long premium (short premium > long premium)
             spread_value = short_call_price - long_call_price
             return spread_value
             
         elif spread_type == 'BULL_PUT_SPREAD':
-            # Short higher strike put, long lower strike put
+            # CORRECT: Short higher strike put, long lower strike put
+            # Validate strike relationship for bull put spread
+            if short_strike <= long_strike:
+                raise ValueError(f"Bull put spread requires short_strike > long_strike. Got short={short_strike}, long={long_strike}")
+            
             short_put_price = self.calculate_option_price(
                 spot_price, short_strike, time_to_expiry, volatility, 'put'
             )
@@ -133,6 +156,7 @@ class BlackScholesCalculator:
                 spot_price, long_strike, time_to_expiry, volatility, 'put'
             )
             # Credit spread: we receive premium for short, pay premium for long
+            # Net credit = short premium - long premium (short premium > long premium)
             spread_value = short_put_price - long_put_price
             return spread_value
             
@@ -160,17 +184,19 @@ class BlackScholesCalculator:
             return spread_value
         
         elif spread_type == 'CREDIT_SPREAD':
-            # Generic credit spread - determine type based on strikes
+            # FIXED: Correct logic for determining spread type based on strikes
             if short_strike > long_strike:
-                # Bear call spread (short lower strike, long higher strike)
+                # This is a BULL PUT SPREAD (short higher strike put, long lower strike put)
+                return self.calculate_spread_value(
+                    spot_price, long_strike, short_strike, time_to_expiry, volatility, 'BULL_PUT_SPREAD'
+                )
+            elif short_strike < long_strike:
+                # This is a BEAR CALL SPREAD (short lower strike call, long higher strike call)
                 return self.calculate_spread_value(
                     spot_price, long_strike, short_strike, time_to_expiry, volatility, 'BEAR_CALL_SPREAD'
                 )
             else:
-                # Bull put spread (short higher strike, long lower strike)
-                return self.calculate_spread_value(
-                    spot_price, long_strike, short_strike, time_to_expiry, volatility, 'BULL_PUT_SPREAD'
-                )
+                raise ValueError(f"Invalid spread: identical strikes {short_strike}")
         
         else:
             logger.warning(f"Unknown spread type: {spread_type}")

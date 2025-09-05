@@ -204,7 +204,12 @@ class ProfitManager:
         if trailing_stop_signal.should_exit:
             return trailing_stop_signal
         
-        # 5. TIME DECAY - Approaching expiration
+        # 5. BREAKEVEN MANAGEMENT - Protect profits
+        breakeven_signal = self._check_breakeven_management(position)
+        if breakeven_signal.should_exit:
+            return breakeven_signal
+        
+        # 6. TIME DECAY - Approaching expiration
         time_decay_signal = self._check_time_decay(position, current_time)
         if time_decay_signal.should_exit:
             return time_decay_signal
@@ -326,6 +331,30 @@ class ProfitManager:
                 urgency="MEDIUM",
                 expected_pnl=position.unrealized_pnl,
                 confidence=0.9
+            )
+        
+        return ExitSignal(False, "", "", "LOW", 0.0, 0.0)
+    
+    def _check_breakeven_management(self, position: Position) -> ExitSignal:
+        """Check breakeven management - protect profits once achieved"""
+        
+        # Only apply breakeven management if we've achieved some profit
+        min_profit_for_breakeven = position.premium_collected * 0.15  # 15% profit threshold
+        
+        if position.highest_profit < min_profit_for_breakeven:
+            return ExitSignal(False, "", "", "LOW", 0.0, 0.0)
+        
+        # If we've made good profit but are now at/near breakeven, exit
+        if (position.highest_profit >= min_profit_for_breakeven and 
+            position.unrealized_pnl <= position.premium_collected * 0.05):  # Within 5% of breakeven
+            
+            return ExitSignal(
+                should_exit=True,
+                exit_reason=f"Breakeven protection: profit declined from ${position.highest_profit:.2f} to ${position.unrealized_pnl:.2f}",
+                exit_type="BREAKEVEN_PROTECTION",
+                urgency="MEDIUM",
+                expected_pnl=position.unrealized_pnl,
+                confidence=0.85
             )
         
         return ExitSignal(False, "", "", "LOW", 0.0, 0.0)

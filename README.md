@@ -7,7 +7,7 @@ A comprehensive, extensible framework for developing and deploying professional 
 ### **Vision: Universal Strategy Development Platform**
 This framework provides a **complete infrastructure** for creating, testing, and deploying any 0DTE options trading strategy with:
 - 🧠 **Built-in Machine Learning** - 9 trained models with 94-100% accuracy
-- 📊 **Market Intelligence Engine** - Multi-layer analysis (VIX, VWAP, GEX, Options Flow)
+- 📊 **Market Intelligence Engine** - Multi-layer analysis (VIX, MA Shift, GEX, Options Flow)
 - 🔬 **Professional Backtesting** - Real data compliance with Black-Scholes P&L
 - ⚡ **Live Trading Ready** - Alpaca SDK integration for paper/live trading
 - 🏗️ **Strategy Generator** - Automated strategy scaffolding and templates
@@ -18,7 +18,8 @@ This framework provides a **complete infrastructure** for creating, testing, and
 - ✅ **Paper Trading System**: Perfect backtesting alignment with live Alpaca integration
 - ✅ **Iron Condor Strategy**: Production-ready with realistic $200-300 premiums
 - ✅ **ML Enhancement**: 177 features, 9 models, adaptive confidence scoring
-- ✅ **Market Intelligence**: VIX term structure, VWAP, GEX analysis
+- ✅ **Market Intelligence**: VIX term structure, MA Shift breakout signals, GEX analysis
+- ✅ **ChatGPT Micro-Cap Integration**: Risk Manager, Performance Analytics, Trade Validator
 - 🔄 **Flyagonal Strategy**: Complex multi-leg strategy under development
 - 🔄 **Strategy Expansion**: Framework ready for unlimited strategy creation
 
@@ -53,7 +54,7 @@ This framework provides a **complete infrastructure** for creating, testing, and
 │
 ├── 📊 MARKET INTELLIGENCE ENGINE (Universal)
 │   ├── 📈 VIX Term Structure Analysis
-│   ├── 💹 VWAP Deviation Calculations
+│   ├── 💹 MA Shift Breakout Detection (15-min retest signals)
 │   ├── ⚡ Gamma Exposure (GEX) Analysis
 │   ├── 🔄 Options Flow Monitoring
 │   └── 🧠 Multi-Layer Signal Fusion
@@ -77,7 +78,8 @@ This framework provides a **complete infrastructure** for creating, testing, and
 │   ├── 📊 Dynamic Position Sizing
 │   ├── ⚠️ Multi-Layer Risk Controls
 │   ├── 🎯 Daily Target Management
-│   └── 🔄 Real-Time Risk Monitoring
+│   ├── 🔄 Real-Time Risk Monitoring
+│   └── 🚀 ChatGPT Micro-Cap Integration (Risk Manager, Analytics, Validator)
 │
 └── 🚀 EXECUTION LAYER
     ├── 🎯 Dynamic Risk Paper Trader (NEW - Perfect Alignment)
@@ -87,6 +89,99 @@ This framework provides a **complete infrastructure** for creating, testing, and
     ├── 📊 Real-Time Position Management
     └── 🎯 Production Deployment Ready
 ```
+
+---
+
+## 🚀 NEW: ChatGPT Micro-Cap Integration
+
+### **🎯 Institutional-Grade Risk Management**
+Integrated sophisticated risk management patterns from the ChatGPT Micro-Cap experiment, providing institutional-grade safety and performance analytics for 0DTE options trading.
+
+### **📊 Three Core Components**
+
+#### **🛡️ 1. Automated Risk Manager** (`src/utils/risk_manager.py`)
+- **Real-time stop-loss automation** - Automatic position closure on risk triggers
+- **Position monitoring** - Continuous tracking of all open positions
+- **Daily risk limits** - $400 max loss, $250 profit target enforcement
+- **Cash constraint validation** - Prevents over-leveraging
+- **Emergency position management** - Circuit breakers for extreme conditions
+
+#### **📈 2. Enhanced Performance Analytics** (`src/utils/performance_analytics.py`)
+- **Sortino Ratio** - Downside deviation analysis (missing from original system)
+- **CAMP Analysis** - Beta, Alpha, R² calculations vs benchmarks
+- **Advanced drawdown metrics** - Duration, recovery time analysis
+- **Risk-adjusted returns** - Comprehensive performance attribution
+- **Multi-benchmark comparison** - SPY, QQQ, IWM performance comparison
+
+#### **✅ 3. Trade Validator** (`src/utils/trade_validator.py`)
+- **Pre-trade validation** - Multi-layer safety checks before execution
+- **Cash constraint verification** - Ensures sufficient margin
+- **Risk limit compliance** - Validates against daily/per-trade limits
+- **Market condition validation** - VIX, volume, regime checks
+- **Time-based restrictions** - Market hours, late-day trading controls
+
+### **🔧 Integration Benefits**
+```python
+# Example: Enhanced trading workflow with ChatGPT integration
+from src.utils.risk_manager import RiskManager
+from src.utils.performance_analytics import PerformanceAnalyzer  
+from src.utils.trade_validator import TradeValidator
+
+# Comprehensive safety and analytics for every trade
+risk_manager = RiskManager()
+performance_analyzer = PerformanceAnalyzer()
+trade_validator = TradeValidator()
+
+# Automatic integration with existing strategies
+enhanced_system = EnhancedTradingSystem(
+    risk_manager=risk_manager,
+    performance_analyzer=performance_analyzer,
+    trade_validator=trade_validator
+)
+```
+
+### **📊 Performance Enhancement**
+- **Institutional-grade safety** - Multi-layer risk controls
+- **Advanced analytics** - Sortino ratio, CAPM analysis, comprehensive metrics
+- **Automated execution** - Stop-loss, profit-taking, position management
+- **Professional reporting** - Detailed performance attribution and analysis
+
+---
+
+## 🎯 NEW: Moving Average Shift Integration
+
+### **📈 15-Minute Retest Breakout Signals**
+Replaced VWAP system with ChartPrime's Moving Average Shift indicator, specifically optimized for 0DTE trading with 15-minute retest breakout signals.
+
+### **🔧 Key Features**
+- **Multiple MA Types** - EMA, SMA, WMA, Hull MA support
+- **Percentile Normalization** - Advanced statistical analysis
+- **Hull MA Smoothing** - Reduced noise for cleaner signals
+- **Breakout Detection** - Perfect for 0DTE momentum strategies
+- **Crossover Signals** - Optimized for short-term trading
+
+### **⚡ Integration Benefits**
+```python
+# MA Shift replaces VWAP in intelligence engine
+from src.strategies.market_intelligence.moving_average_shift_analyzer import MovingAverageShiftAnalyzer
+
+# Automatic integration with 35% weight in intelligence synthesis
+ma_shift_analyzer = MovingAverageShiftAnalyzer(
+    ma_type="EMA",
+    ma_length=40,
+    osc_length=15,
+    osc_threshold=0.5
+)
+
+# Provides superior 0DTE signals vs VWAP
+signal = ma_shift_analyzer.analyze_ma_shift_intelligence(spy_data, current_price)
+```
+
+### **🎯 0DTE Optimization**
+- **15-minute timeframe** - Perfect for 0DTE retest signals
+- **Momentum detection** - Superior breakout identification
+- **Trend confirmation** - Multi-timeframe analysis
+- **Reversal probability** - Advanced mean reversion detection
 
 ---
 
@@ -280,7 +375,7 @@ INTELLIGENCE_LAYERS = {
 
 ### **📈 Real-Time Intelligence Components**
 - **VIX Term Structure**: Market stress and contango/backwardation analysis
-- **VWAP Deviation**: Intraday momentum and mean reversion signals
+- **MA Shift Breakout Detection**: 15-minute retest signals optimized for 0DTE
 - **Gamma Exposure (GEX)**: Market maker positioning and pinning levels
 - **Options Flow**: Put/call ratios, volume analysis, unusual activity
 - **Cross-Asset Signals**: Bonds, currencies, sector rotation

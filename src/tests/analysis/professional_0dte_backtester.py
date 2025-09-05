@@ -34,18 +34,22 @@ sys.path.append(str(project_root))
 # Import existing infrastructure
 try:
     from src.data.parquet_data_loader import ParquetDataLoader
+    from src.data.spy_1minute_loader import SPY1MinuteLoader
     from src.strategies.real_option_pricing.black_scholes_calculator import BlackScholesCalculator
     from src.strategies.professional_0dte.professional_credit_spread_system import (
         Professional0DTESystem, ProfessionalConfig, TradeSignal, SpreadType
     )
+    from src.strategies.market_intelligence.intelligence_engine import MarketIntelligenceEngine
 except ImportError:
     # Alternative import method
     sys.path.insert(0, str(project_root))
     from data.parquet_data_loader import ParquetDataLoader
+    from data.spy_1minute_loader import SPY1MinuteLoader
     from strategies.real_option_pricing.black_scholes_calculator import BlackScholesCalculator
     from strategies.professional_0dte.professional_credit_spread_system import (
         Professional0DTESystem, ProfessionalConfig, TradeSignal, SpreadType
     )
+    from strategies.market_intelligence.intelligence_engine import MarketIntelligenceEngine
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -65,10 +69,23 @@ class Professional0DTEBacktester:
     def __init__(self, config: Optional[ProfessionalConfig] = None):
         self.config = config or ProfessionalConfig()
         
-        # Initialize components
-        self.data_loader = ParquetDataLoader()
+        # Initialize components with REAL historical data (2023-2024)
+        self.data_loader = ParquetDataLoader('src/data/spy_options_20230830_20240829.parquet')
+        self.spy_loader = SPY1MinuteLoader()  # NEW: SPY 1-minute data for VWAP analysis
         self.option_pricer = BlackScholesCalculator()
         self.trading_system = Professional0DTESystem(self.config)
+        
+        # CRITICAL FIX: Initialize Market Intelligence Engine with REAL fixes
+        self.market_intelligence = MarketIntelligenceEngine()
+        
+        # ENHANCED: Initialize Enhanced Regime Detector
+        try:
+            from src.strategies.market_intelligence.enhanced_regime_detector import EnhancedRegimeDetector
+            self.enhanced_regime_detector = EnhancedRegimeDetector()
+            logger.info("🎯 Enhanced Regime Detector initialized")
+        except ImportError:
+            self.enhanced_regime_detector = None
+            logger.warning("Enhanced Regime Detector not available, using standard detection")
         
         # Backtesting tracking
         self.backtest_results: List[Dict] = []
@@ -167,7 +184,7 @@ class Professional0DTEBacktester:
                 continue
                 
             # Generate trade signal
-            market_regime = self._determine_market_regime(options_data, spy_price)
+            market_regime = self._determine_market_regime(options_data, spy_price, trade_date)
             signal = self.trading_system.generate_trade_signal(
                 options_data, spy_price, market_regime, window_time
             )
@@ -312,29 +329,105 @@ class Professional0DTEBacktester:
             'current_spy_price': spy_price
         }
         
-    def _determine_market_regime(self, options_data: pd.DataFrame, spy_price: float) -> str:
-        """Determine market regime (simplified)"""
+    def _determine_market_regime(self, options_data: pd.DataFrame, spy_price: float, trade_date: datetime) -> str:
+        """
+        ENHANCED: Multi-timeframe regime detection with transition analysis
+        Uses Enhanced Regime Detector for improved accuracy and reduced single-regime bias
+        """
         
-        # Simplified regime detection based on put/call ratio
-        puts = options_data[options_data['option_type'] == 'put']
-        calls = options_data[options_data['option_type'] == 'call']
-        
-        if len(puts) == 0 or len(calls) == 0:
-            return "NEUTRAL"
+        try:
+            # Load SPY historical data for enhanced regime analysis
+            start_date = trade_date - timedelta(days=7)  # Get extra days for multi-timeframe analysis
+            historical_spy_data = self.spy_loader.load_date_range(start_date, trade_date)
             
-        put_volume = puts['volume'].sum()
-        call_volume = calls['volume'].sum()
-        
-        if call_volume == 0:
-            return "BEARISH"
+            logger.debug(f"📊 Loaded {len(historical_spy_data)} SPY bars for enhanced regime analysis")
             
-        pc_ratio = put_volume / call_volume
-        
-        if pc_ratio < 0.8:
-            return "BULLISH"
-        elif pc_ratio > 1.2:
-            return "BEARISH"
-        else:
+            # ENHANCED: Use Enhanced Regime Detector if available
+            if self.enhanced_regime_detector is not None:
+                logger.info("🎯 USING ENHANCED REGIME DETECTOR")
+                
+                # Get VWAP intelligence from Market Intelligence Engine
+                intelligence = self.market_intelligence.analyze_market_intelligence(
+                    options_data=options_data,
+                    spy_price=spy_price,
+                    vix_data=None,
+                    historical_prices=historical_spy_data
+                )
+                
+                logger.debug(f"📊 VWAP Intelligence: {getattr(intelligence, 'vwap_intelligence', {})}")
+                
+                # Use Enhanced Regime Detector for comprehensive analysis
+                enhanced_analysis = self.enhanced_regime_detector.analyze_enhanced_regime(
+                    spy_data=historical_spy_data,
+                    options_data=options_data,
+                    spy_price=spy_price,
+                    vwap_intelligence=getattr(intelligence, 'vwap_intelligence', {})
+                )
+                
+                logger.info(f"🎯 ENHANCED ANALYSIS COMPLETE: {enhanced_analysis.primary_regime.value} ({enhanced_analysis.confidence:.1f}%)")
+                
+                # Convert enhanced regime to expected format
+                regime_mapping = {
+                    'STRONG_BULLISH': 'BULLISH',
+                    'BULLISH': 'BULLISH',
+                    'NEUTRAL': 'NEUTRAL',
+                    'BEARISH': 'BEARISH',
+                    'STRONG_BEARISH': 'BEARISH',
+                    'TRANSITION': 'NEUTRAL'  # Don't trade during transitions
+                }
+                
+                detected_regime = regime_mapping.get(enhanced_analysis.primary_regime.value, 'NEUTRAL')
+                
+                # Enhanced logging with multi-timeframe analysis
+                logger.debug(f"🎯 Enhanced Regime Analysis:")
+                logger.debug(f"   Primary: {enhanced_analysis.primary_regime.value} ({enhanced_analysis.confidence:.1f}%)")
+                logger.debug(f"   Transition Prob: {enhanced_analysis.transition_probability:.1%}")
+                logger.debug(f"   Recommended Strategy: {enhanced_analysis.recommended_strategy}")
+                if enhanced_analysis.supporting_factors:
+                    logger.debug(f"   Supporting: {enhanced_analysis.supporting_factors}")
+                if enhanced_analysis.risk_factors:
+                    logger.debug(f"   Risk Factors: {enhanced_analysis.risk_factors}")
+                
+                # Apply confidence and transition filtering
+                if enhanced_analysis.confidence < 60:
+                    logger.info(f"🚫 Low confidence regime ({enhanced_analysis.confidence:.1f}%), using NEUTRAL")
+                    return "NEUTRAL"
+                
+                if enhanced_analysis.transition_probability > 0.3:
+                    logger.info(f"🚫 Market transitioning ({enhanced_analysis.transition_probability:.1%}), using NEUTRAL")
+                    return "NEUTRAL"
+                
+                return detected_regime
+                
+            else:
+                # Fallback to standard Market Intelligence Engine
+                logger.warning("🚨 FALLING BACK TO STANDARD MARKET INTELLIGENCE ENGINE")
+                
+                intelligence = self.market_intelligence.analyze_market_intelligence(
+                    options_data=options_data,
+                    spy_price=spy_price,
+                    vix_data=None,
+                    historical_prices=historical_spy_data
+                )
+
+                regime_mapping = {
+                    'BULLISH': 'BULLISH',
+                    'BEARISH': 'BEARISH',
+                    'NEUTRAL': 'NEUTRAL'
+                }
+
+                detected_regime = regime_mapping.get(intelligence.primary_regime, 'NEUTRAL')
+                
+                logger.info(f"🧠 Standard Market Intelligence: {intelligence.primary_regime} "
+                            f"({intelligence.regime_confidence:.1f}% confidence)")
+                
+                return detected_regime
+            
+        except Exception as e:
+            logger.warning(f"Enhanced regime detection failed: {e}")
+            import traceback
+            logger.debug(traceback.format_exc())
+            # Fallback to neutral if detection fails
             return "NEUTRAL"
             
     def _simulate_vix(self) -> float:

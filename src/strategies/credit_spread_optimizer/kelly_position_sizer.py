@@ -166,30 +166,32 @@ class KellyPositionSizer:
         avg_loss: float
     ) -> float:
         """
-        Calculate Kelly fraction using the formula:
-        f = (bp - q) / b
+        CORRECTED: Kelly fraction for credit spreads using proper formula:
+        f = p - q/b where b = avg_loss / avg_win (loss/win ratio)
         
-        Where:
-        - b = odds received on the wager (avg_win / avg_loss)
-        - p = probability of winning (win_rate)
-        - q = probability of losing (1 - win_rate)
+        For credit spreads:
+        - We collect premium upfront (positive cash flow)
+        - Risk is spread width minus premium collected
+        - Use loss/win ratio, not win/loss ratio
         """
         
-        if avg_loss <= 0 or win_rate <= 0 or win_rate >= 1:
+        if avg_win <= 0 or win_rate <= 0 or win_rate >= 1:
             return self.kelly_config.min_kelly_fraction
         
-        # Calculate odds (how much you win vs how much you lose)
-        odds = avg_win / avg_loss
+        # CORRECTED: For credit spreads, we use loss/win ratio
+        p = win_rate
+        q = 1 - win_rate
+        b = avg_loss / avg_win  # Loss to win ratio for credit spreads
         
-        # Kelly formula
-        kelly_fraction = (odds * win_rate - (1 - win_rate)) / odds
+        # Kelly formula: f = p - q/b
+        kelly_fraction = p - (q / b)
         
         # Ensure positive and within bounds
         kelly_fraction = max(0, kelly_fraction)
         kelly_fraction = min(self.kelly_config.max_kelly_fraction, kelly_fraction)
         
-        # Apply conservative adjustment
-        kelly_fraction *= self.kelly_config.kelly_adjustment_factor
+        # Conservative adjustment (reduce by 15% instead of 25%)
+        kelly_fraction *= 0.85
         
         return kelly_fraction
     

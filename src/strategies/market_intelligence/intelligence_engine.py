@@ -31,11 +31,13 @@ import logging
 import warnings
 warnings.filterwarnings('ignore')
 
-# Import GEX analyzer
+# Import GEX analyzer and VWAP analyzer
 try:
     from .gamma_exposure_analyzer import GammaExposureAnalyzer
+    from .moving_average_shift_analyzer import MovingAverageShiftAnalyzer
 except ImportError:
     from gamma_exposure_analyzer import GammaExposureAnalyzer
+    from moving_average_shift_analyzer import MovingAverageShiftAnalyzer
 
 @dataclass
 class MarketIntelligence:
@@ -56,6 +58,7 @@ class MarketIntelligence:
     vwap_analysis: Dict[str, float]
     rsi_analysis: Dict[str, float]
     put_call_analysis: Dict[str, float]
+    ma_shift_intelligence: Dict[str, Any]  # NEW: Complete MA Shift analysis
     
     # Market Regime
     primary_regime: str  # 'BULLISH', 'BEARISH', 'NEUTRAL'
@@ -82,15 +85,17 @@ class MarketIntelligenceEngine:
     """
     
     def __init__(self):
-        # Initialize GEX analyzer
+        # Initialize GEX analyzer and VWAP analyzer
         self.gex_analyzer = GammaExposureAnalyzer()
+        self.ma_shift_analyzer = MovingAverageShiftAnalyzer()
         
-        # FIXED: Layer weights for balanced regime detection
+        # ENHANCED: Rebalanced layer weights with MA Shift system
         self.layer_weights = {
-            'technical': 0.40,    # INCREASED - includes fixed momentum analysis
-            'internals': 0.20,    # DECREASED - was causing bearish bias
-            'flow': 0.25,         # Slightly reduced
-            'ml': 0.15            # Reduced - placeholder for now
+            'flow': 0.35,         # Most reliable - options flow
+            'ma_shift': 0.35,     # NEW: MA Shift system (replaces VWAP)
+            'technical': 0.15,    # Reduced - context-aware RSI
+            'internals': 0.10,    # Reduced - put/call ratio
+            'gex': 0.05           # Further reduced - GEX environment
         }
         
         # VIX thresholds
@@ -124,6 +129,7 @@ class MarketIntelligenceEngine:
         
         self.logger.info("🧠 MARKET INTELLIGENCE ENGINE INITIALIZED")
         self.logger.info(f"   Layer Weights: {self.layer_weights}")
+        self.logger.info("   🎯 ENHANCED: Dynamic VWAP system integrated")
     
     def analyze_market_intelligence(
         self, 
@@ -144,27 +150,31 @@ class MarketIntelligenceEngine:
         
         self.logger.info("🧠 RUNNING COMPREHENSIVE MARKET INTELLIGENCE ANALYSIS")
         
-        # Layer 1: Technical Analysis
+        # Layer 1: MA Shift Analysis (NEW - Primary trend detection)
+        ma_shift_analysis = self._analyze_ma_shift_layer(options_data, spy_price, historical_prices)
+        
+        # Layer 2: Technical Analysis (Reduced weight)
         technical_analysis = self._analyze_technical_layer(
             options_data, spy_price, historical_prices
         )
         
-        # Layer 2: Market Internals
+        # Layer 3: Market Internals (with VWAP context)
         internals_analysis = self._analyze_internals_layer(
-            options_data, vix_data
+            options_data, vix_data, ma_shift_analysis.get('trend_analysis', {})
         )
         
-        # Layer 3: Options Flow Analysis
+        # Layer 4: Options Flow Analysis
         flow_analysis = self._analyze_flow_layer(options_data)
         
-        # Layer 4: ML Integration (placeholder for now)
+        # Layer 5: ML Integration (placeholder for now)
         ml_analysis = self._analyze_ml_layer(options_data)
         
-        # Layer 5: GEX Analysis (NEW - addresses direction detection issues)
+        # Layer 6: GEX Analysis (Reduced weight)
         gex_analysis = self._analyze_gex_layer(options_data, spy_price)
         
-        # Combine all layers with GEX-aware synthesis
-        intelligence = self._synthesize_intelligence_with_gex(
+        # Combine all layers with MA Shift-enhanced synthesis
+        intelligence = self._synthesize_intelligence_with_vwap(
+            ma_shift_analysis,
             technical_analysis,
             internals_analysis,
             flow_analysis,
@@ -180,13 +190,119 @@ class MarketIntelligenceEngine:
         
         return intelligence
     
+    def _analyze_ma_shift_layer(
+        self,
+        options_data: pd.DataFrame,
+        spy_price: Optional[float],
+        historical_prices: Optional[pd.DataFrame]
+    ) -> Dict[str, Any]:
+        """Analyze MA Shift layer - Primary trend detection system"""
+        
+        analysis = {
+            'bull_score': 50.0,
+            'bear_score': 50.0,
+            'neutral_score': 50.0,
+            'ma_shift_intelligence': {},
+            'trend_analysis': {}
+        }
+        
+        try:
+            # Estimate current price if not provided
+            if spy_price is None:
+                spy_price = self._estimate_current_price(options_data)
+            
+            # Create price data for VWAP analysis
+            if historical_prices is not None and not historical_prices.empty:
+                price_data = historical_prices.copy()
+                # Ensure we have required columns
+                if 'close' not in price_data.columns and 'Close' in price_data.columns:
+                    price_data['close'] = price_data['Close']
+                if 'volume' not in price_data.columns and 'Volume' in price_data.columns:
+                    price_data['volume'] = price_data['Volume']
+            else:
+                # Create minimal price data from current price
+                price_data = pd.DataFrame({
+                    'close': [spy_price] * 50,
+                    'volume': [1000] * 50
+                })
+            
+            # Run MA Shift analysis
+            ma_shift_signal = self.ma_shift_analyzer.analyze_ma_shift_intelligence(
+                price_data, spy_price
+            )
+            
+            analysis['ma_shift_intelligence'] = {
+                'signal': ma_shift_signal,
+                'trend': ma_shift_signal.ma_trend,
+                'confidence': ma_shift_signal.signal_confidence * 100,
+                'momentum_score': ma_shift_signal.momentum_score,
+                'breakout_potential': ma_shift_signal.breakout_potential
+            }
+            
+            # Convert MA Shift signal to bull/bear scores
+            if ma_shift_signal.ma_trend == 'BULLISH':
+                bull_contribution = 60 + (ma_shift_signal.trend_strength * 30)
+                bear_contribution = 40 - (ma_shift_signal.trend_strength * 30)
+            elif ma_shift_signal.ma_trend == 'BEARISH':
+                bull_contribution = 40 - (ma_shift_signal.trend_strength * 30)
+                bear_contribution = 60 + (ma_shift_signal.trend_strength * 30)
+            else:  # NEUTRAL
+                bull_contribution = 50 + (ma_shift_signal.momentum_score * 10)
+                bear_contribution = 50 - (ma_shift_signal.momentum_score * 10)
+            
+            analysis['bull_score'] = max(0, min(100, bull_contribution))
+            analysis['bear_score'] = max(0, min(100, bear_contribution))
+            analysis['neutral_score'] = 100 - analysis['bull_score'] - analysis['bear_score']
+            
+            # Create trend analysis for other layers
+            if ma_shift_signal.ma_trend == 'BULLISH':
+                trend_direction = 'UPTREND'
+            elif ma_shift_signal.ma_trend == 'BEARISH':
+                trend_direction = 'DOWNTREND'
+            else:
+                trend_direction = 'SIDEWAYS'
+            
+            # Determine trend strength
+            if ma_shift_signal.trend_strength > 0.7:
+                trend_strength = 'STRONG'
+            elif ma_shift_signal.trend_strength > 0.4:
+                trend_strength = 'MODERATE'
+            else:
+                trend_strength = 'WEAK'
+            
+            analysis['trend_analysis'] = {
+                'trend_direction': trend_direction,
+                'trend_strength': trend_strength,
+                'trend_confidence': ma_shift_signal.signal_confidence * 100,
+                'bull_contribution': analysis['bull_score'],
+                'bear_contribution': analysis['bear_score']
+            }
+            
+            self.logger.info(f"🎯 MA SHIFT LAYER ANALYSIS:")
+            self.logger.info(f"   Signal Type: {ma_shift_signal.signal_type}")
+            self.logger.info(f"   Trend Direction: {trend_direction}")
+            self.logger.info(f"   Confidence: {ma_shift_signal.signal_confidence * 100:.1f}%")
+            
+        except Exception as e:
+            self.logger.warning(f"MA Shift layer analysis failed: {e}")
+            # Return neutral analysis on failure
+            analysis['trend_analysis'] = {
+                'trend_direction': 'SIDEWAYS',
+                'trend_strength': 'WEAK',
+                'trend_confidence': 50.0,
+                'bull_contribution': 50.0,
+                'bear_contribution': 50.0
+            }
+        
+        return analysis
+    
     def _analyze_technical_layer(
         self, 
         options_data: pd.DataFrame,
         spy_price: Optional[float],
         historical_prices: Optional[pd.DataFrame]
     ) -> Dict[str, Any]:
-        """Analyze technical indicators layer"""
+        """Analyze technical indicators layer with TREND CONTEXT"""
         
         analysis = {
             'bull_score': 50.0,
@@ -194,21 +310,22 @@ class MarketIntelligenceEngine:
             'neutral_score': 50.0,
             'rsi_analysis': {},
             'vwap_analysis': {},
-            'momentum_analysis': {}
+            'momentum_analysis': {},
+            'trend_analysis': {}  # NEW: Critical trend context
         }
         
         # Estimate current price if not provided
         if spy_price is None:
             spy_price = self._estimate_current_price(options_data)
         
-        # RSI Analysis (simplified from options data)
+        # CRITICAL: Trend Context Analysis (Foundation for all other indicators)
+        trend_analysis = self._analyze_trend_context(spy_price, historical_prices, options_data)
+        analysis['trend_analysis'] = trend_analysis
+        
+        # Context-Aware RSI Analysis (REAL FIX)
         rsi_score = self._calculate_rsi_from_options(options_data)
-        analysis['rsi_analysis'] = {
-            'rsi_value': rsi_score,
-            'interpretation': self._interpret_rsi(rsi_score),
-            'bull_contribution': max(0, (rsi_score - 30) / 40 * 100) if rsi_score < 70 else 0,
-            'bear_contribution': max(0, (70 - rsi_score) / 40 * 100) if rsi_score > 30 else 0
-        }
+        rsi_analysis = self._analyze_context_aware_rsi(rsi_score, trend_analysis)
+        analysis['rsi_analysis'] = rsi_analysis
         
         # VWAP Analysis
         vwap_analysis = self._calculate_vwap_deviation(spy_price, historical_prices, options_data)
@@ -242,7 +359,8 @@ class MarketIntelligenceEngine:
     def _analyze_internals_layer(
         self, 
         options_data: pd.DataFrame,
-        vix_data: Optional[pd.DataFrame]
+        vix_data: Optional[pd.DataFrame],
+        trend_analysis: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """Analyze market internals layer"""
         
@@ -259,8 +377,12 @@ class MarketIntelligenceEngine:
         vix_analysis = self._analyze_vix_term_structure(vix_data, options_data)
         analysis['vix_term_structure'] = vix_analysis
         
-        # Put/Call Ratio Analysis
-        pc_analysis = self._analyze_put_call_ratio(options_data)
+        # Context-Aware Put/Call Ratio Analysis (REAL FIX)
+        if trend_analysis is not None:
+            market_regime = 'BULLISH' if trend_analysis['trend_direction'] == 'UPTREND' else 'BEARISH' if trend_analysis['trend_direction'] == 'DOWNTREND' else 'NEUTRAL'
+        else:
+            market_regime = 'NEUTRAL'
+        pc_analysis = self._analyze_context_aware_put_call_ratio(options_data, market_regime)
         analysis['put_call_analysis'] = pc_analysis
         
         # Volatility Environment Analysis
@@ -498,7 +620,7 @@ class MarketIntelligenceEngine:
         return analysis
     
     def _calculate_rsi_from_options(self, options_data: pd.DataFrame) -> float:
-        """Calculate RSI-like indicator from options data"""
+        """Calculate RSI-like indicator from options data - SIMPLIFIED"""
         
         if options_data.empty:
             return 50.0
@@ -513,17 +635,11 @@ class MarketIntelligenceEngine:
         # Convert P/C ratio to RSI-like scale (0-100)
         pc_ratio = put_volume / max(call_volume, 1)
         
-        # FIXED: Map P/C ratio to RSI scale with CORRECT logic
-        # P/C ratio of 1.0 = RSI 50 (neutral)
-        # P/C ratio of 2.0 = RSI 30 (oversold/bearish) - HIGH P/C = BEARISH
-        # P/C ratio of 0.5 = RSI 70 (overbought/bullish) - LOW P/C = BULLISH
-        
-        if pc_ratio >= 1.0:
-            # High P/C ratio = Bearish = Lower RSI (30-50)
-            rsi = max(10, 50 - (pc_ratio - 1.0) * 20)  # Reduced sensitivity
-        else:
-            # Low P/C ratio = Bullish = Higher RSI (50-70)  
-            rsi = min(90, 50 + (1.0 - pc_ratio) * 20)  # Reduced sensitivity
+        # SIMPLIFIED: Direct mapping without double inversion
+        # P/C ratio 0.5 = RSI 70 (bullish)
+        # P/C ratio 1.0 = RSI 50 (neutral)
+        # P/C ratio 2.0 = RSI 30 (bearish)
+        rsi = max(20, min(80, 50 + (1.0 - pc_ratio) * 15))
         
         return rsi
     
@@ -613,25 +729,25 @@ class MarketIntelligenceEngine:
         pc_ratio = put_volume / max(call_volume, 1)
         analysis['put_call_ratio'] = pc_ratio
         
-        # FIXED: Interpret P/C ratio with 0DTE-appropriate thresholds
-        if pc_ratio > 2.0:  # VERY heavy put activity = bearish (raised from 1.5)
+        # RESTORED: Tighter thresholds for 0DTE
+        if pc_ratio > 1.3:  # Back to 1.3 from 1.5
             analysis['interpretation'] = 'BEARISH'
-            analysis['bear_contribution'] = 80.0
-            analysis['bull_contribution'] = 20.0
-        elif pc_ratio > 1.5:  # Heavy put activity = weak bearish (raised from 1.2)
+            analysis['bear_contribution'] = 75.0
+            analysis['bull_contribution'] = 25.0
+        elif pc_ratio > 1.1:  # Back to 1.1 from 1.5
             analysis['interpretation'] = 'WEAK_BEARISH'
-            analysis['bear_contribution'] = 60.0  # Reduced impact
+            analysis['bear_contribution'] = 60.0
             analysis['bull_contribution'] = 40.0
-        elif pc_ratio < 0.6:  # VERY heavy call activity = bullish (lowered from 0.7)
+        elif pc_ratio < 0.7:  # Back to 0.7 from 0.6
             analysis['interpretation'] = 'BULLISH'
-            analysis['bull_contribution'] = 80.0
-            analysis['bear_contribution'] = 20.0
-        elif pc_ratio < 0.8:  # Heavy call activity = weak bullish (lowered from 0.9)
+            analysis['bull_contribution'] = 75.0
+            analysis['bear_contribution'] = 25.0
+        elif pc_ratio < 0.9:  # Back to 0.9 from 0.8
             analysis['interpretation'] = 'WEAK_BULLISH'
             analysis['bull_contribution'] = 65.0
             analysis['bear_contribution'] = 35.0
         else:
-            # P/C ratio 0.8-1.5 is now NEUTRAL (wider neutral zone)
+            # Neutral zone: 0.9-1.1 (was 0.8-1.5)
             analysis['interpretation'] = 'NEUTRAL'
             analysis['bull_contribution'] = 50.0
             analysis['bear_contribution'] = 50.0
@@ -772,53 +888,57 @@ class MarketIntelligenceEngine:
         
         return analysis
     
-    def _synthesize_intelligence_with_gex(
+    def _synthesize_intelligence_with_vwap(
         self,
+        ma_shift_analysis: Dict[str, Any],
         technical_analysis: Dict[str, Any],
         internals_analysis: Dict[str, Any],
         flow_analysis: Dict[str, Any],
         ml_analysis: Dict[str, Any],
         gex_analysis: Dict[str, Any]
     ) -> MarketIntelligence:
-        """Synthesize all layers into final intelligence with GEX awareness"""
+        """Synthesize all layers into final intelligence with MA Shift-enhanced analysis"""
         
-        # Weighted combination of layer scores (GEX doesn't contribute to direction)
+        # ENHANCED: Weighted combination using MA Shift-rebalanced layer weights
         bull_score = (
-            technical_analysis['bull_score'] * self.layer_weights['technical'] +
-            internals_analysis['bull_score'] * self.layer_weights['internals'] +
             flow_analysis['bull_score'] * self.layer_weights['flow'] +
-            ml_analysis['bull_score'] * self.layer_weights['ml']
+            ma_shift_analysis['bull_score'] * self.layer_weights['ma_shift'] +
+            technical_analysis['rsi_analysis']['bull_contribution'] * self.layer_weights['technical'] +
+            internals_analysis['put_call_analysis']['bull_contribution'] * self.layer_weights['internals'] +
+            gex_analysis['bull_score'] * self.layer_weights['gex']
         )
         
         bear_score = (
-            technical_analysis['bear_score'] * self.layer_weights['technical'] +
-            internals_analysis['bear_score'] * self.layer_weights['internals'] +
             flow_analysis['bear_score'] * self.layer_weights['flow'] +
-            ml_analysis['bear_score'] * self.layer_weights['ml']
+            ma_shift_analysis['bear_score'] * self.layer_weights['ma_shift'] +
+            technical_analysis['rsi_analysis']['bear_contribution'] * self.layer_weights['technical'] +
+            internals_analysis['put_call_analysis']['bear_contribution'] * self.layer_weights['internals'] +
+            gex_analysis['bear_score'] * self.layer_weights['gex']
         )
         
         neutral_score = 100 - bull_score - bear_score
         
-        # ENHANCED: Determine primary regime with TREND CONFIRMATION  
-        # Add price trend confirmation for 2024 bull market detection
-        # Use the same options_data that was passed to the analysis
-        spy_price = 500.0  # Default fallback
-        try:
-            # Try to get SPY price from VWAP analysis if available
-            if 'vwap_analysis' in technical_analysis and 'current_price' in technical_analysis['vwap_analysis']:
-                spy_price = technical_analysis['vwap_analysis']['current_price']
-        except:
-            spy_price = 500.0  # Safe fallback
+        # CRITICAL FIX: Remove hardcoded bull market bias that was overriding VWAP signals
+        # The previous logic was adding +10 bull score when SPY > $520, which completely
+        # overrode strong VWAP bearish signals, causing the system to make wrong trades
         
-        # 2024 bull market price levels (SPY $460 -> $538)
-        if spy_price > 520:  # Strong bull market territory
-            bull_score += 10  # Boost bull score for high prices
-        elif spy_price > 480:  # Moderate bull market
-            bull_score += 5   # Modest boost
-        elif spy_price < 450:  # Bear market territory  
-            bear_score += 10  # Boost bear score for low prices
+        # ENHANCED: MA Shift Signal Prioritization
+        # When MA Shift has high confidence (>60%), give it extra weight to override other layers
+        ma_shift_intel = ma_shift_analysis.get('ma_shift_intelligence', {})
+        ma_shift_confidence = ma_shift_intel.get('confidence', 0)
+        ma_shift_signal = ma_shift_intel.get('trend', 'NEUTRAL')
         
-        # Recalculate neutral score after adjustments
+        if ma_shift_confidence > 60:  # High confidence MA Shift signal
+            ma_shift_boost = (ma_shift_confidence - 60) * 0.5  # Up to 20 point boost for 100% confidence
+            
+            if ma_shift_signal == 'BULLISH':
+                bull_score += ma_shift_boost
+                self.logger.info(f"🎯 HIGH CONFIDENCE MA SHIFT BOOST: +{ma_shift_boost:.1f} to BULL ({ma_shift_signal})")
+            elif ma_shift_signal == 'BEARISH':
+                bear_score += ma_shift_boost
+                self.logger.info(f"🎯 HIGH CONFIDENCE MA SHIFT BOOST: +{ma_shift_boost:.1f} to BEAR ({ma_shift_signal})")
+        
+        # Ensure scores don't exceed 100
         total_score = bull_score + bear_score
         if total_score > 100:
             # Normalize scores to maintain 100% total
@@ -826,22 +946,49 @@ class MarketIntelligenceEngine:
             bear_score = bear_score * 100 / total_score
         neutral_score = max(0, 100 - bull_score - bear_score)
         
-        # Determine primary regime
-        if bull_score > bear_score and bull_score > neutral_score:
-            primary_regime = 'BULLISH'
-            regime_confidence = bull_score
-        elif bear_score > bull_score and bear_score > neutral_score:
-            primary_regime = 'BEARISH'
-            regime_confidence = bear_score
+        # ENHANCED: MA Shift Override Logic for Very High Confidence Signals
+        # If MA Shift has extremely high confidence (>80%), it can override other layers completely
+        if ma_shift_confidence > 80:
+            if ma_shift_signal == 'BULLISH':
+                primary_regime = 'BULLISH'
+                regime_confidence = min(95, ma_shift_confidence)
+                self.logger.info(f"🎯 MA SHIFT OVERRIDE: Strong bullish signal ({ma_shift_confidence:.1f}% confidence)")
+            elif ma_shift_signal == 'BEARISH':
+                primary_regime = 'BEARISH'
+                regime_confidence = min(95, ma_shift_confidence)
+                self.logger.info(f"🎯 MA SHIFT OVERRIDE: Strong bearish signal ({ma_shift_confidence:.1f}% confidence)")
+            else:
+                # Normal regime determination
+                if bull_score > bear_score and bull_score > neutral_score:
+                    primary_regime = 'BULLISH'
+                    regime_confidence = bull_score
+                elif bear_score > bull_score and bear_score > neutral_score:
+                    primary_regime = 'BEARISH'
+                    regime_confidence = bear_score
+                else:
+                    primary_regime = 'NEUTRAL'
+                    regime_confidence = neutral_score
         else:
-            primary_regime = 'NEUTRAL'
-            regime_confidence = neutral_score
+            # Normal regime determination when VWAP confidence is not extreme
+            if bull_score > bear_score and bull_score > neutral_score:
+                primary_regime = 'BULLISH'
+                regime_confidence = bull_score
+            elif bear_score > bull_score and bear_score > neutral_score:
+                primary_regime = 'BEARISH'
+                regime_confidence = bear_score
+            else:
+                primary_regime = 'NEUTRAL'
+                regime_confidence = neutral_score
         
-        # FIXED: Apply LIMITED GEX confidence adjustment (was too conservative)
+        # REAL FIX: GEX suppresses confidence in BOTH directions equally
         gex_confidence_multiplier = gex_analysis['confidence_multiplier']
-        # Limit GEX impact to prevent over-conservative adjustments
-        limited_gex_multiplier = max(0.85, gex_confidence_multiplier)  # Don't reduce below 85%
-        gex_adjusted_confidence = regime_confidence * limited_gex_multiplier
+        # High GEX suppresses ALL moves, not just bullish ones
+        if gex_analysis['direction_reliability'] == 'LOW':
+            # In high suppression environments, reduce confidence regardless of direction
+            gex_adjusted_confidence = regime_confidence * max(0.80, gex_confidence_multiplier)
+        else:
+            # Normal GEX environment - minimal impact
+            gex_adjusted_confidence = regime_confidence * max(0.95, gex_confidence_multiplier)
         
         # Log GEX impact
         self.logger.info(f"⚡ GEX IMPACT ON DIRECTION DETECTION:")
@@ -894,6 +1041,7 @@ class MarketIntelligenceEngine:
             vwap_analysis=technical_analysis['vwap_analysis'],
             rsi_analysis=technical_analysis['rsi_analysis'],
             put_call_analysis=internals_analysis['put_call_analysis'],
+            ma_shift_intelligence=ma_shift_analysis.get('ma_shift_intelligence', {}),  # NEW: MA Shift intelligence
             primary_regime=primary_regime,
             regime_confidence=gex_adjusted_confidence,  # Use GEX-adjusted confidence
             volatility_environment=volatility_environment,
@@ -984,6 +1132,247 @@ class MarketIntelligenceEngine:
         
         # Last resort - return default
         return 640.0
+    
+    def _analyze_trend_context(
+        self, 
+        current_price: float, 
+        historical_prices: Optional[pd.DataFrame],
+        options_data: pd.DataFrame
+    ) -> Dict[str, Any]:
+        """
+        CRITICAL: Analyze trend context - the foundation for all other indicators
+        This fixes the systematic bearish bias by providing market direction context
+        """
+        
+        analysis = {
+            'trend_direction': 'SIDEWAYS',
+            'trend_strength': 'WEAK',
+            'trend_confidence': 50.0,
+            'bull_contribution': 50.0,
+            'bear_contribution': 50.0,
+            'sma_deviation': 0.0
+        }
+        
+        # Method 1: Use historical prices if available
+        if historical_prices is not None and not historical_prices.empty and len(historical_prices) >= 20:
+            try:
+                if 'close' in historical_prices.columns:
+                    prices = historical_prices['close'].values
+                    sma_20 = np.mean(prices[-20:])  # 20-period SMA
+                    sma_deviation = (current_price - sma_20) / sma_20
+                    analysis['sma_deviation'] = sma_deviation
+                    
+                    # Trend determination based on SMA deviation
+                    if sma_deviation > 0.002:  # 0.2% above SMA = UPTREND
+                        analysis['trend_direction'] = 'UPTREND'
+                        analysis['trend_strength'] = 'STRONG' if sma_deviation > 0.005 else 'MODERATE'
+                        analysis['bull_contribution'] = min(85.0, 50 + (sma_deviation * 5000))  # Scale to 0-85
+                        analysis['bear_contribution'] = max(15.0, 50 - (sma_deviation * 5000))
+                        analysis['trend_confidence'] = min(90.0, 60 + abs(sma_deviation) * 3000)
+                        
+                    elif sma_deviation < -0.002:  # 0.2% below SMA = DOWNTREND
+                        analysis['trend_direction'] = 'DOWNTREND'
+                        analysis['trend_strength'] = 'STRONG' if sma_deviation < -0.005 else 'MODERATE'
+                        analysis['bear_contribution'] = min(85.0, 50 + abs(sma_deviation) * 5000)
+                        analysis['bull_contribution'] = max(15.0, 50 - abs(sma_deviation) * 5000)
+                        analysis['trend_confidence'] = min(90.0, 60 + abs(sma_deviation) * 3000)
+                        
+                    else:  # Within 0.2% of SMA = SIDEWAYS
+                        analysis['trend_direction'] = 'SIDEWAYS'
+                        analysis['trend_strength'] = 'WEAK'
+                        analysis['bull_contribution'] = 50.0
+                        analysis['bear_contribution'] = 50.0
+                        analysis['trend_confidence'] = 40.0
+                        
+            except Exception as e:
+                self.logger.warning(f"Error in historical trend analysis: {e}")
+        
+        # Method 2: Fallback using options volume-weighted price momentum
+        if analysis['trend_direction'] == 'SIDEWAYS':
+            try:
+                if 'volume' in options_data.columns and 'strike' in options_data.columns:
+                    # Calculate volume-weighted average strike
+                    total_volume = options_data['volume'].sum()
+                    if total_volume > 0:
+                        vw_strike = (options_data['strike'] * options_data['volume']).sum() / total_volume
+                        strike_deviation = (current_price - vw_strike) / vw_strike
+                        
+                        if strike_deviation > 0.003:  # 0.3% above volume-weighted strikes
+                            analysis['trend_direction'] = 'UPTREND'
+                            analysis['trend_strength'] = 'MODERATE'
+                            analysis['bull_contribution'] = 70.0
+                            analysis['bear_contribution'] = 30.0
+                            analysis['trend_confidence'] = 65.0
+                            
+                        elif strike_deviation < -0.003:  # 0.3% below volume-weighted strikes
+                            analysis['trend_direction'] = 'DOWNTREND'
+                            analysis['trend_strength'] = 'MODERATE'
+                            analysis['bear_contribution'] = 70.0
+                            analysis['bull_contribution'] = 30.0
+                            analysis['trend_confidence'] = 65.0
+                            
+            except Exception as e:
+                self.logger.warning(f"Error in options-based trend analysis: {e}")
+        
+        return analysis
+    
+    def _analyze_context_aware_rsi(self, rsi_score: float, trend_analysis: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        REAL FIX: Context-aware RSI interpretation based on trend direction
+        In uptrends, RSI >70 is bullish continuation, not bearish reversal
+        """
+        
+        trend_direction = trend_analysis['trend_direction']
+        
+        analysis = {
+            'rsi_value': rsi_score,
+            'trend_context': trend_direction,
+            'interpretation': 'NEUTRAL',
+            'bull_contribution': 50.0,
+            'bear_contribution': 50.0
+        }
+        
+        if trend_direction == 'UPTREND':
+            # In uptrends, RSI stays "overbought" - this is BULLISH continuation
+            if rsi_score > 80:  # Extreme overbought in uptrend
+                analysis['interpretation'] = 'BEARISH_REVERSAL'
+                analysis['bull_contribution'] = 20.0
+                analysis['bear_contribution'] = 80.0
+            elif rsi_score > 60:  # Strong but not extreme - BULLISH continuation
+                analysis['interpretation'] = 'BULLISH_CONTINUATION'
+                analysis['bull_contribution'] = 75.0
+                analysis['bear_contribution'] = 25.0
+            elif rsi_score > 40:  # Normal in uptrend
+                analysis['interpretation'] = 'BULLISH_NORMAL'
+                analysis['bull_contribution'] = 65.0
+                analysis['bear_contribution'] = 35.0
+            else:  # RSI <40 in uptrend = potential reversal
+                analysis['interpretation'] = 'BEARISH_DIVERGENCE'
+                analysis['bull_contribution'] = 30.0
+                analysis['bear_contribution'] = 70.0
+                
+        elif trend_direction == 'DOWNTREND':
+            # In downtrends, RSI stays "oversold" - this is BEARISH continuation
+            if rsi_score < 20:  # Extreme oversold in downtrend
+                analysis['interpretation'] = 'BULLISH_REVERSAL'
+                analysis['bull_contribution'] = 80.0
+                analysis['bear_contribution'] = 20.0
+            elif rsi_score < 40:  # Strong but not extreme - BEARISH continuation
+                analysis['interpretation'] = 'BEARISH_CONTINUATION'
+                analysis['bull_contribution'] = 25.0
+                analysis['bear_contribution'] = 75.0
+            elif rsi_score < 60:  # Normal in downtrend
+                analysis['interpretation'] = 'BEARISH_NORMAL'
+                analysis['bull_contribution'] = 35.0
+                analysis['bear_contribution'] = 65.0
+            else:  # RSI >60 in downtrend = potential reversal
+                analysis['interpretation'] = 'BULLISH_DIVERGENCE'
+                analysis['bull_contribution'] = 70.0
+                analysis['bear_contribution'] = 30.0
+                
+        else:  # SIDEWAYS - use traditional RSI interpretation
+            if rsi_score > 70:
+                analysis['interpretation'] = 'OVERBOUGHT'
+                analysis['bull_contribution'] = 30.0
+                analysis['bear_contribution'] = 70.0
+            elif rsi_score < 30:
+                analysis['interpretation'] = 'OVERSOLD'
+                analysis['bull_contribution'] = 70.0
+                analysis['bear_contribution'] = 30.0
+            else:
+                analysis['interpretation'] = 'NEUTRAL'
+                analysis['bull_contribution'] = 50.0
+                analysis['bear_contribution'] = 50.0
+        
+        return analysis
+    
+    def _analyze_context_aware_put_call_ratio(self, options_data: pd.DataFrame, market_regime: str) -> Dict[str, Any]:
+        """
+        REAL FIX: Context-aware P/C ratio interpretation based on market regime
+        In up markets, P/C 0.8-1.2 is normal hedging, not bearish sentiment
+        """
+        
+        analysis = {
+            'put_call_ratio': 1.0,
+            'market_context': market_regime,
+            'interpretation': 'NEUTRAL',
+            'bull_contribution': 50.0,
+            'bear_contribution': 50.0
+        }
+        
+        if options_data.empty:
+            return analysis
+        
+        puts = options_data[options_data['option_type'] == 'put']
+        calls = options_data[options_data['option_type'] == 'call']
+        
+        put_volume = puts['volume'].sum() if 'volume' in puts.columns and not puts.empty else 0
+        call_volume = calls['volume'].sum() if 'volume' in calls.columns and not calls.empty else 1
+        
+        pc_ratio = put_volume / max(call_volume, 1)
+        analysis['put_call_ratio'] = pc_ratio
+        
+        if market_regime == 'BULLISH':
+            # In bull markets, higher P/C is normal hedging, not panic
+            if pc_ratio > 1.5:  # Very heavy put activity = potential reversal
+                analysis['interpretation'] = 'BEARISH_REVERSAL'
+                analysis['bear_contribution'] = 75.0
+                analysis['bull_contribution'] = 25.0
+            elif pc_ratio > 1.2:  # Heavy hedging = still bullish but cautious
+                analysis['interpretation'] = 'BULLISH_HEDGED'
+                analysis['bull_contribution'] = 60.0
+                analysis['bear_contribution'] = 40.0
+            elif pc_ratio > 0.8:  # Normal bull market range
+                analysis['interpretation'] = 'BULLISH_NORMAL'
+                analysis['bull_contribution'] = 70.0
+                analysis['bear_contribution'] = 30.0
+            else:  # P/C < 0.8 = very bullish (low hedging)
+                analysis['interpretation'] = 'VERY_BULLISH'
+                analysis['bull_contribution'] = 80.0
+                analysis['bear_contribution'] = 20.0
+                
+        elif market_regime == 'BEARISH':
+            # In bear markets, lower P/C is unusual (not enough hedging)
+            if pc_ratio < 0.8:  # Low put activity in bear market = potential reversal
+                analysis['interpretation'] = 'BULLISH_REVERSAL'
+                analysis['bull_contribution'] = 75.0
+                analysis['bear_contribution'] = 25.0
+            elif pc_ratio < 1.2:  # Not enough hedging = still bearish but vulnerable
+                analysis['interpretation'] = 'BEARISH_VULNERABLE'
+                analysis['bear_contribution'] = 60.0
+                analysis['bull_contribution'] = 40.0
+            elif pc_ratio < 1.8:  # Normal bear market range
+                analysis['interpretation'] = 'BEARISH_NORMAL'
+                analysis['bear_contribution'] = 70.0
+                analysis['bull_contribution'] = 30.0
+            else:  # P/C > 1.8 = very bearish (heavy hedging/panic)
+                analysis['interpretation'] = 'VERY_BEARISH'
+                analysis['bear_contribution'] = 80.0
+                analysis['bull_contribution'] = 20.0
+                
+        else:  # NEUTRAL market - use traditional interpretation
+            if pc_ratio > 1.3:
+                analysis['interpretation'] = 'BEARISH'
+                analysis['bear_contribution'] = 70.0
+                analysis['bull_contribution'] = 30.0
+            elif pc_ratio > 1.1:
+                analysis['interpretation'] = 'WEAK_BEARISH'
+                analysis['bear_contribution'] = 60.0
+                analysis['bull_contribution'] = 40.0
+            elif pc_ratio < 0.7:
+                analysis['interpretation'] = 'BULLISH'
+                analysis['bull_contribution'] = 70.0
+                analysis['bear_contribution'] = 30.0
+            elif pc_ratio < 0.9:
+                analysis['interpretation'] = 'WEAK_BULLISH'
+                analysis['bull_contribution'] = 60.0
+                analysis['bear_contribution'] = 40.0
+            else:
+                analysis['interpretation'] = 'NEUTRAL'
+                analysis['bull_contribution'] = 50.0
+                analysis['bear_contribution'] = 50.0
+        
+        return analysis
 
 def main():
     """Test the Market Intelligence Engine"""

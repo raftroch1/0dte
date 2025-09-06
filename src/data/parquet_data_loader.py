@@ -48,13 +48,32 @@ class ParquetDataLoader:
         # Load the parquet file
         df = pd.read_parquet(self.parquet_path)
         
-        # Convert timestamp and prepare datetime columns
-        df['datetime'] = pd.to_datetime(df['timestamp'], unit='ms')
+        # Handle different column names for timestamp
+        if 'sip_timestamp' in df.columns:
+            # New 2024 format
+            df['datetime'] = pd.to_datetime(df['sip_timestamp'], unit='ns')
+            df['expiration_date'] = pd.to_datetime(df['option_details.expiration_date'])
+            df['strike'] = df['option_details.strike_price']
+            df['contract_type'] = df['option_details.contract_type']
+            # Map volume column (in 2024 data it's 'size')
+            if 'size' in df.columns:
+                df['volume'] = df['size']
+            # Map option_type column
+            df['option_type'] = df['option_details.contract_type']
+            # Map close price (use 'price' column)
+            if 'price' in df.columns:
+                df['close'] = df['price']
+            # Add transactions column (not in 2024 data, use volume as proxy)
+            df['transactions'] = df['volume']  # Simplified mapping
+        elif 'timestamp' in df.columns:
+            # Old format
+            df['datetime'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df['expiration_date'] = pd.to_datetime(df['expiration'])
+        else:
+            raise ValueError("No recognized timestamp column found in parquet file")
+        
         df['date'] = df['datetime'].dt.date
         df['time'] = df['datetime'].dt.time
-        
-        # Parse expiration dates
-        df['expiration_date'] = pd.to_datetime(df['expiration'])
         df['days_to_expiry'] = (df['expiration_date'] - df['datetime'].dt.normalize()).dt.days
         
         # Add market hours filter

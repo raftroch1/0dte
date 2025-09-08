@@ -160,6 +160,43 @@ class BlackScholesCalculator:
             spread_value = short_put_price - long_put_price
             return spread_value
             
+        elif spread_type == 'BULL_CALL_SPREAD':
+            # DEBIT SPREAD: Long lower strike call, short higher strike call
+            # Validate strike relationship for bull call spread
+            if long_strike >= short_strike:
+                raise ValueError(f"Bull call spread requires long_strike < short_strike. Got long={long_strike}, short={short_strike}")
+            
+            long_call_price = self.calculate_option_price(
+                spot_price, long_strike, time_to_expiry, volatility, 'call'
+            )
+            short_call_price = self.calculate_option_price(
+                spot_price, short_strike, time_to_expiry, volatility, 'call'
+            )
+            # Debit spread: we pay premium for long, receive premium for short
+            # Net debit = long premium - short premium (long premium > short premium)
+            # Current value = long call value - short call value
+            spread_value = long_call_price - short_call_price
+            return spread_value
+            
+        elif spread_type == 'BEAR_PUT_SPREAD':
+            # DEBIT SPREAD: Long higher strike put, short lower strike put
+            # Validate strike relationship for bear put spread
+            if long_strike <= short_strike:
+                raise ValueError(f"Bear put spread requires long_strike > short_strike. Got long={long_strike}, short={short_strike}")
+            
+            long_put_price = self.calculate_option_price(
+                spot_price, long_strike, time_to_expiry, volatility, 'put'
+            )
+            short_put_price = self.calculate_option_price(
+                spot_price, short_strike, time_to_expiry, volatility, 'put'
+            )
+            # Debit spread: we pay premium for long, receive premium for short
+            # Net debit = long premium - short premium (long premium > short premium)
+            # Current value = long put value - short put value
+            spread_value = long_put_price - short_put_price
+            return spread_value
+            
+            
         elif spread_type == 'IRON_CONDOR':
             # Combination of bear call spread and bull put spread
             # For simplicity, we'll estimate as average of both components

@@ -607,15 +607,15 @@ class MarketIntelligenceEngine:
             analysis['bull_contribution'] = 50.0
             analysis['bear_contribution'] = 50.0
         
-        # Adjust based on absolute VIX level
+        # FIXED: Symmetric adjustments based on absolute VIX level
         if analysis['vix_level'] > self.vix_thresholds['high_vol']:
             # High VIX = bearish bias
             analysis['bear_contribution'] = min(90, analysis['bear_contribution'] + 20)
             analysis['bull_contribution'] = max(10, analysis['bull_contribution'] - 20)
         elif analysis['vix_level'] < self.vix_thresholds['low_vol']:
-            # Low VIX = bullish bias
-            analysis['bull_contribution'] = min(90, analysis['bull_contribution'] + 15)
-            analysis['bear_contribution'] = max(10, analysis['bear_contribution'] - 15)
+            # FIXED: Low VIX = symmetric bullish bias (was +15/-15, now +20/-20)
+            analysis['bull_contribution'] = min(90, analysis['bull_contribution'] + 20)
+            analysis['bear_contribution'] = max(10, analysis['bear_contribution'] - 20)
         
         return analysis
     
@@ -635,11 +635,17 @@ class MarketIntelligenceEngine:
         # Convert P/C ratio to RSI-like scale (0-100)
         pc_ratio = put_volume / max(call_volume, 1)
         
-        # SIMPLIFIED: Direct mapping without double inversion
+        # FIXED: Symmetric mapping without bullish bias
         # P/C ratio 0.5 = RSI 70 (bullish)
-        # P/C ratio 1.0 = RSI 50 (neutral)
+        # P/C ratio 1.0 = RSI 50 (neutral)  
         # P/C ratio 2.0 = RSI 30 (bearish)
-        rsi = max(20, min(80, 50 + (1.0 - pc_ratio) * 15))
+        # CRITICAL FIX: Use logarithmic scaling to prevent bias
+        if pc_ratio > 1.0:
+            # Bearish territory: P/C > 1.0
+            rsi = max(20, 50 - (pc_ratio - 1.0) * 20)
+        else:
+            # Bullish territory: P/C < 1.0
+            rsi = min(80, 50 + (1.0 - pc_ratio) * 20)
         
         return rsi
     
@@ -682,17 +688,17 @@ class MarketIntelligenceEngine:
         
         moneyness_std = options_data['moneyness'].std()
         
-        # FIXED: Strong momentum detection with volume weighting
+        # FIXED: Symmetric momentum detection with volume weighting
         if abs(weighted_moneyness) > 0.015:  # 1.5% volume-weighted moneyness
             analysis['momentum_strength'] = 'STRONG'
             if weighted_moneyness > 0:
                 analysis['momentum_direction'] = 'BULLISH'
-                analysis['bull_contribution'] = 75.0  # Reduced from 80 for balance
-                analysis['bear_contribution'] = 25.0
+                analysis['bull_contribution'] = 70.0  # SYMMETRIC: Same as bearish
+                analysis['bear_contribution'] = 30.0
             else:
                 analysis['momentum_direction'] = 'BEARISH'
-                analysis['bull_contribution'] = 25.0
-                analysis['bear_contribution'] = 75.0
+                analysis['bull_contribution'] = 30.0  # SYMMETRIC: Same as bullish
+                analysis['bear_contribution'] = 70.0
         elif moneyness_std > 0.05:  # High volatility in moneyness
             analysis['momentum_strength'] = 'MIXED'
             analysis['momentum_direction'] = 'SIDEWAYS'
@@ -970,15 +976,21 @@ class MarketIntelligenceEngine:
                     regime_confidence = neutral_score
         else:
             # Normal regime determination when VWAP confidence is not extreme
+            # DEBUG: Log the scores to identify systematic bias
+            self.logger.info(f"🔍 REGIME SCORES: Bull={bull_score:.1f}, Bear={bear_score:.1f}, Neutral={neutral_score:.1f}")
+            
             if bull_score > bear_score and bull_score > neutral_score:
                 primary_regime = 'BULLISH'
                 regime_confidence = bull_score
+                self.logger.info(f"🟢 REGIME SELECTED: BULLISH ({bull_score:.1f})")
             elif bear_score > bull_score and bear_score > neutral_score:
                 primary_regime = 'BEARISH'
                 regime_confidence = bear_score
+                self.logger.info(f"🔴 REGIME SELECTED: BEARISH ({bear_score:.1f})")
             else:
                 primary_regime = 'NEUTRAL'
                 regime_confidence = neutral_score
+                self.logger.info(f"🟡 REGIME SELECTED: NEUTRAL ({neutral_score:.1f})")
         
         # REAL FIX: GEX suppresses confidence in BOTH directions equally
         gex_confidence_multiplier = gex_analysis['confidence_multiplier']
